@@ -1,0 +1,96 @@
+{
+    "id": "agent_multi_step_0",
+    "ground_truth": [
+        {
+            "BaseApi": {
+                "wifi": true,
+                "logged_in": true
+            }
+        },
+        {
+            "FoodPlatform": {
+                "users": {
+                    "Eve": {
+                        "user_id": "U100",
+                        "password": "password123",
+                        "balance": 412.0
+                    },
+                    "Frank": {
+                        "user_id": "U101",
+                        "password": "password456",
+                        "balance": 300.0
+                    },
+                    "Grace": {
+                        "user_id": "U102",
+                        "password": "password789",
+                        "balance": 150.0
+                    },
+                    "Helen": {
+                        "user_id": "U103",
+                        "password": "password321",
+                        "balance": 800.0
+                    },
+                    "Isaac": {
+                        "user_id": "U104",
+                        "password": "password654",
+                        "balance": 400.0
+                    },
+                    "Jack": {
+                        "user_id": "U105",
+                        "password": "password654",
+                        "balance": 120.0
+                    }
+                },
+                "logged_in_users": [
+                    "Eve"
+                ],
+                "orders": [
+                    {
+                        "user_name": "Eve",
+                        "merchant_name": "Domino's",
+                        "items": [
+                            {
+                                "product": "Super Supreme Pizza",
+                                "quantity": 1,
+                                "price_per_unit": 88.0
+                            }
+                        ],
+                        "total_price": 88.0
+                    }
+                ]
+            }
+        },
+        {
+            "ReminderAPI": {
+                "reminder_list": {
+                    "1": {
+                        "reminder_id": 1001,
+                        "title": "Doctor's Appointment",
+                        "description": "Visit Dr. Smith for a checkup.",
+                        "time": "2024-07-15 09:30",
+                        "notified": false
+                    },
+                    "2": {
+                        "reminder_id": 1002,
+                        "title": "Team Meeting",
+                        "description": "Monthly project review with the team.",
+                        "time": "2024-07-17 11:00",
+                        "notified": false
+                    },
+                    "3": {
+                        "reminder_id": 3,
+                        "title": "Today's spending",
+                        "description": "Today's spending 88.0 yuan",
+                        "time": "2024-07-15 09:30",
+                        "notified": false
+                    }
+                }
+            }
+        }
+    ],
+    "mile_stone": [
+        "[login_food_platform(username='Eve', password='password123')]",
+        "[add_food_delivery_order(username='Eve', merchant_name='Domino's', items=[{'product': 'Super Supreme', 'quantity': 1}])]",
+        "[add_reminder(title='Today's spending', description='Today's spending 88.0 yuan', time='2024-07-15 09:30')]"
+    ]
+}
