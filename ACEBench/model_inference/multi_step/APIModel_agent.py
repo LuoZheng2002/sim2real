@@ -1,5 +1,5 @@
 
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 import os
 import re 
 
@@ -62,9 +62,9 @@ FOOD_SYSTEM_EN = """Below is the account information and passwords for different
 
 class APIAgent_step():
 
-    def __init__(self, model_name, time, functions, temperature=0.001, top_p=1, max_tokens=1000, language="zh") -> None:
+    def __init__(self, model_name, time, functions, temperature=0.001, top_p=1, max_tokens=1000, language="zh", async_client=None) -> None:
         self.model_name = model_name.lower()
-        
+
         if "gpt" in self.model_name:
             api_key = os.getenv("GPT_AGENT_API_KEY")
             base_url = os.getenv("GPT_AGENT_BASE_URL")
@@ -81,6 +81,8 @@ class APIAgent_step():
             raise ValueError(f"Unknown model name: {self.model_name}")
 
         self.client = OpenAI(base_url=base_url, api_key=api_key)
+        # Use global async client if provided, otherwise create a new one
+        self.async_client = async_client if async_client else AsyncOpenAI(base_url=base_url, api_key=api_key)
         self.temperature = temperature
         self.top_p = top_p
         self.max_tokens = max_tokens
@@ -130,6 +132,60 @@ class APIAgent_step():
             )
             response = response.choices[0].message.content
             
+        current_message["sender"] = "agent"
+
+        pattern = r"\[.*?\]"
+        match = re.match(pattern, response)
+
+        if match:
+            current_message["recipient"] = "execution"
+        else:
+            current_message["recipient"] = "user"
+        current_message["message"] = response
+
+        return current_message
+
+    async def respond_async(self, history) -> None:
+
+        current_message = {}
+        if self.language == "zh":
+            system_prompt = MULTI_TURN_AGENT_PROMPT_SYSTEM_ZH.format(time = self.time)
+            user_prompt = MULTI_TURN_AGENT_PROMPT_USER_ZH.format(functions = self.functions, history = history)
+        elif self.language == "en":
+            system_prompt = MULTI_TURN_AGENT_PROMPT_SYSTEM_EN.format(time = self.time)
+            user_prompt = MULTI_TURN_AGENT_PROMPT_USER_EN.format(functions = self.functions, history = history)
+
+        if "o1" not in self.model_name:
+            message = [
+                {
+                    "role": "system",
+                    "content": system_prompt,
+                },
+                {
+                    "role": "user",
+                    "content": user_prompt,
+                },
+            ]
+
+            response = await self.async_client.chat.completions.create(
+                messages=message,
+                model=self.model_name,
+                temperature=self.temperature,
+                max_tokens=self.max_tokens,
+                top_p=self.top_p,
+            )
+            response = response.choices[0].message.content
+        else:
+            message = [{
+                "role": "user",
+                "content": system_prompt+"\n\n"+user_prompt,
+            }]
+            response = await self.async_client.chat.completions.create(
+                messages=message,
+                model=self.model_name,
+            )
+            response = response.choices[0].message.content
+
         current_message["sender"] = "agent"
 
         pattern = r"\[.*?\]"

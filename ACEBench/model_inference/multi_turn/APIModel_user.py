@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 import os
 
 SYSTEM_PROMPT_TRAVEL_ZH = """您是一名与agent互动的用户。
@@ -76,8 +76,8 @@ def remove_prefix(text):
 
 class APIUSER():
 
-    def __init__(self, model_name, involved_class, temperature=0.001, top_p=1, max_tokens=1000, language="zh") -> None:
-        
+    def __init__(self, model_name, involved_class, temperature=0.001, top_p=1, max_tokens=1000, language="zh", async_client=None) -> None:
+
         self.model_name = model_name.lower()
         if "gpt" in self.model_name:
             api_key = os.getenv("GPT_API_KEY")
@@ -93,8 +93,10 @@ class APIUSER():
             base_url = os.getenv("KIMI_BASE_URL")
         else:
             raise ValueError(f"Unknown model name: {self.model_name}")
-            
+
         self.client = OpenAI(base_url=base_url, api_key=api_key)
+        # Use global async client if provided, otherwise create a new one
+        self.async_client = async_client if async_client else AsyncOpenAI(base_url=base_url, api_key=api_key)
         self.model_name = model_name
         self.temperature = temperature
         self.top_p = top_p
@@ -159,6 +161,69 @@ class APIUSER():
         current_message = {}
         
         response = self.client.chat.completions.create(
+            messages=self.messages,
+            model=self.model_name,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            top_p=self.top_p,
+        )
+        response = response.choices[0].message.content
+        self.messages.append({"role": "system", "content": response})
+
+        current_message = {"sender":"user", "recipient": "agent", "message": response}
+
+        return current_message
+
+    async def get_init_prompt_async(self, question):
+
+        if self.language == "zh":
+            if "BaseApi" in self.involved_class:
+                system_prompt = SYSTEM_PROMPT_BASE_ZH
+            elif "Travel" in self.involved_class:
+                system_prompt = SYSTEM_PROMPT_TRAVEL_ZH
+            self.messages = [
+                {
+                    "role": "system",
+                    "content": system_prompt.format(instruction = question)
+                },
+                {
+                    "role": "user",
+                    "content": "今天有什么需要帮助的吗？",
+                }]
+
+        elif self.language == "en":
+            if "BaseApi" in self.involved_class:
+                system_prompt = SYSTEM_PROMPT_BASE_EN
+            elif "Travel" in self.involved_class:
+                system_prompt = SYSTEM_PROMPT_TRAVEL_EN
+            self.messages = [
+                {
+                    "role": "system",
+                    "content": system_prompt.format(instruction = question)
+                },
+                {
+                    "role": "user",
+                    "content": "Is there anything you need help with today?",
+                }]
+
+        response = await self.async_client.chat.completions.create(
+            messages=self.messages,
+            model=self.model_name,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            top_p=self.top_p,
+        )
+        response = response.choices[0].message.content
+        message = {"role":"system",
+                   "content":response}
+        self.messages.append(message)
+        return response
+
+    async def respond_async(self) -> None:
+
+        current_message = {}
+
+        response = await self.async_client.chat.completions.create(
             messages=self.messages,
             model=self.model_name,
             temperature=self.temperature,

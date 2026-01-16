@@ -1,9 +1,78 @@
 
-import argparse, json, os
+import argparse, json, os, asyncio
 from tqdm import tqdm
+from dotenv import load_dotenv
+from openai import AsyncOpenAI
 from model_inference.inference_map import inference_map
 from category import ACE_DATA_CATEGORY
-from concurrent.futures import ThreadPoolExecutor, as_completed
+
+load_dotenv()
+
+def get_async_clients(model_name, user_model):
+    """Create global async clients for the model and user model."""
+    clients = {}
+
+    # Client for the main model
+    model_name_lower = model_name.lower()
+    if "gpt" in model_name_lower or "o1" in model_name_lower:
+        clients['model'] = AsyncOpenAI(
+            base_url=os.getenv("GPT_BASE_URL"),
+            api_key=os.getenv("GPT_AGENT_API_KEY")
+        )
+    elif "deepseek" in model_name_lower:
+        clients['model'] = AsyncOpenAI(
+            base_url=os.getenv("DEEPSEEK_BASE_URL"),
+            api_key=os.getenv("DEEPSEEK_API_KEY")
+        )
+    elif "qwen" in model_name_lower:
+        clients['model'] = AsyncOpenAI(
+            base_url=os.getenv("QWEN_BASE_URL"),
+            api_key=os.getenv("QWEN_API_KEY")
+        )
+    elif "doubao" in model_name_lower:
+        clients['model'] = AsyncOpenAI(
+            base_url=os.getenv("DOUBAO_BASE_URL"),
+            api_key=os.getenv("DOUBAO_API_KEY")
+        )
+    elif "claude" in model_name_lower:
+        clients['model'] = AsyncOpenAI(
+            base_url=os.getenv("CLAUDE_BASE_URL"),
+            api_key=os.getenv("CLAUDE_API_KEY")
+        )
+    elif "kimi" in model_name_lower:
+        clients['model'] = AsyncOpenAI(
+            base_url=os.getenv("KIMI_BASE_URL"),
+            api_key=os.getenv("KIMI_API_KEY")
+        )
+    else:
+        clients['model'] = None  # Local model, no async client needed
+
+    # Client for the user model (used in multi-turn scenarios)
+    user_model_lower = user_model.lower()
+    if "gpt" in user_model_lower:
+        clients['user'] = AsyncOpenAI(
+            base_url=os.getenv("GPT_BASE_URL"),
+            api_key=os.getenv("GPT_API_KEY")
+        )
+    elif "deepseek" in user_model_lower:
+        clients['user'] = AsyncOpenAI(
+            base_url=os.getenv("DEEPSEEK_BASE_URL"),
+            api_key=os.getenv("DEEPSEEK_API_KEY")
+        )
+    elif "qwen" in user_model_lower:
+        clients['user'] = AsyncOpenAI(
+            base_url=os.getenv("QWEN_BASE_URL"),
+            api_key=os.getenv("QWEN_API_KEY")
+        )
+    elif "kimi" in user_model_lower:
+        clients['user'] = AsyncOpenAI(
+            base_url=os.getenv("KIMI_BASE_URL"),
+            api_key=os.getenv("KIMI_API_KEY")
+        )
+    else:
+        clients['user'] = None
+
+    return clients
 
 
 def get_args():
@@ -70,85 +139,86 @@ def sort_json(file):
             json.dump(entry, f, ensure_ascii=False)
             f.write('\n')  
 
-def generate_singal(args, model_name, test_case):
-    model_path = args.model_path 
-    result_path = args.result_path
-    model_inference = inference_map[model_name](model_name, model_path, args.temperature, args.top_p, args.max_tokens, args.max_dialog_turns, args.user_model, args.language)
+async def generate_single(args, model_name, test_case, semaphore, async_clients):
+    async with semaphore:
+        model_path = args.model_path
+        result_path = args.result_path
+        model_inference = inference_map[model_name](model_name, model_path, args.temperature, args.top_p, args.max_tokens, args.max_dialog_turns, args.user_model, args.language, async_clients)
 
-    if "agent" in test_case["id"]:
-        id, question, functions = (
-                    test_case["id"],
-                    test_case["question"],
-                    test_case["function"],
-                )
-        if isinstance(functions, (dict, str)):
-            functions = [functions]
-        time = ""
-        profile = ""
-        result, process_list = model_inference.inference(question, functions, time, profile,test_case, id)
-        result_to_write = {
-            "id": id,
-            "result": result,
-            "process": process_list
-        }
-        model_inference.write_result(result_to_write, model_name, result_path)
+        if "agent" in test_case["id"]:
+            id, question, functions = (
+                        test_case["id"],
+                        test_case["question"],
+                        test_case["function"],
+                    )
+            if isinstance(functions, (dict, str)):
+                functions = [functions]
+            time = ""
+            profile = ""
+            result, process_list = await model_inference.inference_async(question, functions, time, profile, test_case, id)
+            result_to_write = {
+                "id": id,
+                "result": result,
+                "process": process_list
+            }
+            model_inference.write_result(result_to_write, model_name, result_path)
 
-    elif "preference" in test_case["id"]:
-        id, question, functions, profile = (
-                    test_case["id"],
-                    test_case["question"],
-                    test_case["function"],
-                    test_case["profile"],
-                )
-        time = ""
-        if isinstance(functions, (dict, str)):
-            functions = [functions]
+        elif "preference" in test_case["id"]:
+            id, question, functions, profile = (
+                        test_case["id"],
+                        test_case["question"],
+                        test_case["function"],
+                        test_case["profile"],
+                    )
+            time = ""
+            if isinstance(functions, (dict, str)):
+                functions = [functions]
 
-        result = model_inference.inference(question, functions, time, profile, test_case, id)
+            result = await model_inference.inference_async(question, functions, time, profile, test_case, id)
 
-        result_to_write = {
-            "id": id,
-            "result": result,
-        }
-        model_inference.write_result(result_to_write, model_name, result_path)
-    
-    else:
-        id, question, functions, time = (
-                    test_case["id"],
-                    test_case["question"],
-                    test_case["function"],
-                    test_case["time"],
-                )
-        profile = ""
-        if isinstance(functions, (dict, str)):
-            functions = [functions]
+            result_to_write = {
+                "id": id,
+                "result": result,
+            }
+            model_inference.write_result(result_to_write, model_name, result_path)
 
-        result = model_inference.inference(question, functions, time, profile, test_case, id)
+        else:
+            id, question, functions, time = (
+                        test_case["id"],
+                        test_case["question"],
+                        test_case["function"],
+                        test_case["time"],
+                    )
+            profile = ""
+            if isinstance(functions, (dict, str)):
+                functions = [functions]
 
-        result_to_write = {
-            "id": id,
-            "result": result,
-        }
-        model_inference.write_result(result_to_write, model_name, result_path)
+            result = await model_inference.inference_async(question, functions, time, profile, test_case, id)
 
-def generate_results(args, model_name, test_case, completed_id_set):
-    with ThreadPoolExecutor(max_workers = args.num_threads) as executor:
-        futures = []
-        for test_case in test_cases_total:
-            if test_case["id"] not in completed_id_set:
-                future = executor.submit(generate_singal, args, model_name, test_case)
-                futures.append(future)
+            result_to_write = {
+                "id": id,
+                "result": result,
+            }
+            model_inference.write_result(result_to_write, model_name, result_path)
 
-        with tqdm(total=len(futures), desc="Processing Tasks", leave=True) as pbar:
-            for future in as_completed(futures):
-                try:
-                    result = future.result()  # Catch exceptions in tasks
-                    pbar.update(1)
-                except Exception as e:
-                    print(f"Task raised an exception: {e}")
-                    # You can choose whether to continue executing tasks after catching an exception, or to terminate the program
-                    raise
-        print("All tasks have been completed.")
+async def generate_results(args, model_name, test_cases_total, completed_id_set):
+    semaphore = asyncio.Semaphore(200)
+    async_clients = get_async_clients(model_name, args.user_model)
+    tasks = []
+    for test_case in test_cases_total:
+        if test_case["id"] not in completed_id_set:
+            task = asyncio.create_task(generate_single(args, model_name, test_case, semaphore, async_clients))
+            tasks.append(task)
+
+    with tqdm(total=len(tasks), desc="Processing Tasks", leave=True) as pbar:
+        for coro in asyncio.as_completed(tasks):
+            try:
+                await coro
+                pbar.update(1)
+            except Exception as e:
+                print(f"Task raised an exception: {e}")
+                raise
+    print("All tasks have been completed.")
 
 
 
@@ -196,7 +266,7 @@ if __name__ == "__main__":
         test_cases_total = load_test_cases(data_path, test_files)
 
         if len(test_cases_total) > 0:
-            generate_results(args, model_name, test_cases_total, completed_id_set)
+            asyncio.run(generate_results(args, model_name, test_cases_total, completed_id_set))
         
         # Multithreading may disrupt the order of execution, so the result ids need to be reordered
         for file in test_names:

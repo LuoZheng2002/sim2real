@@ -27,7 +27,7 @@ SAVED_CLASS = {
 
 
 class CommonInference(BaseHandler):
-    def __init__(self, model_name, model_path=None, temperature=0.001, top_p=1, max_tokens=1000, max_dialog_turns=40, user_model="gpt-4o", language="zh") -> None:
+    def __init__(self, model_name, model_path=None, temperature=0.001, top_p=1, max_tokens=1000, max_dialog_turns=40, user_model="gpt-4o", language="zh", async_clients=None) -> None:
         super().__init__(model_name, model_path, temperature, top_p, max_tokens, language)
 
         self.model_name = model_name
@@ -35,6 +35,7 @@ class CommonInference(BaseHandler):
         self.max_message_index = max_dialog_turns
         self.language = language
         self.user_model = user_model
+        self.async_clients = async_clients  # Store for potential use in multi-turn with user model
         self.tokenizer = self.initialize_tokenizer(model_path)
         self.model = get_model(model_name=model_name, model_path=model_path)
 
@@ -83,9 +84,14 @@ class CommonInference(BaseHandler):
                 system_prompt = SYSTEM_PROMPT_FOR_NORMAL_DATA_EN.format(time=time, function=functions)
             user_prompt = USER_PROMPT_EN.format(question=question)
 
-      
+
         result = self.model.inference(system_prompt, user_prompt)
         return result
+
+    async def inference_async(self, question, functions, time, profile, test_case, id):
+        # For local models, we just call the synchronous method
+        # since VLLM doesn't benefit from asyncio
+        return self.inference(question, functions, time, profile, test_case, id)
 
     def multi_turn_inference(self, question, initial_config, functions, involved_classes, test_id, time):
         agent = CommonAgent(model=self.model, time=time, functions=functions, involved_class=involved_classes, language=self.language)
