@@ -4,7 +4,7 @@ import os
 import subprocess
 from openai import OpenAI
 import google.generativeai as genai
-from vllm import LLM, SamplingParams
+
 import time
 
 
@@ -26,6 +26,9 @@ def get_free_gpu(use_gpu_num):
 
 class LLMInfer(object):
     def __init__(self, model_path, temperature=0.001, top_p=1, max_tokens=1000, language="zh", max_model_len=8192, tensor_parallel_size=1) -> None:
+        print("importing vllm...")
+        from vllm import LLM, SamplingParams
+        print("imported vllm.")
         gpu_ids = get_free_gpu(use_gpu_num=tensor_parallel_size)
         os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
         self.sampling_params = SamplingParams(

@@ -10,7 +10,7 @@ def get_args():
 
     parser = argparse.ArgumentParser()
     # Model name
-    parser.add_argument("--model", type=str, default="gpt-4o", nargs="+", help="Name of the model(s) to use")
+    parser.add_argument("--model", type=str, required=True, nargs="+", help="Name of the model(s) to use")
 
     # For local models, specify the model path
     parser.add_argument("--model-path", type=str, help="Path to the model for local models")
