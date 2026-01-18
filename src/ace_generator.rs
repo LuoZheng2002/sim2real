@@ -1,0 +1,376 @@
+use std::{
+    cell::RefCell,
+    collections::{HashMap, HashSet, VecDeque},
+    path::{Path, PathBuf},
+    rc::Rc,
+    sync::{Arc, LazyLock},
+};
+
+use atomic_refcell::AtomicRefCell;
+use indexmap::IndexMap;
+use pyo3::{pyclass, pymethods};
+use serde::{Deserialize, Serialize};
+
+use crate::{
+    ace_problem::{
+        AceProblem, AceProblemState, AgentProblemState, DialogueEntry, DialogueParticipant,
+        ProblemStatus,
+    },
+    datasets::DATASETS,
+    paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH},
+    python_interface::PythonResponse,
+    utils::load_json_lines,
+    world_state::WorldState,
+};
+
+/// Entry for agent_multi_turn and agent_multi_step datasets
+/// Files: data_agent_multi_turn.json, data_agent_multi_step.json
+#[derive(Deserialize, Clone)]
+pub struct AgentEntry {
+    pub id: String,
+    pub question: String,
+    pub initial_config: IndexMap<String, serde_json::Value>,
+    pub path: Vec<serde_json::Value>, // unused in current codebase
+    pub function: Vec<serde_json::Value>, // passed as-is to LLM
+    pub involved_classes: Vec<String>,
+}
+
+/// Entry for normal and special datasets (most common format)
+/// Files: data_normal_atom_*.json, data_normal_multi_turn_*.json,
+///        data_normal_similar_api.json, data_normal_single_turn_*.json,
+///        data_special_*.json
+#[derive(Deserialize, Clone)]
+pub struct NormalEntry {
+    pub id: String,
+    pub question: String,
+    pub function: Vec<serde_json::Value>,
+    pub time: String, // can be empty string
+}
+
+/// Entry for preference dataset
+/// File: data_normal_preference.json
+#[derive(Deserialize, Clone)]
+pub struct PreferenceEntry {
+    pub id: String,
+    pub question: String,
+    pub function: Vec<serde_json::Value>,
+    pub profile: String, // JSON-like string containing user profile
+}
+
+/// Unified entry enum for all dataset types
+#[derive(Deserialize, Clone)]
+#[serde(untagged)]
+pub enum DatasetEntry {
+    Agent(AgentEntry),
+    Preference(PreferenceEntry),
+    Normal(NormalEntry),
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct AgentResultEntry {
+    pub id: String,
+    pub result: WorldState,
+    pub process: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct NormalResultEntry {
+    pub id: String,
+    pub result: String, // to do: there might be a better representation
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+#[serde(untagged)]
+pub enum ResultEntry {
+    Agent(AgentResultEntry),
+    Normal(NormalResultEntry),
+}
+
+pub enum ProblemType {
+    SingleTurnNormal,
+    SingleTurnPreference,
+    SingleTurnSpecial,
+    AgentMultiTurn,
+    AgentMultiStep,
+}
+pub enum EvaluationType {
+    NormalSingleTurn,
+    NormalMultiTurn,
+    Special,
+    Agent,
+}
+pub struct DatasetTrait {
+    pub problem_type: ProblemType,
+    pub evaluation_type: EvaluationType,
+}
+
+fn parse_entries_to_problems(
+    entries: Vec<serde_json::Value>,
+    dataset_name: String,
+    output_file_path: impl AsRef<Path>,
+    problem_type: &ProblemType,
+) -> Vec<AceProblem> {
+    let existing_entries: Vec<serde_json::Value> =
+        load_json_lines(output_file_path.as_ref()).unwrap_or_default();
+    let existing_ids = existing_entries
+        .iter()
+        .map(|entry_value| {
+            let entry: ResultEntry =
+                serde_json::from_value(entry_value.clone()).expect("failed to parse NormalEntry");
+            match entry {
+                ResultEntry::Agent(agent_entry) => agent_entry.id,
+                ResultEntry::Normal(normal_entry) => normal_entry.id,
+            }
+        })
+        .collect::<HashSet<String>>();
+    let output_file = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(output_file_path.as_ref())
+        .expect(&format!(
+            "Failed to create/open output file at {}",
+            output_file_path.as_ref().display()
+        ));
+    let output_file = Arc::new(AtomicRefCell::new(output_file));
+    match problem_type {
+        ProblemType::SingleTurnNormal => {
+            let mut problems: Vec<AceProblem> = Vec::new();
+            for entry_value in entries {
+                let entry: NormalEntry = serde_json::from_value(entry_value.clone())
+                    .expect("failed to parse NormalEntry");
+                if existing_ids.contains(&entry.id) {
+                    continue;
+                }
+                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let problem = AceProblem {
+                    identifier,
+                    dataset_name: dataset_name.clone(),
+                    id: entry.id,
+                    status: ProblemStatus::Waiting,
+                    question: entry.question,
+                    function: entry.function,
+                    state: AceProblemState::SingleTurnNormal { time: entry.time },
+                    output_file: output_file.clone(),
+                };
+                problems.push(problem);
+            }
+            problems
+        }
+        ProblemType::SingleTurnPreference => {
+            let mut problems: Vec<AceProblem> = Vec::new();
+            for entry_value in entries {
+                let entry: PreferenceEntry = serde_json::from_value(entry_value.clone())
+                    .expect("failed to parse PreferenceEntry");
+                if existing_ids.contains(&entry.id) {
+                    continue;
+                }
+                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let problem = AceProblem {
+                    identifier,
+                    dataset_name: dataset_name.clone(),
+                    id: entry.id,
+                    status: ProblemStatus::Waiting,
+                    question: entry.question,
+                    function: entry.function,
+                    state: AceProblemState::SingleTurnPreference {
+                        profile: entry.profile,
+                    },
+                    output_file: output_file.clone(),
+                };
+                problems.push(problem);
+            }
+            problems
+        }
+        ProblemType::SingleTurnSpecial => {
+            let mut problems: Vec<AceProblem> = Vec::new();
+            for entry_value in entries {
+                let entry: NormalEntry = serde_json::from_value(entry_value.clone())
+                    .expect("failed to parse NormalEntry for special");
+                if existing_ids.contains(&entry.id) {
+                    continue;
+                }
+                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let problem = AceProblem {
+                    identifier,
+                    dataset_name: dataset_name.clone(),
+                    id: entry.id,
+                    status: ProblemStatus::Waiting,
+                    question: entry.question,
+                    function: entry.function,
+                    state: AceProblemState::SingleTurnSpecial { time: entry.time },
+                    output_file: output_file.clone(),
+                };
+                problems.push(problem);
+            }
+            problems
+        }
+        ProblemType::AgentMultiTurn => {
+            let mut problems: Vec<AceProblem> = Vec::new();
+            for entry_value in entries {
+                let entry: AgentEntry = serde_json::from_value(entry_value)
+                    .expect("failed to parse AgentEntry for multi-turn");
+                let world_state: WorldState =
+                    serde_json::from_value(serde_json::to_value(&entry.initial_config).unwrap())
+                        .unwrap_or_default();
+                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let problem = AceProblem {
+                    identifier,
+                    dataset_name: dataset_name.clone(),
+                    id: entry.id,
+                    status: ProblemStatus::Waiting,
+                    question: entry.question.clone(),
+                    function: entry.function,
+                    state: AceProblemState::MultiTurn(AgentProblemState {
+                        initial_config: entry.initial_config,
+                        involved_classes: entry.involved_classes,
+                        world_state,
+                        dialogue_history: vec![DialogueEntry {
+                            sender: DialogueParticipant::User,
+                            recipient: DialogueParticipant::Agent,
+                            message: serde_json::Value::String(entry.question),
+                        }],
+                        inference_data: String::new(),
+                        mile_stones: Vec::new(),
+                    }),
+                    output_file: output_file.clone(),
+                };
+                problems.push(problem);
+            }
+            problems
+        }
+        ProblemType::AgentMultiStep => {
+            let mut problems: Vec<AceProblem> = Vec::new();
+            for entry_value in entries {
+                let entry: AgentEntry = serde_json::from_value(entry_value)
+                    .expect("failed to parse AgentEntry for multi-step");
+                let world_state: WorldState =
+                    serde_json::from_value(serde_json::to_value(&entry.initial_config).unwrap())
+                        .unwrap_or_default();
+                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let problem = AceProblem {
+                    identifier,
+                    dataset_name: dataset_name.clone(),
+                    id: entry.id,
+                    status: ProblemStatus::Waiting,
+                    question: entry.question.clone(),
+                    function: entry.function,
+                    state: AceProblemState::MultiStep(AgentProblemState {
+                        initial_config: entry.initial_config,
+                        involved_classes: entry.involved_classes,
+                        world_state,
+                        dialogue_history: vec![DialogueEntry {
+                            sender: DialogueParticipant::User,
+                            recipient: DialogueParticipant::Agent,
+                            message: serde_json::Value::String(entry.question),
+                        }],
+                        inference_data: String::new(),
+                        mile_stones: Vec::new(),
+                    }),
+                    output_file: output_file.clone(),
+                };
+                problems.push(problem);
+            }
+            problems
+        }
+    }
+}
+
+#[pyclass]
+pub struct AceGenerator {
+    // exposes an interface for getting the next task, assigning an id
+    // and retrieving the result and matching it with the id
+    // needs to store all the tasks and results
+    pub model_safe_name: String,
+    pub waiting_queue: VecDeque<AceProblem>,
+    pub executing_pool: HashMap<String, AceProblem>,
+    pub num_completed: usize,
+    pub total_num: usize,
+}
+
+#[pymethods]
+impl AceGenerator {
+    #[new]
+    pub fn new(model_name: String) -> Self {
+        Self::new_helper(model_name)
+    }
+    /// Returns a json string with the format {"identifier": str, "system_prompt": str, "user_prompt": str}
+    pub fn next_task(&mut self) -> Option<String> {
+        self.next_task_helper()
+    }
+
+    pub fn receive_response(&mut self, response: String) {
+        self.receive_response_helper(response);
+    }
+}
+impl AceGenerator {
+    pub fn new_helper(model_name: String) -> Self {
+        let mut waiting_queue = VecDeque::new();
+        let executing_pool = HashMap::new();
+        let model_safe_name = model_name.replace("/", "-");
+
+        for (dataset_name, dataset_trait) in DATASETS.iter() {
+            let dataset_path = BASE_DATASET_PATH.join(dataset_name.to_string() + ".json");
+            let output_path = BASE_OUTPUT_PATH
+                .join(model_safe_name.clone())
+                .join(dataset_name.to_string() + "_result.json");
+            std::fs::create_dir_all(output_path.parent().unwrap())
+                .expect("failed to create output directory");
+
+            // exit the program if any dataset fails to load
+            let dataset_entries = load_json_lines(&dataset_path).expect(&format!(
+                "Failed to load dataset from {}",
+                dataset_path.display()
+            ));
+            let problems = parse_entries_to_problems(
+                dataset_entries,
+                dataset_name.to_string(),
+                &output_path,
+                &dataset_trait.problem_type,
+            );
+            waiting_queue.extend(problems);
+        }
+        let total_num = waiting_queue.len();
+        println!("Initialized ACEBenchRunner with {} problems.", total_num);
+        AceGenerator {
+            model_safe_name,
+            waiting_queue,
+            executing_pool,
+            num_completed: 0,
+            total_num,
+        }
+    }
+    pub fn next_task_helper(&mut self) -> Option<String> {
+        let mut problem = self.waiting_queue.pop_front()?;
+        problem.status = ProblemStatus::Executing;
+        let python_task = problem.build_python_task();
+        self.executing_pool
+            .insert(problem.identifier.clone(), problem);
+        let python_task_serialized =
+            serde_json::to_string(&python_task).expect("failed to serialize task");
+        Some(python_task_serialized)
+    }
+    pub fn receive_response_helper(&mut self, response: String) {
+        // first deserialize the json string to a result struct
+        let response: PythonResponse =
+            serde_json::from_str(&response).expect("failed to deserialize response");
+        let mut problem = self
+            .executing_pool
+            .remove(&response.identifier)
+            .expect("The problem is not in the executing pool");
+        let completed = problem.handle_python_response(response);
+        if !completed {
+            problem.status = ProblemStatus::Waiting;
+            println!(
+                "Problem {} not completed, re-added to waiting queue.",
+                problem.identifier
+            );
+            self.waiting_queue.push_front(problem); // insert to the front of the queue to make problems finish early            
+        } else {
+            self.num_completed += 1;
+            println!(
+                "Problem {} completed. {}/{} completed.",
+                problem.identifier, self.num_completed, self.total_num
+            );
+        }
+    }
+}

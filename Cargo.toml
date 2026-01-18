@@ -1,6 +1,21 @@
 [package]
-name = "sim2real"
+name = "rust_code"
 version = "0.1.0"
 edition = "2024"
 
+
+[lib]
+name = "rust_code"
+# "cdylib" is necessary to produce a shared library for Python to import from.
+crate-type = ["cdylib"]
+
+
 [dependencies]
+atomic_refcell = "0.1.13"
+indexmap = {version="2.13.0", features=["serde"]}
+lazy_static = "1.5.0"
+pyo3 = "0.27.2"
+regex = "1.10"
+rustpython-parser = "0.4.0"
+serde = {version="1.0.228", features=["derive"]}
+serde_json = "1.0.149"

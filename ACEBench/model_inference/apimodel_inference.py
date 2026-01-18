@@ -315,7 +315,7 @@ class APIModelInference(BaseHandler):
 
         init_message = await user.get_init_prompt_async(question)
 
-        scene = Scene(initial_state=initial_config, functions=functions, agent_role=agent, user_role=user, init_message=init_message, language=self.language)
+        scene = Scene(functions=functions, agent_role=agent, user_role=user, init_message=init_message, language=self.language)
         message_history = scene.dialogue_history
         result_list = []
 
@@ -362,7 +362,7 @@ class APIModelInference(BaseHandler):
         model_async_client = self.async_clients.get('model') if self.async_clients else None
 
         agent = APIAgent_step(model_name=self.model_name, time=time, functions=functions, async_client=model_async_client)
-        scene = Mulit_Step_Scene(question=question, initial_state=initial_config, functions=functions, agent_role=agent, language=self.language)
+        scene = Mulit_Step_Scene(question=question, functions=functions, agent_role=agent, language=self.language)
         execution = EXECUTION_STEP(agent_model_name=self.model_name, initial_config=initial_config, involved_classes=involved_classes, test_id=test_id, language=self.language)
         message_history = scene.dialogue_history
         result_list = []

@@ -4,8 +4,7 @@ import os
 from wcwidth import wcswidth
 
 class Scene:
-    def __init__(self, initial_state, functions, agent_role, user_role, init_message, language):
-        self.initial_state = initial_state     
+    def __init__(self, functions, agent_role, user_role, init_message, language):
         self.dialogue_history = [{"sender": "user", "recipient": "agent", "message": init_message}]  # Initialize the first message as dialogue history
         self.final_state = None 
         self.functions = functions              

@@ -130,6 +130,11 @@ class EXECUTION():
         message = history[-1]["message"]
 
         function_call_list = self.decode_function_list(message)
+        print("Function Call List:", function_call_list)
+        # if len(function_call_list) != 1:
+        #     print("Warning: More than one function call detected in a single turn execution.")
+        #     exit(1)
+        # So, the function call list can contain more than 1 function calls
 
         single_turn_execution_results, result_instances = execute_agent_func_call(
             func_call_list=function_call_list,

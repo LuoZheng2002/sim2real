@@ -4,8 +4,7 @@ import os
 from wcwidth import wcswidth
 
 class Mulit_Step_Scene:
-    def __init__(self, question, initial_state, functions, agent_role, language):
-        self.initial_state = initial_state     
+    def __init__(self, question, functions, agent_role, language): 
         self.dialogue_history = [{"sender": "user", "recipient": "agent", "message": question}]  # Initialize the first message as dialogue history
         self.final_state = None 
         self.functions = functions              
