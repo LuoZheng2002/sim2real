@@ -9,6 +9,13 @@ pub mod prompts;
 pub mod python_interface;
 pub mod utils;
 pub mod world_state;
+pub mod evaluate_parse;
+pub mod parse_ast;
+pub mod travel;
+pub mod reminder;
+pub mod message;
+pub mod food_services;
+pub mod base_api;
 
 #[pymodule]
 pub mod rust_code {

@@ -7,6 +7,7 @@ pub struct PythonTask {
     pub identifier: String,
     pub system_prompt: String,
     pub user_prompt: String,
+    pub role: String, // "user" or "assistant"
 }
 
 #[derive(Clone, Deserialize)]

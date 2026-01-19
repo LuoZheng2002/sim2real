@@ -1,13 +1,15 @@
-use std::sync::Arc;
+use std::{cell::RefCell, sync::Arc};
 
 use atomic_refcell::AtomicRefCell;
 use indexmap::IndexMap;
 
-use crate::{ace_generator::NormalResultEntry, prompts::{system_prompt_for_normal_data_en, system_prompt_for_preference_data_en, system_prompt_for_special_data_en, user_prompt_en}, python_interface::{PythonResponse, PythonTask}, world_state::WorldState};
+use crate::{
+    ace_generator::NormalResultEntry, evaluate_parse::FunctionCallHygienic, parse_ast::decode_function_list, prompts::{
+        multi_turn_agent_prompt_system_en, multi_turn_agent_prompt_user_en, system_prompt_for_normal_data_en, system_prompt_for_preference_data_en, system_prompt_for_special_data_en, user_prompt_en
+    }, python_interface::{PythonResponse, PythonTask}, world_state::WorldState
+};
 
 use std::io::Write;
-
-
 
 pub enum ProblemStatus {
     Waiting,
@@ -16,7 +18,7 @@ pub enum ProblemStatus {
 /// Sender/recipient in dialogue history
 /// Multi-turn has 3 participants: User, Agent, Execution
 /// Multi-step has 2 participants: Agent, Execution (User only appears in initial message)
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Copy, PartialEq, Eq)]
 pub enum DialogueParticipant {
     User,
     Agent,
@@ -30,9 +32,8 @@ pub struct DialogueEntry {
     pub sender: DialogueParticipant,
     pub recipient: DialogueParticipant,
     /// Message content - can be string or list (execution results)
-    pub message: serde_json::Value,
+    pub message: String,
 }
-
 
 /// Unified agent task state for both multi-turn and multi-step scenarios
 /// Python: Scene (multi_turn_scene.py) and Mulit_Step_Scene (multi_step_scene.py)
@@ -42,21 +43,80 @@ pub struct DialogueEntry {
 pub struct AgentProblemState {
     // immutable fields
     /// Initial configuration used to initialize WorldState (kept for reference/reset)
-    pub initial_config: IndexMap<String, serde_json::Value>,
+    pub initial_config: WorldState,
     /// Classes involved in this task (e.g., ["BaseApi", "MessageApi"])
     pub involved_classes: Vec<String>,
 
     // mutable fields
+    pub num_steps: usize,
     /// Current state of all API instances (mutates during execution)
     pub world_state: WorldState,
     /// Full dialogue history: [{sender, recipient, message}, ...]
-    pub dialogue_history: Vec<DialogueEntry>,
+    dialogue_history: Vec<DialogueEntry>,
     /// Accumulated string for LLM prompt
     /// Multi-turn: "user:...\nagent:...\nexecution:..."
     /// Multi-step: "user:...\nagent:...\nexecution result:..."
-    pub inference_data: String,
+    // pub inference_data: RefCell<String>,
     /// Function calls made during execution (milestones)
     pub mile_stones: Vec<String>,
+}
+
+impl AgentProblemState {
+    pub fn new_multi_step(
+        initial_config: WorldState,
+        involved_classes: Vec<String>,
+        question: &str,
+    ) -> Self {
+        Self {
+            initial_config: initial_config.clone(),
+            involved_classes,
+            num_steps: 0,
+            world_state: initial_config.clone(),
+            dialogue_history: vec![DialogueEntry {
+                sender: DialogueParticipant::User,
+                recipient: DialogueParticipant::Agent,
+                message: question.to_string(),
+            }],
+            // inference_data: RefCell::new(String::new()),
+            mile_stones: Vec::new(),
+        }
+    }
+    pub fn new_multi_turn(initial_config: WorldState, involved_classes: Vec<String>) -> Self {
+        Self {
+            initial_config: initial_config.clone(),
+            involved_classes,
+            num_steps: 0,
+            world_state: initial_config.clone(),
+            dialogue_history: Vec::new(), // needs to call api user to get started
+            // inference_data: RefCell::new(String::new()),
+            mile_stones: Vec::new(),
+        }
+    }
+    pub fn get_inference_message(&self) -> String {
+        let mut inference_message = String::new();
+        for entry in &self.dialogue_history {
+            let sender_str = match entry.sender {
+                DialogueParticipant::User => "user",
+                DialogueParticipant::Agent => "agent",
+                DialogueParticipant::Execution => "execution result",
+            };
+            inference_message.push_str(&format!("{}: {}\n", sender_str, entry.message));
+        }
+        inference_message
+    }
+    // pub fn execute_function_calls(&mut self, function_calls: Vec<FunctionCallHygienic>) {
+    //     let execution_results = self
+    //         .world_state
+    //         .execute_function_calls(function_calls.clone());
+    //     let execution_message = serde_json::to_string(&execution_results)
+    //         .expect("failed to serialize execution results");
+    //     let new_history_entry = DialogueEntry {
+    //         sender: DialogueParticipant::Execution,
+    //         recipient: DialogueParticipant::Agent,
+    //         message: execution_message,
+    //     };
+    //     self.dialogue_history.push(new_history_entry);
+    // }
 }
 
 pub enum AceProblemState {
@@ -94,6 +154,7 @@ impl AceProblem {
                     identifier: self.identifier.clone(),
                     system_prompt,
                     user_prompt,
+                    role: "assistant".to_string(),
                 }
             }
             AceProblemState::SingleTurnPreference { profile } => {
@@ -105,6 +166,7 @@ impl AceProblem {
                     identifier: self.identifier.clone(),
                     system_prompt,
                     user_prompt,
+                    role: "assistant".to_string(),
                 }
             }
             AceProblemState::SingleTurnSpecial { time } => {
@@ -116,7 +178,31 @@ impl AceProblem {
                     identifier: self.identifier.clone(),
                     system_prompt,
                     user_prompt,
+                    role: "assistant".to_string(),
                 }
+            }
+            AceProblemState::MultiStep(agent_problem_state) => {
+                let last_sender = agent_problem_state
+                    .dialogue_history
+                    .last()
+                    .expect("In multi-step, dialogue history is initialized with user question")
+                    .sender;
+                assert!(agent_problem_state.num_steps == 0 || matches!(last_sender, DialogueParticipant::Execution));
+                // let inference_message: String = agent_problem_state.inference_data.clone();
+                let inference_message = agent_problem_state.get_inference_message();
+                // system_prompt = MULTI_TURN_AGENT_PROMPT_SYSTEM_EN.format(time = self.time)
+                // user_prompt = MULTI_TURN_AGENT_PROMPT_USER_EN.format(functions = self.functions, history = history)
+                let system_prompt = multi_turn_agent_prompt_system_en();
+                let functions_str = serde_json::to_string(&self.function)
+                    .expect("failed to serialize function");
+                let user_prompt = multi_turn_agent_prompt_user_en(&functions_str, &inference_message);
+                // User turn
+                PythonTask {
+                    identifier: self.identifier.clone(),
+                    system_prompt, // system prompt is only used in the first turn
+                    user_prompt,
+                    role: "assistant".to_string(),
+                }               
             }
             _ => todo!(),
         }
@@ -144,8 +230,54 @@ impl AceProblem {
                     .expect("failed to serialize normal result entry");
                 let mut file_ref = self.output_file.borrow_mut();
 
-                writeln!(file_ref, "{}", entry_serialized).expect("failed to write normal result entry");
+                writeln!(file_ref, "{}", entry_serialized)
+                    .expect("failed to write normal result entry");
                 true
+            }
+            AceProblemState::MultiStep(agent_problem_state) => {
+                agent_problem_state.num_steps += 1;
+                // when receiving the response, the last recipient must be the agent
+                let last_recipient = agent_problem_state
+                    .dialogue_history
+                    .last()
+                    .expect("In multi-step, dialogue history is initialized with user question")
+                    .recipient;
+                assert!(matches!(last_recipient, DialogueParticipant::Agent));
+                let new_history_entry = DialogueEntry {
+                    sender: DialogueParticipant::Agent,
+                    recipient: DialogueParticipant::Execution,
+                    message: response.response.clone(),
+                };
+                agent_problem_state.dialogue_history.push(new_history_entry);
+
+                if response.response.contains("finish conversation") {
+                    // to do: finalize and write to file
+                    return true;
+                }
+                // execute the function call and get the result
+                let Ok(function_call_list) = decode_function_list(&response.response) else {
+                    let new_history_entry = DialogueEntry {
+                        sender: DialogueParticipant::Execution,
+                        recipient: DialogueParticipant::Agent,
+                        message: "Please do not ask me any questions, use the known conditions to solve the problem".to_string(),
+                    };
+                    agent_problem_state.dialogue_history.push(new_history_entry);
+                    return false;
+                };
+                agent_problem_state.world_state.execute_function_calls(&function_call_list);
+
+
+
+
+
+
+
+
+                if agent_problem_state.num_steps > 40 {
+                    // to do: finalize and write to file
+                    return true;
+                }
+                false
             }
             _ => todo!(),
         }

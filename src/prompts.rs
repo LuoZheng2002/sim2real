@@ -69,3 +69,27 @@ API Specifications:
 pub fn user_prompt_en(question: &str) -> String {
     format!("Conversation history 1..t:\n{}", question)
 }
+
+
+pub fn multi_turn_agent_prompt_system_en() -> String {
+    format!(
+        r#"You are an AI system with the role of 'system'. Based on the provided API documentation and the conversation history from steps 1 to t, generate the corresponding content for the 'system' role in step t+1.
+1. If the information provided in the previous step is complete and allows for a successful API call, you should output the API request(s) to be called in the format [ApiName(key1='value1', key2='value2', ...)]. Replace ApiName with the actual API name, key1, key2, etc., with the actual parameter names, and value1, value2, etc., with the actual parameter values. The output should start with a square bracket "[" and end with a square bracket "]". If there are multiple API requests, separate them with commas, for example, [ApiName(key1='value1', key2='value2', ...), ApiName(key1='value1', key2='value2', ...), ...]. Do not include any additional explanations, prompts, or API call results in the output.
+   - If the API parameter description does not specify otherwise, the parameter is optional (only include parameters mentioned in the user input; if not mentioned, do not include them).
+   - If the API parameter description does not specify a required value format, use the user's original input for the parameter value.
+2. If a task requires multiple steps to complete (with strict sequential relationships between steps), execute them step by step, and decide how to proceed based on the results returned from each execution.
+3. Generally do not use parallel calls, meaning only one function is called at a time.
+
+Please note that if an API call is needed, strictly adhere to the calling rules [ApiName(key1='value1', key2='value2', ...)] and do not output any other content.
+When you believe the task is completed, return "finish conversation" to end the dialogue.
+
+Role Descriptions:
+user: The user
+agent: The AI system role that performs API requests
+execution: Executes API calls and returns results"#
+    )
+}
+
+pub fn multi_turn_agent_prompt_user_en(functions: &str, history: &str) -> String {
+    format!("Below is the list of APIs you can call (in JSON format): {}. Conversation history: {}\n", functions, history)
+}

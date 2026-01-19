@@ -7,12 +7,13 @@ use crate::ace_generator::{DatasetTrait, EvaluationType, ProblemType};
 pub static DATASETS: LazyLock<IndexMap<String, DatasetTrait>> = LazyLock::new(|| {
     let mut m = IndexMap::new();
     // // agent datasets
-    // m.insert(
-    //     "data_agent_multi_step".to_string(),
-    //     DatasetTrait {
-    //         task_state_type: ProblemType::MultiStep,
-    //     },
-    // );
+    m.insert(
+        "data_agent_multi_step".to_string(),
+        DatasetTrait {
+            problem_type: ProblemType::AgentMultiStep,
+            evaluation_type: EvaluationType::Agent,
+        },
+    );
     // m.insert(
     //     "data_agent_multi_turn".to_string(),
     //     DatasetTrait {

@@ -44,33 +44,36 @@ pub struct NormalEntry {
     pub id: String,
     pub question: String,
     pub function: Vec<serde_json::Value>,
-    pub time: String, // can be empty string
+    #[serde(default)]
+    pub time: Option<String>, // exists in non-preference normal datasets, even if it exists, it can be empty string
+    #[serde(default)]
+    pub profile: Option<String>, // exists in normal preference datasets, does not exist in other datasets
 }
 
-/// Entry for preference dataset
-/// File: data_normal_preference.json
-#[derive(Deserialize, Clone)]
-pub struct PreferenceEntry {
-    pub id: String,
-    pub question: String,
-    pub function: Vec<serde_json::Value>,
-    pub profile: String, // JSON-like string containing user profile
-}
+// /// Entry for preference dataset
+// /// File: data_normal_preference.json
+// #[derive(Deserialize, Clone)]
+// pub struct PreferenceEntry {
+//     pub id: String,
+//     pub question: String,
+//     pub function: Vec<serde_json::Value>,
+//     pub profile: String, // JSON-like string containing user profile
+// }
 
 /// Unified entry enum for all dataset types
 #[derive(Deserialize, Clone)]
 #[serde(untagged)]
 pub enum DatasetEntry {
     Agent(AgentEntry),
-    Preference(PreferenceEntry),
     Normal(NormalEntry),
 }
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct AgentResultEntry {
     pub id: String,
-    pub result: WorldState,
-    pub process: Vec<String>,
+    pub conversation: String,
+    pub final_world_state: WorldState,
+    pub output_function_calls: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -96,7 +99,8 @@ pub enum ProblemType {
 pub enum EvaluationType {
     NormalSingleTurn,
     NormalMultiTurn,
-    Special,
+    SpecialPointingOut,
+    SpecialIrrelevant,
     Agent,
 }
 pub struct DatasetTrait {
@@ -149,7 +153,11 @@ fn parse_entries_to_problems(
                     status: ProblemStatus::Waiting,
                     question: entry.question,
                     function: entry.function,
-                    state: AceProblemState::SingleTurnNormal { time: entry.time },
+                    state: AceProblemState::SingleTurnNormal {
+                        time: entry
+                            .time
+                            .expect("Non-preference normal dataset should have time field"),
+                    },
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);
@@ -159,7 +167,7 @@ fn parse_entries_to_problems(
         ProblemType::SingleTurnPreference => {
             let mut problems: Vec<AceProblem> = Vec::new();
             for entry_value in entries {
-                let entry: PreferenceEntry = serde_json::from_value(entry_value.clone())
+                let entry: NormalEntry = serde_json::from_value(entry_value.clone())
                     .expect("failed to parse PreferenceEntry");
                 if existing_ids.contains(&entry.id) {
                     continue;
@@ -173,7 +181,9 @@ fn parse_entries_to_problems(
                     question: entry.question,
                     function: entry.function,
                     state: AceProblemState::SingleTurnPreference {
-                        profile: entry.profile,
+                        profile: entry
+                            .profile
+                            .expect("Preference normal dataset should have profile field"),
                     },
                     output_file: output_file.clone(),
                 };
@@ -197,7 +207,11 @@ fn parse_entries_to_problems(
                     status: ProblemStatus::Waiting,
                     question: entry.question,
                     function: entry.function,
-                    state: AceProblemState::SingleTurnSpecial { time: entry.time },
+                    state: AceProblemState::SingleTurnSpecial {
+                        time: entry
+                            .time
+                            .expect("Non-preference normal dataset should have time field"),
+                    },
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);
@@ -220,18 +234,7 @@ fn parse_entries_to_problems(
                     status: ProblemStatus::Waiting,
                     question: entry.question.clone(),
                     function: entry.function,
-                    state: AceProblemState::MultiTurn(AgentProblemState {
-                        initial_config: entry.initial_config,
-                        involved_classes: entry.involved_classes,
-                        world_state,
-                        dialogue_history: vec![DialogueEntry {
-                            sender: DialogueParticipant::User,
-                            recipient: DialogueParticipant::Agent,
-                            message: serde_json::Value::String(entry.question),
-                        }],
-                        inference_data: String::new(),
-                        mile_stones: Vec::new(),
-                    }),
+                    state: AceProblemState::MultiTurn(AgentProblemState::new_multi_turn(world_state.clone(), entry.involved_classes.clone())),
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);
@@ -254,18 +257,7 @@ fn parse_entries_to_problems(
                     status: ProblemStatus::Waiting,
                     question: entry.question.clone(),
                     function: entry.function,
-                    state: AceProblemState::MultiStep(AgentProblemState {
-                        initial_config: entry.initial_config,
-                        involved_classes: entry.involved_classes,
-                        world_state,
-                        dialogue_history: vec![DialogueEntry {
-                            sender: DialogueParticipant::User,
-                            recipient: DialogueParticipant::Agent,
-                            message: serde_json::Value::String(entry.question),
-                        }],
-                        inference_data: String::new(),
-                        mile_stones: Vec::new(),
-                    }),
+                    state: AceProblemState::MultiStep(AgentProblemState::new_multi_step(world_state.clone(), entry.involved_classes.clone(), &entry.question)),
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);

@@ -31,7 +31,13 @@ parser.add_argument(
     help="Name of the model to use",
 )
 parser.add_argument(
-    "--is-api",
+    "--user-api-model-name",
+    type=str,
+    required=True,
+    help="Name of the user API model to use",
+)
+parser.add_argument(
+    "--use-api-for-all",
     type=bool,
     required=True,
     help="Whether to use API backend",
@@ -66,16 +72,17 @@ async def main():
     runner = AceGenerator(args.model_name)
     async def process_single_task_async(task: dict) -> dict:
             global client, api_backend_created, engine, vllm_backend_created, tokenizer
-            if args.is_api and not api_backend_created:
-                client = create_api_backend(args.model_name)
+            currently_using_api = args.use_api_for_all or task['role'] == 'user'
+            if currently_using_api and not api_backend_created:
+                client = create_api_backend(args.user_api_model_name)
                 api_backend_created = True
-            elif not args.is_api and not vllm_backend_created:
+            elif not currently_using_api and not vllm_backend_created:
                 engine, tokenizer = create_vllm_backend(args.model_name)
                 vllm_backend_created = True
-            if args.is_api:
+            if currently_using_api:
                 response = await call_api_model_async(
                     client,
-                    args.model_name,
+                    args.user_api_model_name,
                     task["system_prompt"],
                     task["user_prompt"],
                 )
