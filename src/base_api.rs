@@ -1,9 +1,25 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug)]
+// this is the model for the object passed to the LLM as the tool execution result
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ExecutionResult {
-    pub status: bool, // true if success, false if error
+    status: bool, // true if success, false if error
     pub message: String, // error message if any
+}
+
+impl ExecutionResult {
+    pub fn success(message: String) -> Self {
+        ExecutionResult {
+            status: true,
+            message,
+        }
+    }
+    pub fn error(message: String) -> Self {
+        ExecutionResult {
+            status: false,
+            message,
+        }
+    }
 }
 
 /// Base API state - shared by MessageApi, ReminderApi, FoodPlatform

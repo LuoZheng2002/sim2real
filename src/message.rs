@@ -34,6 +34,29 @@ pub struct MessageApi {
     pub message_id_counter: usize,
 }
 
+#[derive(Deserialize, Clone)]
+pub struct SendMessageArgs {
+    pub sender_name: String,
+    pub receiver_name: String,
+    pub message: String,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct DeleteMessageArgs {
+    pub message_id: usize,
+}
+#[derive(Deserialize, Clone)]
+pub struct ViewMessagesBetweenUsersArgs {
+    pub sender_name: String,
+    pub receiver_name: String,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct SearchMessagesArgs {
+    pub user_name: String,
+    pub keyword: String,
+}
+
 impl Default for MessageApi {
     fn default() -> Self {
         let max_capacity = 6;
@@ -142,38 +165,24 @@ impl Default for MessageApi {
 impl MessageApi {
     pub fn send_message(
         &mut self,
-        sender_name: &str,
-        receiver_name: &str,
-        message: &str,
+        sender_name: String,
+        receiver_name: String,
+        message: String,
     ) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in, unable to send message".to_string(),
-            };
+            return ExecutionResult::error("Device not logged in, unable to send message".to_string());
         }
         if !self.base_api.wifi {
-            return ExecutionResult {
-                status: false,
-                message: "Wi-Fi is turned off, cannot send messages at this time".to_string(),
-            };
+            return ExecutionResult::error("Wi-Fi is turned off, cannot send messages at this time".to_string());
         }
         if self.inbox.len() >= self.max_capacity {
-            return ExecutionResult {
-                status: false,
-                message:
-                    "Inbox capacity is full. You need to ask the user which message to delete."
-                        .to_string(),
-            };
+            return ExecutionResult::error("Inbox capacity is full. You need to ask the user which message to delete.".to_string());
         }
         let (Some(sender), Some(receiver)) = (
-            self.user_list.get(sender_name),
-            self.user_list.get(receiver_name),
+            self.user_list.get(&sender_name),
+            self.user_list.get(&receiver_name),
         ) else {
-            return ExecutionResult {
-                status: false,
-                message: "Sender or receiver does not exist".to_string(),
-            };
+            return ExecutionResult::error("Sender or receiver does not exist".to_string());
         };
         let sender_id = &sender.user_id;
         let receiver_id = &receiver.user_id;
@@ -190,51 +199,33 @@ impl MessageApi {
             },
         );
 
-        ExecutionResult {
-            status: true,
-            message: format!("Message successfully sent to {}.", receiver_name),
-        }
+        ExecutionResult::success(format!("Message successfully sent to {}.", receiver_name))
     }
 
     pub fn delete_message(&mut self, message_id: usize) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in, unable to delete message".to_string(),
-            };
+            return ExecutionResult::error("Device not logged in, unable to delete message".to_string());
         }
         if !self.inbox.contains_key(&message_id) {
-            return ExecutionResult {
-                status: false,
-                message: "Message ID does not exist".to_string(),
-            };
+            return ExecutionResult::error("Message ID does not exist".to_string());
         }
         self.inbox.swap_remove(&message_id);
-        ExecutionResult {
-            status: true,
-            message: format!("Message ID {} has been successfully deleted.", message_id),
-        }
+        ExecutionResult::success(format!("Message ID {} has been successfully deleted.", message_id))
     }
 
     pub fn view_messages_between_users(
         &self,
-        sender_name: &str,
-        receiver_name: &str,
+        sender_name: String,
+        receiver_name: String,
     ) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in, unable to view message information".to_string(),
-            };
+            return ExecutionResult::error("Device not logged in, unable to view message information".to_string());
         }
         let (Some(sender), Some(receiver)) = (
-            self.user_list.get(sender_name),
-            self.user_list.get(receiver_name),
+            self.user_list.get(&sender_name),
+            self.user_list.get(&receiver_name),
         ) else {
-            return ExecutionResult {
-                status: false,
-                message: "Sender or receiver does not exist".to_string(),
-            };
+            return ExecutionResult::error("Sender or receiver does not exist".to_string());
         };
         let sender_id = &sender.user_id;
         let receiver_id = &receiver.user_id;
@@ -247,26 +238,17 @@ impl MessageApi {
             .collect();
 
         if messages_between_users.is_empty() {
-            return ExecutionResult {
-                status: false,
-                message: "No related message records found".to_string(),
-            };
+            return ExecutionResult::error("No related message records found".to_string());
         }
         let messages_str = serde_json::to_string(&messages_between_users).unwrap();
-        ExecutionResult {
-            status: true,
-            message: format!("Messages between users: {}", messages_str),
-        }
+        ExecutionResult::success(format!("Messages between users: {}", messages_str))
     }
     pub fn search_messages(
-        &self, user_name: &str,
-        keyword: &str,
+        &self, user_name: String,
+        keyword: String,
     ) -> ExecutionResult {
-        let Some(user) = self.user_list.get(user_name) else {
-            return ExecutionResult {
-                status: false,
-                message: "User does not exist".to_string(),
-            };
+        let Some(user) = self.user_list.get(&user_name) else {
+            return ExecutionResult::error("User does not exist".to_string());
         };
         let user_id = &user.user_id;
         let matched_messages: IndexMap<usize, Message> = self
@@ -279,23 +261,14 @@ impl MessageApi {
             .map(|(id, msg)| (*id, msg.clone())) // clone
             .collect();
         if matched_messages.is_empty() {
-            return ExecutionResult {
-                status: false,
-                message: "No related message records found".to_string(),
-            };
+            return ExecutionResult::error("No related message records found".to_string());
         }
         let messages_str = serde_json::to_string(&matched_messages).unwrap();
-        ExecutionResult {
-            status: true,
-            message: format!("Matched messages: {}", messages_str),
-        }
+        ExecutionResult::success(format!("Matched messages: {}", messages_str))
     }
     pub fn get_all_message_times_with_ids(&self) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in, unable to retrieve all message times and their corresponding message IDs.".to_string(),
-            };
+            return ExecutionResult::error("Device not logged in, unable to retrieve all message times and their corresponding message IDs.".to_string());
         }
         let message_times_with_ids: IndexMap<usize, Option<String>> = self
             .inbox
@@ -303,23 +276,14 @@ impl MessageApi {
             .map(|(id, msg)| (*id, msg.time.clone()))
             .collect();
         let result_str = serde_json::to_string(&message_times_with_ids).unwrap();
-        ExecutionResult {
-            status: true,
-            message: format!("Message times with IDs: {}", result_str),
-        }
+        ExecutionResult::success(format!("Message times with IDs: {}", result_str))
     }
     pub fn get_latest_message_id(&self) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in, unable to retrieve the latest sent message ID.".to_string(),
-            };
+            return ExecutionResult::error("Device not logged in, unable to retrieve the latest sent message ID.".to_string());
         }
         if self.inbox.is_empty() {
-            return ExecutionResult {
-                status: false,
-                message: "No message records found".to_string(),
-            };
+            return ExecutionResult::error("No message records found".to_string());
         }
         let latest_message = self
             .inbox
@@ -332,23 +296,14 @@ impl MessageApi {
             })
             .unwrap();
         let latest_message_id = latest_message.0;
-        ExecutionResult {
-            status: true,
-            message: format!("The latest message ID is {}", latest_message_id),
-        }
+        ExecutionResult::success(format!("The latest message ID is {}", latest_message_id))
     }
     pub fn get_earliest_message_id(&self) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in, unable to retrieve the earliest sent message ID.".to_string(),
-            };
+            return ExecutionResult::error("Device not logged in, unable to retrieve the earliest sent message ID.".to_string());
         }
         if self.inbox.is_empty() {
-            return ExecutionResult {
-                status: false,
-                message: "No message records found".to_string(),
-            };
+            return ExecutionResult::error("No message records found".to_string());
         }
         let earliest_message = self
             .inbox
@@ -361,9 +316,6 @@ impl MessageApi {
             })
             .unwrap();
         let earliest_message_id = earliest_message.0;
-        ExecutionResult {
-            status: true,
-            message: format!("The earliest message ID is {}", earliest_message_id),
-        }
+        ExecutionResult::success(format!("The earliest message ID is {}", earliest_message_id))
     }
 }

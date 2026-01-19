@@ -55,6 +55,7 @@ pub fn parse_from_ast_to_structured(
                 parameters.insert(arg_name.to_string(), arg_value);
             }
         }
+        // let parameters = serde_json::Value::Object(parameters.into_iter().collect());
         function_calls.push(FunctionCallHygienic {
             name: func_name.to_string(),
             parameters,

@@ -24,6 +24,21 @@ pub struct ReminderApi {
     pub reminder_id_counter: usize,
 }
 
+#[derive(Deserialize, Clone)]
+pub struct ViewReminderByTitleArgs {
+    pub title: String,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct AddReminderArgs {
+    pub title: String,
+    pub description: String,
+    pub time: String,
+}
+#[derive(Deserialize, Clone)]
+pub struct DeleteReminderArgs {
+    pub reminder_id: usize,
+}
 impl Default for ReminderApi {
     fn default() -> Self {
         let reminder_list: IndexMap<usize, Reminder> = vec![
@@ -59,39 +74,22 @@ impl Default for ReminderApi {
 }
 
 impl ReminderApi {
-    pub fn view_reminder_by_title(&self, title: &str) -> ExecutionResult {
+    pub fn view_reminder_by_title(&self, title: String) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "The device is not logged in, so you cannot view notifications"
-                    .to_string(),
-            };
+            return ExecutionResult::error("The device is not logged in, so you cannot view notifications".to_string());
         }
         match self.reminder_list.values().find(|reminder| reminder.title == title) {
-            Some(reminder) => ExecutionResult{
-                status: true,
-                message: serde_json::to_string(reminder).unwrap(),
-            },
-            None => ExecutionResult{
-                status: false,
-                message: format!("No reminder found with the title '{}'.", title),
-            }
+            Some(reminder) => ExecutionResult::success(serde_json::to_string(reminder).unwrap()),
+            None => ExecutionResult::error(format!("No reminder found with the title '{}'.", title)),
         }
     }
-    pub fn add_reminder(&mut self, title: &str, description: &str, time: &str) -> ExecutionResult {
+    pub fn add_reminder(&mut self, title: String, description: String, time: String) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in. Unable to add a new reminder.".to_string(),
-            };
+            return ExecutionResult::error("Device not logged in. Unable to add a new reminder.".to_string());
         }
         if self.reminder_list.len() >= self.max_capacity {
-            return ExecutionResult {
-                status: false,
-                message: "Reminder capacity is full. Unable to add a new reminder.".to_string(),
-            };
+            return ExecutionResult::error("Reminder capacity is full. Unable to add a new reminder.".to_string());
         }
-
         self.reminder_id_counter += 1;
         let reminder_id = self.reminder_id_counter;
         self.reminder_list.insert(
@@ -104,44 +102,25 @@ impl ReminderApi {
                 notified: false,
             },
         );
-        ExecutionResult {
-            status: true,
-            message: format!("Reminder '{}' was successfully added.", title),
-        }
+        ExecutionResult::success(format!("Reminder '{}' was successfully added.", title))
     }
     pub fn delete_reminder(&mut self, reminder_id: usize) -> ExecutionResult {
         if !self.base_api.logged_in {
-            return ExecutionResult {
-                status: false,
-                message: "Device not logged in. Unable to delete the specified reminder."
-                    .to_string(),
-            };
+            return ExecutionResult::error("Device not logged in. Unable to delete the specified reminder.".to_string());
         }
         if !self.reminder_list.contains_key(&reminder_id) {
-            return ExecutionResult {
-                status: false,
-                message: "Reminder ID does not exist.".to_string(),
-            };
+            return ExecutionResult::error("Reminder ID does not exist.".to_string());
         }
 
         self.reminder_list.swap_remove(&reminder_id);
-        ExecutionResult {
-            status: true,
-            message: format!("Reminder ID {} was successfully deleted.", reminder_id),
-        }
+        ExecutionResult::success(format!("Reminder ID {} was successfully deleted.", reminder_id))
     }
     pub fn view_all_reminders(&self) -> ExecutionResult {
         if self.reminder_list.is_empty() {
-            return ExecutionResult {
-                status: false,
-                message: "No reminders found.".to_string(),
-            };
+            return ExecutionResult::error("No reminders found.".to_string());
         }
-
         let reminders: Vec<&Reminder> = self.reminder_list.values().collect();
-        ExecutionResult {
-            status: true,
-            message: serde_json::to_string(&reminders).unwrap(),
-        }
+        let reminders_str = serde_json::to_string(&reminders).unwrap();
+        ExecutionResult::success(reminders_str)
     }
 }
