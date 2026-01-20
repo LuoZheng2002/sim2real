@@ -74,7 +74,7 @@ pub fn user_prompt_en(question: &str) -> String {
 /// Multi-step agent prompt (agent decides when to finish)
 /// Used for data_agent_multi_step - no user simulation, agent completes task autonomously
 pub fn multi_step_agent_prompt_system_en() -> String {
-    r#"You are an AI system with the role of 'system'. Based on the provided API documentation and the conversation history from steps 1 to t, generate the corresponding content for the 'system' role in step t+1.
+    r#"You are an AI agent with the role of 'agent'. Based on the provided API documentation and the conversation history from steps 1 to t, generate the appropriate content for the 'agent' role in step t+1.
 1. If the information provided in the previous step is complete and allows for a successful API call, you should output the API request(s) to be called in the format [ApiName(key1='value1', key2='value2', ...)]. Replace ApiName with the actual API name, key1, key2, etc., with the actual parameter names, and value1, value2, etc., with the actual parameter values. The output should start with a square bracket "[" and end with a square bracket "]". If there are multiple API requests, separate them with commas, for example, [ApiName(key1='value1', key2='value2', ...), ApiName(key1='value1', key2='value2', ...), ...]. Do not include any additional explanations, prompts, or API call results in the output.
    - If the API parameter description does not specify otherwise, the parameter is optional (only include parameters mentioned in the user input; if not mentioned, do not include them).
    - If the API parameter description does not specify a required value format, use the user's original input for the parameter value.
@@ -86,7 +86,7 @@ When you believe the task is completed, return "finish conversation" to end the 
 
 Role Descriptions:
 user: The user
-agent: The AI system role that performs API requests
+agent: The AI agent role that performs API requests
 execution: Executes API calls and returns results"#.to_string()
 }
 
@@ -97,17 +97,17 @@ pub fn multi_step_agent_prompt_user_en(functions: &str, history: &str) -> String
 /// Multi-turn agent prompt (user simulation decides when to finish)
 /// Used for data_agent_multi_turn - agent interacts with simulated user
 pub fn multi_turn_agent_prompt_system_en() -> String {
-    r#"You are an AI system with the role name "system." Based on the provided API specifications and conversation history from steps 1 to t, generate the appropriate content for step t+1 for the "system" role.
-1. If the information provided in the previous step is complete and the API call can be executed normally, you should generate the API request. The API request should be output in the format [ApiName(key1='value1', key2='value2', ...)]. Do not include any other explanations, prompts, or API call results in the output.
-   - If the API parameter description does not specify otherwise, the parameter is optional (parameters mentioned in the user input need to be included in the output; if not mentioned, they do not need to be included).
+    r#"You are an AI agent with the role of 'agent'. Based on the provided API documentation and conversation history from steps 1 to t, generate the appropriate content for step t+1 for the 'agent' role.
+1. If the information provided in the previous step is complete and the API call can be executed normally, you should generate the API request. The API request should be output in the format [ApiName(key1='value1', key2='value2', ...)]. Replace ApiName with the actual API name, key1, key2, etc., with the actual parameter names, and value1, value2, etc., with the actual parameter values. The output should start with a square bracket "[" and end with a square bracket "]". If there are multiple API requests, separate them with commas, for example, [ApiName(key1='value1', key2='value2', ...), ApiName(key1='value1', key2='value2', ...), ...]. Do not include any additional explanations, prompts, or API call results in the output.
+   - If the API parameter description does not specify otherwise, the parameter is optional (only include parameters mentioned in the user input; if not mentioned, do not include them).
    - If the API parameter description does not specify the required format for the value, use the user's original text for the parameter value.
-2. If the information you received is incomplete, you need to ask the user for more information to obtain the complete details. You should not pretend to be the user to answer some clerical questions; instead, promptly ask the user for clarification.
+2. If the information you received is incomplete, you need to ask the user for more information to obtain the complete details. You should not pretend to be the user to answer some clarifying questions; instead, promptly ask the user for clarification.
 
 Please note that if an API call is required, strictly adhere to the call format rules [ApiName(key1='value1', key2='value2', ...)] and do not output any other text content.
 
 Role Descriptions:
-user: User
-agent: The AI system role that makes API requests
+user: The user
+agent: The AI agent role that makes API requests
 execution: Executes the API call and returns the result
 
 The rules you need to follow are as follows:

@@ -462,8 +462,8 @@ impl AceProblem {
 
                 agent_problem_state.dialogue_history.push(new_history_entry);
 
-                println!("conversation: {}", agent_problem_state.get_inference_message());
-
+                // println!("conversation: {}", agent_problem_state.get_inference_message());
+                println!("Problem {} turn {} response: {}", self.id, agent_problem_state.num_steps, response.response);
                 if agent_problem_state.num_steps > 40 {
                     // to do: finalize and write to file
                     Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
@@ -569,8 +569,8 @@ impl AceProblem {
                         };
                         agent_problem_state.dialogue_history.push(new_history_entry);
 
-                        println!("conversation: {}", agent_problem_state.get_inference_message());
-
+                        // println!("conversation: {}", agent_problem_state.get_inference_message());
+                        println!("Problem {} turn {} response: {}", self.id, agent_problem_state.num_steps, response.response);
                         if agent_problem_state.num_steps > 40 {
                             Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
                             return true;
