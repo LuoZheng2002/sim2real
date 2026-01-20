@@ -4,9 +4,9 @@ use atomic_refcell::AtomicRefCell;
 use indexmap::IndexMap;
 
 use crate::{
-    ace_generator::NormalResultEntry, evaluate_parse::FunctionCallHygienic, parse_ast::decode_function_list, prompts::{
+    ace_generator::{AgentResultEntry, NormalResultEntry}, base_api::BaseApi, evaluate_parse::FunctionCallHygienic, food_services::FoodPlatform, message::MessageApi, parse_ast::decode_function_list, prompts::{
         multi_turn_agent_prompt_system_en, multi_turn_agent_prompt_user_en, system_prompt_for_normal_data_en, system_prompt_for_preference_data_en, system_prompt_for_special_data_en, user_prompt_en
-    }, python_interface::{PythonResponse, PythonTask}, world_state::WorldState
+    }, python_interface::{PythonResponse, PythonTask}, reminder::ReminderApi, travel::Travel, world_state::WorldState
 };
 
 use std::io::Write;
@@ -62,16 +62,19 @@ pub struct AgentProblemState {
 }
 
 impl AgentProblemState {
+    
     pub fn new_multi_step(
         initial_config: WorldState,
         involved_classes: Vec<String>,
         question: &str,
     ) -> Self {
+        let mut world_state = initial_config.clone();
+        world_state.populate_with_involved_classes(&involved_classes);
         Self {
-            initial_config: initial_config.clone(),
+            initial_config,
             involved_classes,
             num_steps: 0,
-            world_state: initial_config.clone(),
+            world_state,
             dialogue_history: vec![DialogueEntry {
                 sender: DialogueParticipant::User,
                 recipient: DialogueParticipant::Agent,
@@ -82,11 +85,13 @@ impl AgentProblemState {
         }
     }
     pub fn new_multi_turn(initial_config: WorldState, involved_classes: Vec<String>) -> Self {
+        let mut world_state = initial_config.clone();
+        world_state.populate_with_involved_classes(&involved_classes);
         Self {
-            initial_config: initial_config.clone(),
+            initial_config,
             involved_classes,
             num_steps: 0,
-            world_state: initial_config.clone(),
+            world_state,
             dialogue_history: Vec::new(), // needs to call api user to get started
             // inference_data: RefCell::new(String::new()),
             mile_stones: Vec::new(),
@@ -252,6 +257,7 @@ impl AceProblem {
 
                 if response.response.contains("finish conversation") {
                     // to do: finalize and write to file
+                    Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
                     return true;
                 }
                 // execute the function call and get the result
@@ -262,25 +268,60 @@ impl AceProblem {
                         message: "Please do not ask me any questions, use the known conditions to solve the problem".to_string(),
                     };
                     agent_problem_state.dialogue_history.push(new_history_entry);
+                    println!("The agent is trying to ask a question: {}", response.response);
                     return false;
                 };
-                agent_problem_state.world_state.execute_function_calls(&function_call_list);
+                agent_problem_state
+                    .mile_stones
+                    .push(response.response.clone());
+                let execution_results = agent_problem_state.world_state.execute_function_calls(&function_call_list);
 
+                let execution_message = serde_json::to_string(&execution_results)
+                    .expect("failed to serialize execution results");
+                let new_history_entry = DialogueEntry {
+                    sender: DialogueParticipant::Execution,
+                    recipient: DialogueParticipant::Agent,
+                    message: execution_message,
+                };
 
+                agent_problem_state.dialogue_history.push(new_history_entry);
 
-
-
-
-
+                println!("conversation: {}", agent_problem_state.get_inference_message());
 
                 if agent_problem_state.num_steps > 40 {
                     // to do: finalize and write to file
+                    Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
                     return true;
                 }
                 false
             }
             _ => todo!(),
         }
+    }
+
+    fn agent_finish_conversation(id: String, agent_problem_state: &AgentProblemState, output_file: &Arc<AtomicRefCell<std::fs::File>>) {
+        // let normal_result_entry = NormalResultEntry {
+        //             id: self.id.clone(),
+        //             result: response.response,
+        //         };
+        //         let entry_serialized = serde_json::to_string(&normal_result_entry)
+        //             .expect("failed to serialize normal result entry");
+        //         let mut file_ref = self.output_file.borrow_mut();
+
+        //         writeln!(file_ref, "{}", entry_serialized)
+        //             .expect("failed to write normal result entry");
+        //         true
+        let agent_result_entry = AgentResultEntry{
+            id,
+            final_world_state: agent_problem_state.world_state.clone(),
+            output_function_calls: agent_problem_state.mile_stones.clone(),
+            conversation: agent_problem_state.get_inference_message(),
+        };
+        let entry_serialized = serde_json::to_string(&agent_result_entry)
+            .expect("failed to serialize agent result entry");
+        let mut file_ref = output_file.borrow_mut();
+        writeln!(file_ref, "{}", entry_serialized)
+            .expect("failed to write agent result entry");
     }
 
     /// Get the LLM response result for completed problems

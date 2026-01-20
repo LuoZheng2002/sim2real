@@ -19,7 +19,7 @@ use crate::{
     datasets::DATASETS,
     paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH},
     python_interface::PythonResponse,
-    utils::load_json_lines,
+    utils::{load_json_lines, write_json_lines_to_file},
     world_state::WorldState,
 };
 
@@ -223,6 +223,9 @@ fn parse_entries_to_problems(
             for entry_value in entries {
                 let entry: AgentEntry = serde_json::from_value(entry_value)
                     .expect("failed to parse AgentEntry for multi-turn");
+                if existing_ids.contains(&entry.id) {
+                    continue;
+                }
                 let world_state: WorldState =
                     serde_json::from_value(serde_json::to_value(&entry.initial_config).unwrap())
                         .unwrap_or_default();
@@ -246,6 +249,9 @@ fn parse_entries_to_problems(
             for entry_value in entries {
                 let entry: AgentEntry = serde_json::from_value(entry_value)
                     .expect("failed to parse AgentEntry for multi-step");
+                if existing_ids.contains(&entry.id) {
+                    continue;
+                }
                 let world_state: WorldState =
                     serde_json::from_value(serde_json::to_value(&entry.initial_config).unwrap())
                         .unwrap_or_default();
@@ -292,6 +298,10 @@ impl AceGenerator {
 
     pub fn receive_response(&mut self, response: String) {
         self.receive_response_helper(response);
+    }
+
+    pub fn sort_all_files_after_generation(&mut self) {
+        self.sort_all_files_after_generation_helper();
     }
 }
 impl AceGenerator {
@@ -363,6 +373,66 @@ impl AceGenerator {
                 "Problem {} completed. {}/{} completed.",
                 problem.identifier, self.num_completed, self.total_num
             );
+        }
+    }
+
+    pub fn sort_all_files_after_generation_helper(&mut self) {
+        for (dataset_name, _) in DATASETS.iter() {
+            let output_path = BASE_OUTPUT_PATH
+                .join(self.model_safe_name.clone())
+                .join(dataset_name.to_string() + "_result.json");
+
+            let entries = match load_json_lines(&output_path) {
+                Ok(entries) => entries,
+                Err(e) => {
+                    println!("Skipping {}: {}", output_path.display(), e);
+                    continue;
+                }
+            };
+
+            let is_multi_turn = dataset_name.contains("normal_multi_turn");
+
+            let mut entries = entries;
+            entries.sort_by(|a, b| {
+                let id_a = a.get("id").and_then(|v| v.as_str()).unwrap_or("");
+                let id_b = b.get("id").and_then(|v| v.as_str()).unwrap_or("");
+
+                if is_multi_turn {
+                    // For multi_turn datasets, IDs are like "123_456"
+                    // Compare by first number (major), then second number (minor)
+                    let parse_multi_turn_id = |id: &str| -> (i64, i64) {
+                        let parts: Vec<&str> = id.split('_').collect();
+                        let major = parts.first().and_then(|s| s.parse().ok()).unwrap_or(0);
+                        let minor = parts.get(1).and_then(|s| s.parse().ok()).unwrap_or(0);
+                        (major, minor)
+                    };
+                    let (major_a, minor_a) = parse_multi_turn_id(id_a);
+                    let (major_b, minor_b) = parse_multi_turn_id(id_b);
+                    (major_a, minor_a).cmp(&(major_b, minor_b))
+                } else {
+                    // For other datasets, extract trailing number from ID
+                    let extract_trailing_number = |id: &str| -> i64 {
+                        id.chars()
+                            .rev()
+                            .take_while(|c| c.is_ascii_digit())
+                            .collect::<String>()
+                            .chars()
+                            .rev()
+                            .collect::<String>()
+                            .parse()
+                            .unwrap_or(0)
+                    };
+                    let num_a = extract_trailing_number(id_a);
+                    let num_b = extract_trailing_number(id_b);
+                    num_a.cmp(&num_b)
+                }
+            });
+
+            if let Err(e) = write_json_lines_to_file(&output_path, &entries) {
+                println!("Failed to write sorted file {}: {}", output_path.display(), e);
+            } else {
+                println!("Sorted {}", output_path.display());
+            }
         }
     }
 }

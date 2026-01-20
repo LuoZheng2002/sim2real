@@ -16,12 +16,8 @@
 | 10              | execution  | agent                     | status: False message: Message ID does not exist                                                                         |
 | 11              | agent      | execution                 | [get_latest_message_id]                                                                                                  |
 | 12              | execution  | agent                     |                                                                                                                          |
-| 13              | agent      | execution                 | [delete_message(message_id=123)]                                                                                         |
-| 14              | execution  | agent                     | status: False message: Message ID does not exist                                                                         |
-| 15              | agent      | execution                 | [get_latest_message_id]                                                                                                  |
-| 16              | execution  | agent                     |                                                                                                                          |
-| 17              | agent      | execution                 | [delete_message(message_id=1)]                                                                                           |
-| 18              | execution  | agent                     | status: True message: Message ID 1 has been successfully deleted.                                                        |
-| 19              | agent      | execution                 | [send_message(sender_name='Isaac', receiver_name='Frank', message='The takeout has been ordered')]                       |
-| 20              | execution  | agent                     | status: True message: Message successfully sent to Frank.                                                                |
-| 21              | agent      | user                      | finish conversation                                                                                                      |
+| 13              | agent      | execution                 | [delete_message(message_id=1)]                                                                                           |
+| 14              | execution  | agent                     | status: True message: Message ID 1 has been successfully deleted.                                                        |
+| 15              | agent      | execution                 | [send_message(sender_name='Isaac', receiver_name='Frank', message='The takeout has been ordered')]                       |
+| 16              | execution  | agent                     | status: True message: Message successfully sent to Frank.                                                                |
+| 17              | agent      | user                      | finish conversation                                                                                                      |

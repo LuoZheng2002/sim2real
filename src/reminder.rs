@@ -15,13 +15,15 @@ pub struct Reminder {
 
 /// Reminder API state
 /// Python: scenariosen/phone_platform/reminder.py
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ReminderApi {
+    #[serde(skip, default)]
     pub base_api: BaseApi,
     // ReminderApi specific fields
-    pub max_capacity: usize,
-    pub reminder_list: IndexMap<usize, Reminder>, // key: internal id (1, 2, 3...)
-    pub reminder_id_counter: usize,
+    #[serde(default)]
+    pub max_capacity: Option<usize>,
+    pub reminder_list: IndexMap<String, Reminder>, // key: internal id (1, 2, 3...)
+    pub reminder_id_counter: Option<usize>,
 }
 
 #[derive(Deserialize, Clone)]
@@ -41,22 +43,22 @@ pub struct DeleteReminderArgs {
 }
 impl Default for ReminderApi {
     fn default() -> Self {
-        let reminder_list: IndexMap<usize, Reminder> = vec![
-            (1, Reminder {
+        let reminder_list: IndexMap<String, Reminder> = vec![
+            ("1".to_string(), Reminder {
                 reminder_id: 1001,
                 title: "Doctor's Appointment".to_string(),
                 description: "Visit Dr. Smith for a checkup.".to_string(),
                 time: "2024-07-15 09:30".to_string(),
                 notified: false,
             }),
-            (2, Reminder {
+            ("2".to_string(), Reminder {
                 reminder_id: 1002,
                 title: "Team Meeting".to_string(),
                 description: "Monthly project review with the team.".to_string(),
                 time: "2024-07-17 11:00".to_string(),
                 notified: false,
             }),
-            (3, Reminder {
+            ("3".to_string(), Reminder {
                 reminder_id: 1003,
                 title: "To-do list".to_string(),
                 description: "First, help Frank place a food delivery order at \"Hema Fresh,\" ordering two \"Fresh Gift Packs.\" Then, send a message to Frank saying, \"The price of the purchased goods is () yuan.\" Replace the parentheses with the actual amount, keeping one decimal place.".to_string(),
@@ -66,9 +68,9 @@ impl Default for ReminderApi {
         ].into_iter().collect();
         ReminderApi {
             base_api: BaseApi::default(),
-            max_capacity: 6,
+            max_capacity: Some(6),
             reminder_list,
-            reminder_id_counter: 3,
+            reminder_id_counter: Some(3),
         }
     }
 }
@@ -87,13 +89,13 @@ impl ReminderApi {
         if !self.base_api.logged_in {
             return ExecutionResult::error("Device not logged in. Unable to add a new reminder.".to_string());
         }
-        if self.reminder_list.len() >= self.max_capacity {
+        if self.reminder_list.len() >= self.max_capacity.unwrap() {
             return ExecutionResult::error("Reminder capacity is full. Unable to add a new reminder.".to_string());
         }
-        self.reminder_id_counter += 1;
-        let reminder_id = self.reminder_id_counter;
+        *self.reminder_id_counter.as_mut().unwrap() += 1;
+        let reminder_id = self.reminder_id_counter.unwrap();
         self.reminder_list.insert(
-            reminder_id,
+            reminder_id.to_string(),
             Reminder {
                 reminder_id: reminder_id as u32,
                 title: title.to_string(),
@@ -108,11 +110,12 @@ impl ReminderApi {
         if !self.base_api.logged_in {
             return ExecutionResult::error("Device not logged in. Unable to delete the specified reminder.".to_string());
         }
-        if !self.reminder_list.contains_key(&reminder_id) {
+        let reminder_id_str = reminder_id.to_string();
+        if !self.reminder_list.contains_key(&reminder_id_str) {
             return ExecutionResult::error("Reminder ID does not exist.".to_string());
         }
 
-        self.reminder_list.swap_remove(&reminder_id);
+        self.reminder_list.swap_remove(&reminder_id_str);
         ExecutionResult::success(format!("Reminder ID {} was successfully deleted.", reminder_id))
     }
     pub fn view_all_reminders(&self) -> ExecutionResult {
@@ -122,5 +125,19 @@ impl ReminderApi {
         let reminders: Vec<&Reminder> = self.reminder_list.values().collect();
         let reminders_str = serde_json::to_string(&reminders).unwrap();
         ExecutionResult::success(reminders_str)
+    }
+
+    pub fn equals_ground_truth(&self, possible_answer: &ReminderApi) -> Result<(), String> {
+        self.base_api.equals_ground_truth(&possible_answer.base_api)?;
+        if let Some(possible_answer_max_capacity) = &possible_answer.max_capacity && self.max_capacity.as_ref().unwrap() != possible_answer_max_capacity {
+            Err(format!("Reminder max capacity does not match. Expected: {}, got {}", possible_answer_max_capacity, self.max_capacity.as_ref().unwrap()))?;
+        }
+        if self.reminder_list != possible_answer.reminder_list {
+            Err(format!("Reminder lists do not match. Expected: {:?}, got: {:?}", possible_answer.reminder_list, self.reminder_list))?;
+        }
+        if let Some(possible_answer_reminder_id_counter) = &possible_answer.reminder_id_counter && self.reminder_id_counter.as_ref().unwrap() != possible_answer_reminder_id_counter {
+            Err(format!("Reminder ID counters do not match. Expected: {}, got: {}", possible_answer_reminder_id_counter, self.reminder_id_counter.as_ref().unwrap()))?;
+        }
+        Ok(())
     }
 }

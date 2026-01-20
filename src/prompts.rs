@@ -79,7 +79,7 @@ pub fn multi_turn_agent_prompt_system_en() -> String {
    - If the API parameter description does not specify a required value format, use the user's original input for the parameter value.
 2. If a task requires multiple steps to complete (with strict sequential relationships between steps), execute them step by step, and decide how to proceed based on the results returned from each execution.
 3. Generally do not use parallel calls, meaning only one function is called at a time.
-
+4. If the API requires no parameters, the API request should be output as [ApiName()], with no fabricated parameter names.
 Please note that if an API call is needed, strictly adhere to the calling rules [ApiName(key1='value1', key2='value2', ...)] and do not output any other content.
 When you believe the task is completed, return "finish conversation" to end the dialogue.
 

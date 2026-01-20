@@ -108,8 +108,13 @@ async def main():
             # print(f"Worker {wid} processing task {task['identifier']}")
             response_dict = await process_single_task_async(task)
             runner.receive_response(json.dumps(response_dict))
-    workers = [asyncio.create_task(worker(wid)) for wid in range(5)]
+    workers = [asyncio.create_task(worker(wid)) for wid in range(200)]
     await asyncio.gather(*workers)
+
+    # sort
+    runner.sort_all_files_after_generation()
+    evaluate_all_results(args.model_name)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

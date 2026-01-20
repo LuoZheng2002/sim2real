@@ -60,8 +60,8 @@ async def call_api_model_async(
         response = await client.chat.completions.create(
             messages=message,
             model=model_name,
-            temperature=0.001,
-            max_tokens=1000,
+            # temperature=0.001,
+            # max_tokens=1000,
             top_p=1.0,
         )
         result = response.choices[0].message.content

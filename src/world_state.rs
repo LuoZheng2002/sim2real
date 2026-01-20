@@ -18,21 +18,45 @@ use crate::{
 
 /// Unified world state for multi-turn/multi-step scenarios
 /// Contains the state of all involved API instances
-#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct WorldState {
-    #[serde(rename = "BaseApi", default)]
+    #[serde(rename = "BaseApi", default, skip_serializing_if = "Option::is_none")]
     pub base_api: Option<BaseApi>,
-    #[serde(rename = "MessageApi", default)]
+    #[serde(rename = "MessageApi", default, skip_serializing_if = "Option::is_none")]
     pub message_api: Option<MessageApi>,
-    #[serde(rename = "ReminderApi", default)]
+    #[serde(rename = "ReminderApi", default, skip_serializing_if = "Option::is_none")]
     pub reminder_api: Option<ReminderApi>,
-    #[serde(rename = "FoodPlatform", default)]
+    #[serde(rename = "FoodPlatform", default, skip_serializing_if = "Option::is_none")]
     pub food_platform: Option<FoodPlatform>,
-    #[serde(rename = "Travel", default)]
+    #[serde(rename = "Travel", default, skip_serializing_if = "Option::is_none")]
     pub travel: Option<Travel>,
 }
 
 impl WorldState {
+    pub fn populate_with_involved_classes(&mut self, involved_classes: &Vec<String>) {
+        for class_name in involved_classes.iter() {
+            match class_name.as_str() {
+                "BaseApi" => {
+                    self.base_api = Some(BaseApi::default());
+                }
+                "MessageApi" => {
+                    self.message_api = Some(MessageApi::default());
+                }
+                "ReminderApi" => {
+                    self.reminder_api = Some(ReminderApi::default());
+                }                
+                "FoodPlatform" => {
+                    self.food_platform = Some(FoodPlatform::default());
+                }
+                "Travel" => {
+                    self.travel = Some(Travel::default());
+                }
+                _ => {
+                    panic!("Unknown class name: {}", class_name);
+                }
+            }
+        }
+    }
     pub fn execute_function_calls(
         &mut self,
         function_calls: &Vec<FunctionCallHygienic>,
@@ -394,5 +418,36 @@ impl WorldState {
             }
         }
         execution_results
+    }
+    pub fn equals_ground_truth(&self, ground_truth: &WorldState) -> Result<(), String> {
+        if let (None, Some(_)) = (&self.base_api, &ground_truth.base_api) {
+            Err("BaseApi does not appear in the output but is expected by the ground truth")?;
+        } else if let (Some(base), Some(ground_truth_base)) = (&self.base_api, &ground_truth.base_api) {
+            base.equals_ground_truth(ground_truth_base)?;
+        }
+        if let (None, Some(_)) = (&self.message_api, &ground_truth.message_api) {
+            Err("MessageApi does not appear in the output but is expected by the ground truth")?;
+        } else if let (Some(message_api), Some(ground_truth_message_api)) = (&self.message_api, &ground_truth.message_api) {
+            message_api.equals_ground_truth(ground_truth_message_api)?;
+        }
+
+        if let (None, Some(_)) = (&self.reminder_api, &ground_truth.reminder_api) {
+            Err("ReminderApi does not appear in the output but is expected by the ground truth")?;
+        } else if let (Some(reminder_api), Some(ground_truth_reminder_api)) = (&self.reminder_api, &ground_truth.reminder_api) {
+            reminder_api.equals_ground_truth(ground_truth_reminder_api)?;
+        }
+
+        if let (None, Some(_)) = (&self.food_platform, &ground_truth.food_platform) {
+            Err("FoodPlatform does not appear in the output but is expected by the ground truth")?;
+        } else if let (Some(food_platform), Some(ground_truth_food_platform)) = (&self.food_platform, &ground_truth.food_platform) {
+            food_platform.equals_ground_truth(ground_truth_food_platform)?;
+        }
+
+        if let (None, Some(_)) = (&self.travel, &ground_truth.travel) {
+            Err("Travel does not appear in the output but is expected by the ground truth")?;
+        } else if let (Some(travel), Some(ground_truth_travel)) = (&self.travel, &ground_truth.travel) {
+            travel.equals_ground_truth(ground_truth_travel)?;
+        }
+        Ok(())
     }
 }

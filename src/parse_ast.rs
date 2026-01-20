@@ -130,8 +130,8 @@ pub fn ast_expr_to_structured(expr: &ast::Expr) -> Result<serde_json::Value, Str
         ast::Expr::Name(n) => {
             // Handle True/False/None as names
             match n.id.as_str() {
-                "True" => Ok(serde_json::Value::Bool(true)),
-                "False" => Ok(serde_json::Value::Bool(false)),
+                "True" | "true" => Ok(serde_json::Value::Bool(true)),
+                "False" | "false" => Ok(serde_json::Value::Bool(false)),
                 "None" => Ok(serde_json::Value::Null),
                 // other => Ok(serde_json::Value::String(other.to_string())),
                 other => panic!("Unsupported name expression: {}", other),

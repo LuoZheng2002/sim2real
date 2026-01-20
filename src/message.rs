@@ -24,14 +24,18 @@ pub struct Message {
 
 /// Message API state
 /// Python: scenariosen/phone_platform/message.py
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct MessageApi {
+    #[serde(skip, default)]
     pub base_api: BaseApi,
     // MessageApi specific fields
-    pub max_capacity: usize,
-    pub user_list: IndexMap<String, MessageUser>, // key: user name (e.g., "Eve")
-    pub inbox: IndexMap<usize, Message>,          // key: message_id
-    pub message_id_counter: usize,
+    #[serde(default)]
+    pub max_capacity: Option<usize>,
+    #[serde(default)]
+    pub user_list: Option<IndexMap<String, MessageUser>>, // key: user name (e.g., "Eve")
+    pub inbox: IndexMap<String, Message>,          // key: message_id
+    #[serde(default)]
+    pub message_id_counter: Option<usize>,
 }
 
 #[derive(Deserialize, Clone)]
@@ -59,7 +63,7 @@ pub struct SearchMessagesArgs {
 
 impl Default for MessageApi {
     fn default() -> Self {
-        let max_capacity = 6;
+        
         let user_list: IndexMap<String, MessageUser> = vec![
             (
                 "Eve".to_string(),
@@ -113,45 +117,47 @@ impl Default for MessageApi {
         .into_iter()
         .collect();
 
-        let inbox: IndexMap<usize, Message> = vec![
-            (1, Message {
+        let inbox: IndexMap<String, Message> = vec![
+            ("1".to_string(), Message {
                 sender_id: "USR100".to_string(),
                 receiver_id: "USR101".to_string(),
                 message: "Hey Frank, don't forget about our meeting on 2024-06-11 at 4 PM in Conference Room 1.".to_string(),
                 time: Some("2024-06-09".to_string()),
             }),
-            (2, Message {
+            ("2".to_string(), Message {
                 sender_id: "USR101".to_string(),
                 receiver_id: "USR102".to_string(),
                 message: "Can you help me order a \"Margherita Pizza\" delivery? The merchant is Domino's.".to_string(),
                 time: Some("2024-03-09".to_string()),
             }),
-            (3, Message {
+            ("3".to_string(), Message {
                 sender_id: "USR102".to_string(),
                 receiver_id: "USR103".to_string(),
                 message: "Please check the milk tea delivery options available from Heytea and purchase a cheaper milk tea for me. After making the purchase, remember to reply to me with \"Already bought.\"".to_string(),
                 time: Some("2023-12-05".to_string()),
             }),
-            (4, Message {
+            ("4".to_string(), Message {
                 sender_id: "USR103".to_string(),
                 receiver_id: "USR102".to_string(),
                 message: "No problem Helen, I can assist you.".to_string(),
                 time: Some("2024-09-09".to_string()),
             }),
-            (5, Message {
+            ("5".to_string(), Message {
                 sender_id: "USR104".to_string(),
                 receiver_id: "USR105".to_string(),
                 message: "Isaac, are you available for a call?".to_string(),
                 time: Some("2024-06-06".to_string()),
             }),
-            (6, Message {
+            ("6".to_string(), Message {
                 sender_id: "USR105".to_string(),
                 receiver_id: "USR104".to_string(),
                 message: "Yes Jack, let's do it in 30 minutes.".to_string(),
                 time: Some("2024-01-15".to_string()),
             }),
         ].into_iter().collect();
-        let message_id_counter = 6;
+        let user_list = Some(user_list);
+        let max_capacity = Some(6);
+        let message_id_counter = Some(6);
         MessageApi {
             base_api: BaseApi::default(),
             max_capacity,
@@ -175,12 +181,12 @@ impl MessageApi {
         if !self.base_api.wifi {
             return ExecutionResult::error("Wi-Fi is turned off, cannot send messages at this time".to_string());
         }
-        if self.inbox.len() >= self.max_capacity {
+        if self.inbox.len() >= self.max_capacity.unwrap() {
             return ExecutionResult::error("Inbox capacity is full. You need to ask the user which message to delete.".to_string());
         }
         let (Some(sender), Some(receiver)) = (
-            self.user_list.get(&sender_name),
-            self.user_list.get(&receiver_name),
+            self.user_list.as_ref().unwrap().get(&sender_name),
+            self.user_list.as_ref().unwrap().get(&receiver_name),
         ) else {
             return ExecutionResult::error("Sender or receiver does not exist".to_string());
         };
@@ -188,9 +194,9 @@ impl MessageApi {
         let receiver_id = &receiver.user_id;
 
         // Add the message to the inbox
-        self.message_id_counter += 1;
+        *self.message_id_counter.as_mut().unwrap() += 1;
         self.inbox.insert(
-            self.message_id_counter,
+            self.message_id_counter.unwrap().to_string(),
             Message {
                 sender_id: sender_id.clone(),
                 receiver_id: receiver_id.clone(),
@@ -203,6 +209,7 @@ impl MessageApi {
     }
 
     pub fn delete_message(&mut self, message_id: usize) -> ExecutionResult {
+        let message_id = message_id.to_string();
         if !self.base_api.logged_in {
             return ExecutionResult::error("Device not logged in, unable to delete message".to_string());
         }
@@ -222,19 +229,19 @@ impl MessageApi {
             return ExecutionResult::error("Device not logged in, unable to view message information".to_string());
         }
         let (Some(sender), Some(receiver)) = (
-            self.user_list.get(&sender_name),
-            self.user_list.get(&receiver_name),
+            self.user_list.as_ref().unwrap().get(&sender_name),
+            self.user_list.as_ref().unwrap().get(&receiver_name),
         ) else {
             return ExecutionResult::error("Sender or receiver does not exist".to_string());
         };
         let sender_id = &sender.user_id;
         let receiver_id = &receiver.user_id;
 
-        let messages_between_users: IndexMap<usize, Message> = self
+        let messages_between_users: IndexMap<String, Message> = self
             .inbox
             .iter()
             .filter(|(_, msg)| msg.sender_id == *sender_id && msg.receiver_id == *receiver_id)
-            .map(|(id, msg)| (*id, msg.clone())) // clone
+            .map(|(id, msg)| (id.clone(), msg.clone())) // clone
             .collect();
 
         if messages_between_users.is_empty() {
@@ -247,18 +254,18 @@ impl MessageApi {
         &self, user_name: String,
         keyword: String,
     ) -> ExecutionResult {
-        let Some(user) = self.user_list.get(&user_name) else {
+        let Some(user) = self.user_list.as_ref().unwrap().get(&user_name) else {
             return ExecutionResult::error("User does not exist".to_string());
         };
         let user_id = &user.user_id;
-        let matched_messages: IndexMap<usize, Message> = self
+        let matched_messages: IndexMap<String, Message> = self
             .inbox
             .iter()
             .filter(|(_, msg)| {
                 (msg.sender_id == *user_id || msg.receiver_id == *user_id)
                     && msg.message.to_lowercase().contains(&keyword.to_lowercase())
             })
-            .map(|(id, msg)| (*id, msg.clone())) // clone
+            .map(|(id, msg)| (id.clone(), msg.clone())) // clone
             .collect();
         if matched_messages.is_empty() {
             return ExecutionResult::error("No related message records found".to_string());
@@ -270,10 +277,10 @@ impl MessageApi {
         if !self.base_api.logged_in {
             return ExecutionResult::error("Device not logged in, unable to retrieve all message times and their corresponding message IDs.".to_string());
         }
-        let message_times_with_ids: IndexMap<usize, Option<String>> = self
+        let message_times_with_ids: IndexMap<String, Option<String>> = self
             .inbox
             .iter()
-            .map(|(id, msg)| (*id, msg.time.clone()))
+            .map(|(id, msg)| (id.clone(), msg.time.clone()))
             .collect();
         let result_str = serde_json::to_string(&message_times_with_ids).unwrap();
         ExecutionResult::success(format!("Message times with IDs: {}", result_str))
@@ -295,7 +302,7 @@ impl MessageApi {
                 }
             })
             .unwrap();
-        let latest_message_id = latest_message.0;
+        let latest_message_id = latest_message.0.clone();
         ExecutionResult::success(format!("The latest message ID is {}", latest_message_id))
     }
     pub fn get_earliest_message_id(&self) -> ExecutionResult {
@@ -315,7 +322,29 @@ impl MessageApi {
                 }
             })
             .unwrap();
-        let earliest_message_id = earliest_message.0;
+        let earliest_message_id = earliest_message.0.clone();
         ExecutionResult::success(format!("The earliest message ID is {}", earliest_message_id))
+    }
+    pub fn equals_ground_truth(&self, ground_truth: &MessageApi) -> Result<(), String> {
+
+        self.base_api.equals_ground_truth(&ground_truth.base_api)?;
+        if let Some(ground_truth_max_capacity) = &ground_truth.max_capacity && self.max_capacity.as_ref().unwrap() != ground_truth_max_capacity {
+            return Err(format!("max_capacity does not match ground truth. Expected: {}, got: {}", ground_truth_max_capacity, self.max_capacity.as_ref().unwrap()));
+        }
+        if let Some(ground_truth_user_list) = &ground_truth.user_list {
+            if self.user_list.as_ref().unwrap() != ground_truth_user_list {
+                return Err(format!("user_list does not match ground truth. Expected: {:?}, got: {:?}", ground_truth_user_list, self.user_list.as_ref().unwrap()));
+            }
+        }
+        if self.inbox != ground_truth.inbox {
+            return Err(format!("inbox does not match ground truth. Expected: {:?}, got: {:?}", ground_truth.inbox, self.inbox));
+        }
+        // if self.message_id_counter != ground_truth.message_id_counter {
+        //     return Err(format!("message_id_counter does not match ground truth. Expected: {}, got: {}", ground_truth.message_id_counter, self.message_id_counter));
+        // }
+        if let Some(ground_truth_message_id_counter) = &ground_truth.message_id_counter && self.message_id_counter.as_ref().unwrap() != ground_truth_message_id_counter {
+            return Err(format!("message_id_counter does not match ground truth. Expected: {}, got: {}", ground_truth_message_id_counter, self.message_id_counter.as_ref().unwrap()));
+        }
+        Ok(())
     }
 }

@@ -18,8 +18,8 @@
 - New Flight: Next evening flight from Shanghai to Beijing
 - Cabin Class: Economy Class
 
-Would you like to proceed with these changes?                                                                                                                          |
-| 6               | user       | agent                     | Yes, please proceed with these changes.                                                                                  |
+Do you confirm these details?                                                                                                                          |
+| 6               | user       | agent                     | Yes, I confirm these details.                                                                                            |
 | 7               | agent      | execution                 | [get_flight_details(origin='Shanghai', destination='Beijing')]                                                           |
 | 8               | execution  | agent                     | [{'flight_no': 'MU5678', 'origin': 'Shanghai', 'destination': 'Beijing', 'depart_time': '2024-07-16 09:00:00', 'arrival_ |
 |                 |            |                           | time': '2024-07-16 11:30:00', 'status': 'available', 'seats_available': 3, 'economy_price': 1900, 'business_price': 3000 |
@@ -35,8 +35,8 @@ Would you like to proceed with these changes?                                   
 - Cabin Class: Economy Class
 - Additional Payment: 600 yuan (difference in economy class price)
 
-Would you like to proceed with these changes?                                                                                                                          |
-| 10              | user       | agent                     | Yes, I would like to proceed with these changes.                                                                         |
+Do you confirm these details?                                                                                                                          |
+| 10              | user       | agent                     | Yes, I confirm these details.                                                                                            |
 | 11              | agent      | execution                 | [modify_flight(user_id='user1', reservation_id='res_2', new_flight_no='CZ4321', new_cabin='Economy Class', new_payment_m |
 |                 |            |                           | ethod='bank')]                                                                                                           |
 | 12              | execution  | agent                     | Flight number has been changed. Cabin change successful. Price difference refunded: 1100.                                |

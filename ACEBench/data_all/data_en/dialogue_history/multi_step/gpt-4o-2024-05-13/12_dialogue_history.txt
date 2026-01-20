@@ -4,14 +4,14 @@
 |                 |            |                           | fill his request in the text message. (If the message capacity is full, delete the most recent message.)                 |
 | 1               | agent      | execution                 | [view_messages_between_users(sender_name='Grace', receiver_name='Helen')]                                                |
 | 2               | execution  | agent                     | status: False message: Device not logged in, unable to view message information                                          |
-| 3               | agent      | execution                 | [login_device()]                                                                                                         |
-| 4               | execution  | agent                     | status: True message: Device has been logged in                                                                          |
-| 5               | agent      | execution                 | [view_messages_between_users(sender_name='Grace', receiver_name='Helen')]                                                |
-| 6               | execution  | agent                     | status: True messages: [{'id': 3, 'sender': 'Grace', 'receiver': 'Helen', 'message': 'Please check the milk tea delivery |
+| 3               | agent      | execution                 | [login_device]                                                                                                           |
+| 4               | execution  | agent                     |                                                                                                                          |
+| 5               | agent      | execution                 | [login_device()]                                                                                                         |
+| 6               | execution  | agent                     | status: True message: Device has been logged in                                                                          |
+| 7               | agent      | execution                 | [view_messages_between_users(sender_name='Grace', receiver_name='Helen')]                                                |
+| 8               | execution  | agent                     | status: True messages: [{'id': 3, 'sender': 'Grace', 'receiver': 'Helen', 'message': 'Please check the milk tea delivery |
 |                 |            |                           |  options available from Heytea and purchase a cheaper milk tea for me. After making the purchase, remember to reply to m |
 |                 |            |                           | e with "Already bought."'}]                                                                                              |
-| 7               | agent      | execution                 | [delete_message(message_id=3)]                                                                                           |
-| 8               | execution  | agent                     | status: True message: Message ID 3 has been successfully deleted.                                                        |
 | 9               | agent      | execution                 | [login_food_platform(username='Helen', password='password321')]                                                          |
 | 10              | execution  | agent                     | status: True message: User Helen has successfully logged in!                                                             |
 | 11              | agent      | execution                 | [login_food_platform(username='Helen', password='password321')]                                                          |

@@ -27,7 +27,7 @@ pub struct PossibleAnswerNormalHygienic {
 pub struct PossibleAnswerAgentHygienic {
     pub id: String,
     pub ground_truth: WorldState,
-    pub mile_stone: Vec<String>, // a list of function calls
+    pub mile_stone: serde_json::Value, // inconsistent type, so keep as Value
 }
 
 #[derive(Deserialize, Clone)]

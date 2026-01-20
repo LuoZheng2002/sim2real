@@ -3,7 +3,7 @@
 | 0               | user       | agent                     | Yes, I need to view the messages Frank sent to me.                                                                       |
 | 1               | agent      | execution                 | [login_device()]                                                                                                         |
 | 2               | execution  | agent                     | status: True message: Device has been logged in                                                                          |
-| 3               | agent      | execution                 | [view_messages_between_users(sender_name='Frank', receiver_name='me')]                                                   |
+| 3               | agent      | execution                 | [view_messages_between_users(sender_name='Frank', receiver_name='user')]                                                 |
 | 4               | execution  | agent                     | status: False message: Receiver does not exist                                                                           |
 | 5               | agent      | user                      | Who is the recipient of the messages?                                                                                    |
 | 6               | user       | agent                     | The recipient is Grace.                                                                                                  |
@@ -12,7 +12,7 @@
 |                 |            |                           | a Pizza" delivery? The merchant is Domino\'s.'}]                                                                         |
 | 9               | agent      | user                      | Would you like to add the message content to a reminder or reply to the message?                                         |
 | 10              | user       | agent                     | I need to use the information to place a food delivery order for Frank.                                                  |
-| 11              | agent      | user                      | What is your takeout platform account and password?                                                                      |
+| 11              | agent      | user                      | What is your takeout platform account username and password?                                                             |
 | 12              | user       | agent                     | My username is Grace, and the password is password789.                                                                   |
 | 13              | agent      | execution                 | [login_food_platform(username='Grace', password='password789')]                                                          |
 | 14              | execution  | agent                     | status: False message: Wi-Fi is not enabled, unable to login                                                             |

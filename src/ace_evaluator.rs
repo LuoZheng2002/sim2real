@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use indexmap::IndexMap;
+use pyo3::pyfunction;
 use regex::Regex;
 use rustpython_parser::{Mode, ast, parse};
 use serde::{Deserialize, Serialize};
@@ -67,7 +68,7 @@ pub struct AgentEvaluationResult {
     pub final_world_state: WorldState,
     pub expected_world_state: WorldState,
     pub output_function_calls: Vec<String>,
-    pub expected_function_calls: Vec<String>,
+    pub expected_function_calls: serde_json::Value,
 }
 
 /// Summary statistics for evaluation
@@ -78,6 +79,7 @@ pub struct EvaluationSummary {
     pub total_count: usize,
 }
 
+#[pyfunction]
 pub fn evaluate_all_results(model_name: String) {
     let model_safe_name = model_name.replace("/", "-");
     for (dataset_name, dataset_trait) in DATASETS.iter() {
@@ -109,10 +111,23 @@ pub fn evaluate_all_results(model_name: String) {
                 &problem_entries,
                 &possible_answer_entries,
             ),
-            _ => {
-                eprintln!("Evaluation type not implemented for: {}", dataset_name);
-                continue;
-            }
+            EvaluationType::SpecialPointingOut => evaluate_special(
+                &result_entries,
+                &problem_entries,
+                &possible_answer_entries,
+                &EvaluationType::SpecialPointingOut,
+            ),
+            EvaluationType::SpecialIrrelevant => evaluate_special(
+                &result_entries,
+                &problem_entries,
+                &possible_answer_entries,
+                &EvaluationType::SpecialIrrelevant,
+            ),
+            EvaluationType::Agent => evaluate_agent(
+                &result_entries,
+                &problem_entries,
+                &possible_answer_entries,
+            ),
         };
 
         let output_evaluation_path = BASE_SCORE_PATH
@@ -670,7 +685,7 @@ pub fn evaluate_agent(
             .map(|entry| {
                 let parsed: PossibleAnswerAgentHygienic = serde_json::from_value(entry.clone())
                     .expect(
-                        "Failed to parse possible answer entry into PossibleAnswerNormalHygienic",
+                        &format!("Failed to parse possible answer entry into PossibleAnswerNormalHygienic: {}", serde_json::to_string(entry).unwrap()),
                     );
                 (parsed.id.clone(), parsed)
             })
@@ -689,8 +704,8 @@ pub fn evaluate_agent(
             .get(id)
             .expect("Missing possible answer entry");
 
-        match result_entry.final_world_state == possible_answer_entry.ground_truth {
-            true => {
+        match result_entry.final_world_state.equals_ground_truth(&possible_answer_entry.ground_truth) {
+            Ok(_) => {
                 correct_count += 1;
                 results.push(AgentEvaluationResult {
                     id: id.clone(),
@@ -703,11 +718,11 @@ pub fn evaluate_agent(
                     expected_function_calls: possible_answer_entry.mile_stone.clone(),
                 });
             }
-            false => {
+            Err(err) => {
                 results.push(AgentEvaluationResult {
                     id: id.clone(),
                     valid: false,
-                    error: Some("Model output does not match the ground truth world state.".to_string()),
+                    error: Some(format!("Model output does not match the ground truth world state: {}", err)),
                     conversation: result_entry.conversation.clone(),
                     final_world_state: result_entry.final_world_state.clone(),
                     expected_world_state: possible_answer_entry.ground_truth.clone(),

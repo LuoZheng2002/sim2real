@@ -24,7 +24,7 @@ impl ExecutionResult {
 
 /// Base API state - shared by MessageApi, ReminderApi, FoodPlatform
 /// Python: scenariosen/phone_platform/base_api.py
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BaseApi {
     pub wifi: bool,
     pub logged_in: bool,
@@ -53,5 +53,15 @@ impl BaseApi {
             status: true,
             message: "Device has been logged in".to_string(),
         }
+    }
+
+    pub fn equals_ground_truth(&self, other: &BaseApi) -> Result<(), String> {
+        if self.wifi != other.wifi {
+            return Err(format!("Wi-Fi status does not match. expected: {}, got: {}", other.wifi, self.wifi));
+        }
+        if self.logged_in != other.logged_in {
+            return Err(format!("Logged-in status does not match. expected: {}, got: {}", other.logged_in, self.logged_in));
+        }
+        Ok(())
     }
 }

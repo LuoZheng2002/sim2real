@@ -1,8 +1,8 @@
 | message_index   | sender     | recipient                 | content                                                                                                                  |
 |-----------------|------------|---------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | 0               | user       | agent                     | I need to change my flight from Shanghai back to Beijing to the same evening.                                            |
-| 1               | agent      | user                      | Please provide your user ID and password to proceed with retrieving your reservation details.                            |
-| 2               | user       | agent                     | My user ID is user1, and my password is 'password123'.                                                                   |
+| 1               | agent      | user                      | Please provide your user ID and password to proceed with the modification.                                               |
+| 2               | user       | agent                     | My user ID is user1, and the password is 'password123'.                                                                  |
 | 3               | agent      | execution                 | [get_reservation_details(user_id='user1')]                                                                               |
 | 4               | execution  | agent                     | [{'reservation_id': 'res_1', 'user_id': 'user1', 'flight_no': 'CA1234', 'payment_method': 'bank', 'cabin': 'Economy Clas |
 |                 |            |                           | s', 'baggage': 1, 'origin': 'Beijing', 'destination': 'Shanghai', 'flight_info': {'flight_no': 'CA1234', 'origin': 'Beij |
@@ -12,15 +12,13 @@
 |                 |            |                           | i', 'destination': 'Beijing', 'flight_info': {'flight_no': 'MU5678', 'origin': 'Shanghai', 'destination': 'Beijing', 'de |
 |                 |            |                           | part_time': '2024-07-16 09:00:00', 'arrival_time': '2024-07-16 11:30:00', 'status': 'available', 'seats_available': 3, ' |
 |                 |            |                           | economy_price': 1900, 'business_price': 3000}}]                                                                          |
-| 5               | agent      | user                      | Please confirm the following details for changing your flight from Shanghai to Beijing to the same evening:
+| 5               | agent      | user                      | Please confirm the following details for modifying your flight:
 
-- Current Flight: MU5678 (Shanghai to Beijing, Departure: 2024-07-16 09:00:00)
-- New Flight: To be determined (Shanghai to Beijing, Departure: 2024-07-15 evening)
-- Cabin Class: Business Class
-- Payment Method: Bank
+- Current Flight: MU5678 from Shanghai to Beijing, departing on 2024-07-16 at 09:00.
+- New Flight: Same evening on 2024-07-15.
 
-Would you like to proceed with these details? If yes, I will search for available flights for the evening of July 15th.                                                                                                                          |
-| 6               | user       | agent                     | Yes, please proceed with searching for available flights for the evening of July 15th.                                   |
+Would you like to proceed with these changes?                                                                                                                          |
+| 6               | user       | agent                     | Yes, please proceed with changing the flight to the same evening on 2024-07-15.                                          |
 | 7               | agent      | execution                 | [get_flight_details(origin='Shanghai', destination='Beijing')]                                                           |
 | 8               | execution  | agent                     | [{'flight_no': 'MU5678', 'origin': 'Shanghai', 'destination': 'Beijing', 'depart_time': '2024-07-16 09:00:00', 'arrival_ |
 |                 |            |                           | time': '2024-07-16 11:30:00', 'status': 'available', 'seats_available': 3, 'economy_price': 1900, 'business_price': 3000 |
@@ -29,16 +27,21 @@ Would you like to proceed with these details? If yes, I will search for availabl
 |                 |            |                           | 00}, {'flight_no': 'CZ4352', 'origin': 'Shanghai', 'destination': 'Beijing', 'depart_time': '2024-07-17 20:00:00', 'arri |
 |                 |            |                           | val_time': '2024-07-17 22:00:00', 'status': 'available', 'seats_available': 8, 'economy_price': 1600, 'business_price':  |
 |                 |            |                           | 2500}]                                                                                                                   |
-| 9               | agent      | user                      | Please confirm the following details for changing your flight from Shanghai to Beijing to the evening of July 15th:
+| 9               | agent      | user                      | Please confirm the following details for modifying your flight:
 
-- Current Flight: MU5678 (Shanghai to Beijing, Departure: 2024-07-16 09:00:00)
-- New Flight Options:
-  1. CZ4321 (Shanghai to Beijing, Departure: 2024-07-16 20:00:00, Business Class Price: 4000)
-- Cabin Class: Business Class
-- Payment Method: Bank
+- Current Flight: MU5678 from Shanghai to Beijing, departing on 2024-07-16 at 09:00.
+- New Flight Options for the same evening on 2024-07-15:
+  - Flight CZ4321 from Shanghai to Beijing, departing at 20:00 and arriving at 22:00.
 
-Would you like to proceed with changing to flight CZ4321?                                                                                                                          |
-| 10              | user       | agent                     | Yes, please change to flight CZ4321.                                                                                     |
-| 11              | agent      | execution                 | [modify_flight(user_id='user1', reservation_id='res_2', new_flight_no='CZ4321', new_cabin='Business Class')]             |
-| 12              | execution  | agent                     | Flight number has been changed.                                                                                          |
-| 13              | agent      | user                      | finish conversation                                                                                                      |
+Would you like to proceed with changing to Flight CZ4321?                                                                                                                          |
+| 10              | user       | agent                     | Yes, please change to Flight CZ4321.                                                                                     |
+| 11              | agent      | user                      | Please confirm the following details for modifying your flight:
+
+- Current Flight: MU5678 from Shanghai to Beijing, departing on 2024-07-16 at 09:00.
+- New Flight: CZ4321 from Shanghai to Beijing, departing on 2024-07-15 at 20:00 and arriving at 22:00.
+
+Would you like to proceed with these changes?                                                                                                                          |
+| 12              | user       | agent                     | Yes, please proceed with these changes.                                                                                  |
+| 13              | agent      | execution                 | [modify_flight(user_id='user1', reservation_id='res_2', new_flight_no='CZ4321')]                                         |
+| 14              | execution  | agent                     | Flight number has been changed.                                                                                          |
+| 15              | agent      | user                      | finish conversation                                                                                                      |

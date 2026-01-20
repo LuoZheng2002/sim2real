@@ -9,9 +9,25 @@
 | 4               | execution  | agent                     | status: True message: Wi-Fi has been turned on                                                                           |
 | 5               | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
 | 6               | execution  | agent                     | status: True message: User Eve has successfully logged in!                                                               |
-| 7               | agent      | execution                 | [add_food_delivery_order(username='Eve', merchant_name="Domino's", items=[{'product': 'Super Supreme Pizza', 'quantity': |
+| 7               | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 8               | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 9               | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 10              | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 11              | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 12              | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 13              | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 14              | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 15              | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 16              | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 17              | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 18              | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 19              | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 20              | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 21              | agent      | execution                 | [login_food_platform(username='Eve', password='password123')]                                                            |
+| 22              | execution  | agent                     | status: False message: Eve is already logged in                                                                          |
+| 23              | agent      | execution                 | [add_food_delivery_order(username='Eve', merchant_name="Domino's", items=[{'product': 'Super Supreme Pizza', 'quantity': |
 |                 |            |                           |  1}])]                                                                                                                   |
-| 8               | execution  | agent                     | status: True message: Food delivery order successfully placed with Domino's. Total amount: 88.0 yuan                     |
-| 9               | agent      | execution                 | [add_reminder(title="Today's Spending", description="Today's spending (88.0 yuan)", time="2024-07-15 09:30")]            |
-| 10              | execution  | agent                     | status: True message: Reminder 'Today's Spending' was successfully added.                                                |
-| 11              | agent      | user                      | finish conversation                                                                                                      |
+| 24              | execution  | agent                     | status: True message: Food delivery order successfully placed with Domino's. Total amount: 88.0 yuan                     |
+| 25              | agent      | execution                 | [add_reminder(title="Today's Spending", description="Today's spending (88.0 yuan)", time="2024-07-15 09:30")]            |
+| 26              | execution  | agent                     | status: True message: Reminder 'Today's Spending' was successfully added.                                                |
+| 27              | agent      | user                      | finish conversation                                                                                                      |

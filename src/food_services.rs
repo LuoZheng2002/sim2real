@@ -58,12 +58,14 @@ pub struct FoodOrder {
 
 /// Food Platform API state
 /// Python: scenariosen/phone_platform/food_services.py
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct FoodPlatform {
+    #[serde(skip, default)]
     pub base_api: BaseApi,
     // FoodPlatform specific fields
     pub users: IndexMap<String, FoodUser>, // key: user name (e.g., "Eve")
-    pub merchant_list: IndexMap<String, Merchant>, // key: merchant name (e.g., "Domino's")
+    #[serde(default)]
+    pub merchant_list: Option<IndexMap<String, Merchant>>, // key: merchant name (e.g., "Domino's")
     pub logged_in_users: Vec<String>,      // list of logged-in usernames
     pub orders: Vec<FoodOrder>,
 }
@@ -258,6 +260,7 @@ impl Default for FoodPlatform {
         .collect();
         let logged_in_users: Vec<String> = Vec::new();
         let orders: Vec<FoodOrder> = Vec::new();
+        let merchant_list = Some(merchant_list);
         FoodPlatform {
             base_api: BaseApi::default(),
             users,
@@ -311,7 +314,7 @@ impl FoodPlatform {
         if !self.logged_in_users.contains(&username.to_string()) {
             return ExecutionResult::error(format!("User {} is not logged in to the food platform", username));
         }
-        let Some(merchant) = self.merchant_list.get(&merchant_name) else {
+        let Some(merchant) = self.merchant_list.as_ref().unwrap().get(&merchant_name) else {
             return ExecutionResult::error("Merchant does not exist".to_string());
         };
         let mut total_price = NotNan::new(0.0).unwrap();
@@ -352,7 +355,7 @@ impl FoodPlatform {
     }
     // the output format is slightly different from the original implementation for convenience
     pub fn get_products(&self, merchant_name: String) -> ExecutionResult {
-        let Some(merchant) = self.merchant_list.get(&merchant_name) else {
+        let Some(merchant) = self.merchant_list.as_ref().unwrap().get(&merchant_name) else {
             return ExecutionResult::error(format!("Merchant '{}' does not exist", merchant_name));
         };
         let products_str = serde_json::to_string(&merchant.menu).unwrap();
@@ -386,5 +389,24 @@ impl FoodPlatform {
         }
         let orders_str = serde_json::to_string(&matched_orders).unwrap();
         ExecutionResult::success(format!("Matched orders for keyword '{}': {}", keyword, orders_str))
+    }
+
+    pub fn equals_ground_truth(&self, possible_answer: &FoodPlatform) -> Result<(), String> {
+        self.base_api.equals_ground_truth(&possible_answer.base_api)?;
+        if self.users != possible_answer.users {
+            Err(format!("Users do not match. Expected: {:?}, got: {:?}", possible_answer.users, self.users))?;
+        }
+        if let Some(ground_truth_merchant_list) = &possible_answer.merchant_list {
+            if self.merchant_list.as_ref().unwrap() != ground_truth_merchant_list {
+                Err(format!("Merchant lists do not match. Expected: {:?}, got: {:?}", ground_truth_merchant_list, self.merchant_list.as_ref().unwrap()))?;
+            }
+        }
+        if self.logged_in_users != possible_answer.logged_in_users {
+            Err(format!("Logged-in users do not match. Expected: {:?}, got: {:?}", possible_answer.logged_in_users, self.logged_in_users))?;
+        }
+        if self.orders != possible_answer.orders {
+            Err(format!("Orders do not match. Expected: {:?}, got: {:?}", possible_answer.orders, self.orders))?;
+        }
+        Ok(())
     }
 }

@@ -50,7 +50,7 @@ pub struct Reservation {
 
 /// Travel API state (does NOT inherit from BaseApi)
 /// Python: scenariosen/travel.py
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Travel {
     pub users: IndexMap<String, TravelUser>, // key: user_id (e.g., "user1")
     pub flights: Vec<Flight>,
@@ -803,5 +803,18 @@ impl Travel {
         self.flights = flights;
         self.users = travel_users;
         execution_result
+    }
+
+    pub fn equals_ground_truth(&self, ground_truth: &Travel) -> Result<(), String> {
+        if self.users != ground_truth.users {
+            return Err(format!("Users do not match. Expected: {:?}, got: {:?}", ground_truth.users, self.users));
+        }
+        if self.flights != ground_truth.flights {
+            return Err(format!("Flights do not match. Expected: {:?}, got: {:?}", ground_truth.flights, self.flights));
+        }
+        if self.reservations != ground_truth.reservations {
+            return Err(format!("Reservations do not match. Expected: {:?}, got: {:?}", ground_truth.reservations, self.reservations));
+        }
+        Ok(())
     }
 }
