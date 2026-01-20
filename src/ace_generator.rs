@@ -99,7 +99,8 @@ pub enum ProblemType {
 pub enum EvaluationType {
     NormalSingleTurn,
     NormalMultiTurn,
-    SpecialPointingOut,
+    SpecialErrorParam,
+    SpecialIncomplete,
     SpecialIrrelevant,
     Agent,
 }
@@ -237,7 +238,7 @@ fn parse_entries_to_problems(
                     status: ProblemStatus::Waiting,
                     question: entry.question.clone(),
                     function: entry.function,
-                    state: AceProblemState::MultiTurn(AgentProblemState::new_multi_turn(world_state.clone(), entry.involved_classes.clone())),
+                    state: AceProblemState::MultiTurn(AgentProblemState::new_multi_turn(world_state.clone(), entry.involved_classes.clone(), &entry.question)),
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);

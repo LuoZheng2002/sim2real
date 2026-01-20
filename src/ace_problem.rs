@@ -5,7 +5,11 @@ use indexmap::IndexMap;
 
 use crate::{
     ace_generator::{AgentResultEntry, NormalResultEntry}, base_api::BaseApi, evaluate_parse::FunctionCallHygienic, food_services::FoodPlatform, message::MessageApi, parse_ast::decode_function_list, prompts::{
-        multi_turn_agent_prompt_system_en, multi_turn_agent_prompt_user_en, system_prompt_for_normal_data_en, system_prompt_for_preference_data_en, system_prompt_for_special_data_en, user_prompt_en
+        multi_step_agent_prompt_system_en, multi_step_agent_prompt_user_en,
+        multi_turn_agent_prompt_system_en, multi_turn_agent_prompt_user_en,
+        system_prompt_for_normal_data_en, system_prompt_for_preference_data_en, system_prompt_for_special_data_en, user_prompt_en,
+        user_simulation_system_prompt_base_en, user_simulation_system_prompt_travel_en, user_simulation_init_prompt_en,
+        travel_prompt_en, base_prompt_en
     }, python_interface::{PythonResponse, PythonTask}, reminder::ReminderApi, travel::Travel, world_state::WorldState
 };
 
@@ -46,6 +50,8 @@ pub struct AgentProblemState {
     pub initial_config: WorldState,
     /// Classes involved in this task (e.g., ["BaseApi", "MessageApi"])
     pub involved_classes: Vec<String>,
+    /// The original question/instruction for user simulation (multi-turn only)
+    pub question: Option<String>,
 
     // mutable fields
     pub num_steps: usize,
@@ -73,6 +79,7 @@ impl AgentProblemState {
         Self {
             initial_config,
             involved_classes,
+            question: None, // multi-step doesn't need user simulation
             num_steps: 0,
             world_state,
             dialogue_history: vec![DialogueEntry {
@@ -84,12 +91,13 @@ impl AgentProblemState {
             mile_stones: Vec::new(),
         }
     }
-    pub fn new_multi_turn(initial_config: WorldState, involved_classes: Vec<String>) -> Self {
+    pub fn new_multi_turn(initial_config: WorldState, involved_classes: Vec<String>, question: &str) -> Self {
         let mut world_state = initial_config.clone();
         world_state.populate_with_involved_classes(&involved_classes);
         Self {
             initial_config,
             involved_classes,
+            question: Some(question.to_string()), // stored for user simulation
             num_steps: 0,
             world_state,
             dialogue_history: Vec::new(), // needs to call api user to get started
@@ -103,11 +111,37 @@ impl AgentProblemState {
             let sender_str = match entry.sender {
                 DialogueParticipant::User => "user",
                 DialogueParticipant::Agent => "agent",
-                DialogueParticipant::Execution => "execution result",
+                DialogueParticipant::Execution => "execution",
             };
             inference_message.push_str(&format!("{}: {}\n", sender_str, entry.message));
         }
         inference_message
+    }
+
+    /// Returns true if the state requires an LLM call (user or agent response).
+    /// Valid states for LLM call:
+    /// - Empty history (initial)
+    /// - last_recipient is User (user needs to respond)
+    /// - last_recipient is Agent (agent needs to respond)
+    ///
+    /// Note: last_recipient == Execution means agent just sent a function call request,
+    /// which should be executed locally, not by LLM. If sender is Execution, recipient is always Agent.
+    pub fn needs_llm_response(&self) -> bool {
+        if self.dialogue_history.is_empty() {
+            return true;
+        }
+        let last = self.dialogue_history.last().unwrap();
+        matches!(last.recipient, DialogueParticipant::User | DialogueParticipant::Agent)
+    }
+
+    /// Returns true if the state is waiting for local execution (not LLM).
+    /// This is when agent just sent a message to execution.
+    pub fn is_pending_execution(&self) -> bool {
+        if self.dialogue_history.is_empty() {
+            return false;
+        }
+        let last = self.dialogue_history.last().unwrap();
+        last.recipient == DialogueParticipant::Execution
     }
     // pub fn execute_function_calls(&mut self, function_calls: Vec<FunctionCallHygienic>) {
     //     let execution_results = self
@@ -187,6 +221,15 @@ impl AceProblem {
                 }
             }
             AceProblemState::MultiStep(agent_problem_state) => {
+                // Assert: state requires LLM response (not pending execution)
+                assert!(
+                    agent_problem_state.needs_llm_response(),
+                    "build_python_task called but state is pending execution"
+                );
+                assert!(
+                    !agent_problem_state.is_pending_execution(),
+                    "build_python_task called but state is pending execution"
+                );
                 let last_sender = agent_problem_state
                     .dialogue_history
                     .last()
@@ -195,12 +238,12 @@ impl AceProblem {
                 assert!(agent_problem_state.num_steps == 0 || matches!(last_sender, DialogueParticipant::Execution));
                 // let inference_message: String = agent_problem_state.inference_data.clone();
                 let inference_message = agent_problem_state.get_inference_message();
-                // system_prompt = MULTI_TURN_AGENT_PROMPT_SYSTEM_EN.format(time = self.time)
-                // user_prompt = MULTI_TURN_AGENT_PROMPT_USER_EN.format(functions = self.functions, history = history)
-                let system_prompt = multi_turn_agent_prompt_system_en();
+                // Multi-step uses different prompts - agent decides when to finish
+                // Note: Multi-step does NOT use travel_prompt or base_prompt (unlike multi-turn)
+                let system_prompt = multi_step_agent_prompt_system_en();
                 let functions_str = serde_json::to_string(&self.function)
                     .expect("failed to serialize function");
-                let user_prompt = multi_turn_agent_prompt_user_en(&functions_str, &inference_message);
+                let user_prompt = multi_step_agent_prompt_user_en(&functions_str, &inference_message);
                 // User turn
                 PythonTask {
                     identifier: self.identifier.clone(),
@@ -208,8 +251,131 @@ impl AceProblem {
                     user_prompt,
                     role: "assistant".to_string(),
                 }               
+            },
+            AceProblemState::MultiTurn(agent_problem_state) => {
+                // Assert: state requires LLM response (not pending execution)
+                assert!(
+                    agent_problem_state.needs_llm_response(),
+                    "build_python_task called but state is pending execution"
+                );
+                assert!(
+                    !agent_problem_state.is_pending_execution(),
+                    "build_python_task called but state is pending execution"
+                );
+
+                // Multi-turn has 3 participants: User, Agent, Execution
+                // We need to determine who should respond next based on dialogue history
+
+                if agent_problem_state.dialogue_history.is_empty() {
+                    // Initial state: need to get user's first message
+                    // The user model is initialized with system prompt containing the instruction
+                    // and then asked "Is there anything you need help with today?"
+                    let system_prompt = if agent_problem_state.involved_classes.contains(&"Travel".to_string()) {
+                        user_simulation_system_prompt_travel_en(
+                            agent_problem_state.question.as_ref().expect("Multi-turn requires question for user simulation")
+                        )
+                    } else {
+                        user_simulation_system_prompt_base_en(
+                            agent_problem_state.question.as_ref().expect("Multi-turn requires question for user simulation")
+                        )
+                    };
+                    let user_prompt = user_simulation_init_prompt_en();
+                    PythonTask {
+                        identifier: self.identifier.clone(),
+                        system_prompt,
+                        user_prompt,
+                        role: "user".to_string(),
+                    }
+                } else {
+                    let last_recipient = agent_problem_state.dialogue_history.last().unwrap().recipient;
+
+                    match last_recipient {
+                        DialogueParticipant::User => {
+                            // User needs to respond to agent's message
+                            // Build user simulation prompt with conversation history
+                            let system_prompt = if agent_problem_state.involved_classes.contains(&"Travel".to_string()) {
+                                user_simulation_system_prompt_travel_en(
+                                    agent_problem_state.question.as_ref().expect("Multi-turn requires question")
+                                )
+                            } else {
+                                user_simulation_system_prompt_base_en(
+                                    agent_problem_state.question.as_ref().expect("Multi-turn requires question")
+                                )
+                            };
+                            // Build the user prompt from conversation history
+                            // From the user simulator's perspective:
+                            // - Agent's messages are what the agent said TO the user
+                            // - User's own messages are what the user previously responded
+                            let mut user_prompt = user_simulation_init_prompt_en();
+                            for entry in &agent_problem_state.dialogue_history {
+                                match entry.sender {
+                                    DialogueParticipant::User => {
+                                        // User's own previous messages - what "you" (the simulator) said
+                                        user_prompt.push_str(&format!("\nyou: {}", entry.message));
+                                    }
+                                    DialogueParticipant::Agent => {
+                                        // Agent messages - what the agent said to the user
+                                        user_prompt.push_str(&format!("\nagent: {}", entry.message));
+                                    }
+                                    DialogueParticipant::Execution => {
+                                        // Execution results are shown to agent, not directly to user
+                                        // Skip or could include if agent relayed the info
+                                    }
+                                }
+                            }
+                            PythonTask {
+                                identifier: self.identifier.clone(),
+                                system_prompt,
+                                user_prompt,
+                                role: "user".to_string(),
+                            }
+                        }
+                        DialogueParticipant::Agent => {
+                            // Agent needs to respond
+                            let inference_message = agent_problem_state.get_inference_message();
+                            // Build system prompt with domain-specific rules
+                            let mut system_prompt = multi_turn_agent_prompt_system_en();
+                            if agent_problem_state.involved_classes.contains(&"Travel".to_string()) {
+                                system_prompt.push_str(&travel_prompt_en());
+                            }
+                            if agent_problem_state.involved_classes.contains(&"BaseApi".to_string()) {
+                                system_prompt.push_str(&base_prompt_en());
+                            }
+                            let functions_str = serde_json::to_string(&self.function)
+                                .expect("failed to serialize function");
+                            let user_prompt = multi_turn_agent_prompt_user_en(&functions_str, &inference_message);
+                            PythonTask {
+                                identifier: self.identifier.clone(),
+                                system_prompt,
+                                user_prompt,
+                                role: "assistant".to_string(),
+                            }
+                        }
+                        DialogueParticipant::Execution => {
+                            // After execution, agent responds
+                            // This case should be handled similarly to Agent case
+                            let inference_message = agent_problem_state.get_inference_message();
+                            // Build system prompt with domain-specific rules
+                            let mut system_prompt = multi_turn_agent_prompt_system_en();
+                            if agent_problem_state.involved_classes.contains(&"Travel".to_string()) {
+                                system_prompt.push_str(&travel_prompt_en());
+                            }
+                            if agent_problem_state.involved_classes.contains(&"BaseApi".to_string()) {
+                                system_prompt.push_str(&base_prompt_en());
+                            }
+                            let functions_str = serde_json::to_string(&self.function)
+                                .expect("failed to serialize function");
+                            let user_prompt = multi_turn_agent_prompt_user_en(&functions_str, &inference_message);
+                            PythonTask {
+                                identifier: self.identifier.clone(),
+                                system_prompt,
+                                user_prompt,
+                                role: "assistant".to_string(),
+                            }
+                        }
+                    }
+                }
             }
-            _ => todo!(),
         }
     }
 
@@ -240,6 +406,16 @@ impl AceProblem {
                 true
             }
             AceProblemState::MultiStep(agent_problem_state) => {
+                // Assert: we're receiving a response, so state should have been waiting for LLM
+                assert!(
+                    agent_problem_state.needs_llm_response(),
+                    "handle_python_response called but state was not waiting for LLM"
+                );
+                assert!(
+                    !agent_problem_state.is_pending_execution(),
+                    "handle_python_response called but state was pending execution"
+                );
+
                 agent_problem_state.num_steps += 1;
                 // when receiving the response, the last recipient must be the agent
                 let last_recipient = agent_problem_state
@@ -293,9 +469,121 @@ impl AceProblem {
                     Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
                     return true;
                 }
+                // Post-condition: state should be ready for next LLM call
+                assert!(
+                    agent_problem_state.needs_llm_response(),
+                    "MultiStep: after handle_python_response, state should need LLM response"
+                );
                 false
             }
-            _ => todo!(),
+            AceProblemState::MultiTurn(agent_problem_state) => {
+                // Assert: we're receiving a response, so state should have been waiting for LLM
+                assert!(
+                    agent_problem_state.needs_llm_response(),
+                    "handle_python_response called but state was not waiting for LLM"
+                );
+                assert!(
+                    !agent_problem_state.is_pending_execution(),
+                    "handle_python_response called but state was pending execution"
+                );
+
+                agent_problem_state.num_steps += 1;
+
+                if agent_problem_state.dialogue_history.is_empty() {
+                    // This is the user's initial message
+                    let new_history_entry = DialogueEntry {
+                        sender: DialogueParticipant::User,
+                        recipient: DialogueParticipant::Agent,
+                        message: response.response.clone(),
+                    };
+                    agent_problem_state.dialogue_history.push(new_history_entry);
+                    // Post-condition: now agent needs to respond
+                    assert!(
+                        agent_problem_state.needs_llm_response(),
+                        "MultiTurn: after user initial message, state should need LLM response"
+                    );
+                    return false;
+                }
+
+                let last_recipient = agent_problem_state.dialogue_history.last().unwrap().recipient;
+
+                match last_recipient {
+                    DialogueParticipant::User => {
+                        // User responded, add to history
+                        let new_history_entry = DialogueEntry {
+                            sender: DialogueParticipant::User,
+                            recipient: DialogueParticipant::Agent,
+                            message: response.response.clone(),
+                        };
+                        agent_problem_state.dialogue_history.push(new_history_entry);
+
+                        if response.response.contains("finish conversation") {
+                            Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
+                            return true;
+                        }
+                        // Post-condition: now agent needs to respond
+                        assert!(
+                            agent_problem_state.needs_llm_response(),
+                            "MultiTurn: after user response, state should need LLM response"
+                        );
+                        false
+                    }
+                    DialogueParticipant::Agent | DialogueParticipant::Execution => {
+                        // Agent responded (after receiving from user or execution)
+                        let new_history_entry = DialogueEntry {
+                            sender: DialogueParticipant::Agent,
+                            recipient: DialogueParticipant::Execution,
+                            message: response.response.clone(),
+                        };
+                        agent_problem_state.dialogue_history.push(new_history_entry);
+
+                        if response.response.contains("finish conversation") {
+                            Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
+                            return true;
+                        }
+
+                        // Try to parse function calls
+                        let Ok(function_call_list) = decode_function_list(&response.response) else {
+                            // Agent is not making a function call, relay message to user
+                            // Change recipient from Execution to User
+                            agent_problem_state.dialogue_history.last_mut().unwrap().recipient = DialogueParticipant::User;
+                            println!("Agent message to user: {}", response.response);
+                            // Post-condition: now user needs to respond
+                            assert!(
+                                agent_problem_state.needs_llm_response(),
+                                "MultiTurn: after agent message to user, state should need LLM response"
+                            );
+                            return false;
+                        };
+
+                        // Execute function calls
+                        agent_problem_state.mile_stones.push(response.response.clone());
+                        let execution_results = agent_problem_state.world_state.execute_function_calls(&function_call_list);
+                        let execution_message = serde_json::to_string(&execution_results)
+                            .expect("failed to serialize execution results");
+
+                        let new_history_entry = DialogueEntry {
+                            sender: DialogueParticipant::Execution,
+                            recipient: DialogueParticipant::Agent,
+                            message: execution_message,
+                        };
+                        agent_problem_state.dialogue_history.push(new_history_entry);
+
+                        println!("conversation: {}", agent_problem_state.get_inference_message());
+
+                        if agent_problem_state.num_steps > 40 {
+                            Self::agent_finish_conversation(self.id.clone(), agent_problem_state, &self.output_file);
+                            return true;
+                        }
+                        // Post-condition: now agent needs to respond to execution result
+                        assert!(
+                            agent_problem_state.needs_llm_response(),
+                            "MultiTurn: after execution, state should need LLM response"
+                        );
+                        false
+                    }
+                }
+            }
         }
     }
 

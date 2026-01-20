@@ -111,17 +111,11 @@ pub fn evaluate_all_results(model_name: String) {
                 &problem_entries,
                 &possible_answer_entries,
             ),
-            EvaluationType::SpecialPointingOut => evaluate_special(
+            EvaluationType::SpecialIncomplete | EvaluationType::SpecialErrorParam | EvaluationType::SpecialIrrelevant => evaluate_special(
                 &result_entries,
                 &problem_entries,
                 &possible_answer_entries,
-                &EvaluationType::SpecialPointingOut,
-            ),
-            EvaluationType::SpecialIrrelevant => evaluate_special(
-                &result_entries,
-                &problem_entries,
-                &possible_answer_entries,
-                &EvaluationType::SpecialIrrelevant,
+                &dataset_trait.evaluation_type,
             ),
             EvaluationType::Agent => evaluate_agent(
                 &result_entries,
@@ -462,7 +456,7 @@ pub fn evaluate_one_normal(
     possible_answer_function_calls: &Vec<FunctionCallHygienic>,
 ) -> Result<(), String> {
     let decoded_ast = parse_from_string_to_ast(model_result_raw)?;
-    let mut decodeded_function_calls = parse_from_ast_to_structured(&decoded_ast)?;
+    let mut decodeded_function_calls = parse_from_ast_to_structured(&decoded_ast, model_result_raw)?;
     // check function equivalence
     if decodeded_function_calls.len() != possible_answer_function_calls.len() {
         return Err("The number of function calls does not match the possible answer.".to_string());
@@ -567,8 +561,8 @@ pub fn evaluate_special(
             .get(id)
             .expect("Missing possible answer entry");
         let evaluation_result: Result<(), String> = match evaluation_type {
-            EvaluationType::SpecialPointingOut => {
-                evaluate_one_pointing_out(&result_entry.result, possible_answer)
+            EvaluationType::SpecialIncomplete | EvaluationType::SpecialErrorParam => {
+                evaluate_one_pointing_out(&result_entry.result, possible_answer, evaluation_type)
             },
             EvaluationType::SpecialIrrelevant => {
                 evaluate_one_irrelevant(&result_entry.result, possible_answer)
@@ -619,9 +613,15 @@ pub fn evaluate_special(
 pub fn evaluate_one_pointing_out(
     model_result_raw: &str,
     possible_answer: &serde_json::Value,
+    evaluation_type: &EvaluationType,
 ) -> Result<(), String> {
-    if !model_result_raw.contains("Missing necessary parameters") {
-        return Err("No 'Missing necessary parameters' found in model output while answering an incomplete question.".to_string());
+    let phrase_required = match evaluation_type {
+        EvaluationType::SpecialIncomplete => "Missing necessary parameters",
+        EvaluationType::SpecialErrorParam => "There is incorrect value",
+        _ => panic!("Unsupported evaluation type for pointing out evaluation"),
+    };
+    if !model_result_raw.contains(phrase_required) {
+        return Err(format!("No '{}' found in model output while answering an incomplete question.", phrase_required));
     }
     let possible_answer_parsed: PossibleAnswerPointingOutHygienic = serde_json::from_value(possible_answer.clone())
         .expect("Failed to parse possible answer into PossibleAnswerPointingOutHygienic");

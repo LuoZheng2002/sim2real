@@ -41,6 +41,12 @@ pub struct AddReminderArgs {
 pub struct DeleteReminderArgs {
     pub reminder_id: usize,
 }
+
+#[derive(Deserialize, Clone)]
+pub struct SearchRemindersArgs {
+    pub keyword: String,
+}
+
 impl Default for ReminderApi {
     fn default() -> Self {
         let reminder_list: IndexMap<String, Reminder> = vec![
@@ -124,6 +130,23 @@ impl ReminderApi {
         }
         let reminders: Vec<&Reminder> = self.reminder_list.values().collect();
         let reminders_str = serde_json::to_string(&reminders).unwrap();
+        ExecutionResult::success(reminders_str)
+    }
+    // the following function seems to apply only to Chinese version, but it somehow appears in function descriptions in English version as well
+    pub fn search_reminders(&self, keyword: String) -> ExecutionResult {
+        if !self.base_api.logged_in {
+            return ExecutionResult::error("Device not logged in. Unable to search reminders.".to_string());
+        }
+        let matched_reminders: Vec<&Reminder> = self.reminder_list.values()
+            .filter(|reminder| reminder.title.to_lowercase().contains(&keyword.to_lowercase()) ||
+                               reminder.description.to_lowercase().contains(&keyword.to_lowercase()))
+            .collect();
+
+        if matched_reminders.is_empty() {
+            return ExecutionResult::error("No reminders found matching the keyword.".to_string());
+        }
+
+        let reminders_str = serde_json::to_string(&matched_reminders).unwrap();
         ExecutionResult::success(reminders_str)
     }
 

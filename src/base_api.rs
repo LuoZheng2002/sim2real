@@ -55,12 +55,12 @@ impl BaseApi {
         }
     }
 
-    pub fn equals_ground_truth(&self, other: &BaseApi) -> Result<(), String> {
-        if self.wifi != other.wifi {
-            return Err(format!("Wi-Fi status does not match. expected: {}, got: {}", other.wifi, self.wifi));
+    pub fn equals_ground_truth(&self, ground_truth: &BaseApi) -> Result<(), String> {
+        if self.wifi != ground_truth.wifi {
+            return Err(format!("Wi-Fi status does not match. expected: {}, got: {}", ground_truth.wifi, self.wifi));
         }
-        if self.logged_in != other.logged_in {
-            return Err(format!("Logged-in status does not match. expected: {}, got: {}", other.logged_in, self.logged_in));
+        if self.logged_in != ground_truth.logged_in {
+            return Err(format!("Logged-in status does not match. expected: {}, got: {}", ground_truth.logged_in, self.logged_in));
         }
         Ok(())
     }

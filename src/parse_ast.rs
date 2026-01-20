@@ -15,6 +15,7 @@ use crate::{
 };
 
 pub fn parse_from_string_to_ast(function_calls: &str) -> Result<Vec<ast::Expr>, String> {
+    // println!("function calls: {}", function_calls);
     let parsed = rustpython_parser::parse(function_calls, Mode::Expression, "my_source_path");
     let parsed = parsed.map_err(|e| {
         format!(
@@ -33,6 +34,7 @@ pub fn parse_from_string_to_ast(function_calls: &str) -> Result<Vec<ast::Expr>, 
 
 pub fn parse_from_ast_to_structured(
     function_calls_ast: &[ast::Expr],
+    raw_function_calls: &str,
 ) -> Result<Vec<FunctionCallHygienic>, String> {
     let mut function_calls = Vec::new();
     for expr in function_calls_ast {
@@ -51,7 +53,7 @@ pub fn parse_from_ast_to_structured(
         let mut parameters = IndexMap::new();
         for keyword in &call_expr.keywords {
             if let Some(arg_name) = &keyword.arg {
-                let arg_value = ast_expr_to_structured(&keyword.value)?;
+                let arg_value = ast_expr_to_structured(&keyword.value, raw_function_calls)?;
                 parameters.insert(arg_name.to_string(), arg_value);
             }
         }
@@ -66,13 +68,13 @@ pub fn parse_from_ast_to_structured(
 
 pub fn decode_function_list(function_calls: &str) -> Result<Vec<FunctionCallHygienic>, String> {
     let function_calls_ast = parse_from_string_to_ast(function_calls)?;
-    let function_calls_structured = parse_from_ast_to_structured(&function_calls_ast)?;
+    let function_calls_structured = parse_from_ast_to_structured(&function_calls_ast, function_calls)?;
     Ok(function_calls_structured)
 }
 
 
 
-pub fn ast_expr_to_structured(expr: &ast::Expr) -> Result<serde_json::Value, String> {
+pub fn ast_expr_to_structured(expr: &ast::Expr, raw_function_calls: &str) -> Result<serde_json::Value, String> {
     match expr {
         ast::Expr::Constant(c) => match &c.value {
             ast::Constant::Str(s) => Ok(serde_json::Value::String(s.to_string())),
@@ -93,7 +95,7 @@ pub fn ast_expr_to_structured(expr: &ast::Expr) -> Result<serde_json::Value, Str
         ast::Expr::UnaryOp(u) => {
             match u.op {
                 ast::UnaryOp::USub => {
-                    let operand = ast_expr_to_structured(&u.operand)?;
+                    let operand = ast_expr_to_structured(&u.operand, raw_function_calls)?;
                     let negated = negate_json_value(&operand).expect("Cannot negate a json value");
                     Ok(negated)
                 }
@@ -103,25 +105,25 @@ pub fn ast_expr_to_structured(expr: &ast::Expr) -> Result<serde_json::Value, Str
         }
         ast::Expr::List(l) => {
             let items: Result<Vec<serde_json::Value>, String> =
-                l.elts.iter().map(|e| ast_expr_to_structured(e)).collect();
+                l.elts.iter().map(|e| ast_expr_to_structured(e, raw_function_calls)).collect();
             Ok(serde_json::Value::Array(items?))
         }
         ast::Expr::Tuple(t) => {
             let items: Result<Vec<serde_json::Value>, String> =
-                t.elts.iter().map(|e| ast_expr_to_structured(e)).collect();
+                t.elts.iter().map(|e| ast_expr_to_structured(e, raw_function_calls)).collect();
             Ok(serde_json::Value::Array(items?))
         }
         ast::Expr::Dict(d) => {
             let mut map = serde_json::Map::new();
             for (key_opt, value) in d.keys.iter().zip(d.values.iter()) {
                 if let Some(key) = key_opt {
-                    let key_val = ast_expr_to_structured(key)?;
+                    let key_val = ast_expr_to_structured(key, raw_function_calls)?;
                     let key_str = match key_val {
                         serde_json::Value::String(s) => s,
                         // _ => key_val.to_string(),
                         _ => panic!("Unsupported dict key type: {:?}", key_val),
                     };
-                    let val = ast_expr_to_structured(value)?;
+                    let val = ast_expr_to_structured(value, raw_function_calls)?;
                     map.insert(key_str, val);
                 }
             }
@@ -132,9 +134,10 @@ pub fn ast_expr_to_structured(expr: &ast::Expr) -> Result<serde_json::Value, Str
             match n.id.as_str() {
                 "True" | "true" => Ok(serde_json::Value::Bool(true)),
                 "False" | "false" => Ok(serde_json::Value::Bool(false)),
-                "None" => Ok(serde_json::Value::Null),
+                "None" | "null" => Ok(serde_json::Value::Null),
                 // other => Ok(serde_json::Value::String(other.to_string())),
-                other => panic!("Unsupported name expression: {}", other),
+                // other => panic!("Unsupported name expression: {}", other),
+                _ => return Err(format!("Failed to parse python expression: unsupported name expression: {}", n.id)),
             }
         }
         ast::Expr::Call(c) => {
@@ -155,7 +158,8 @@ pub fn ast_expr_to_structured(expr: &ast::Expr) -> Result<serde_json::Value, Str
             panic!("Function call expressions are not supported in parameter values: {:?}", c)
         }
         // _ => Err(format!("Unsupported AST type: {:?}", expr)),
-        _ => panic!("Unknown AST type: {:?}", expr),
+        // _ => panic!("Unknown AST type: {:?}, raw function calls: {}", expr, raw_function_calls),
+        _ => return Err(format!("Unsupported AST type: {:?}, raw function calls: {}", expr, raw_function_calls)),
     }
 }
 

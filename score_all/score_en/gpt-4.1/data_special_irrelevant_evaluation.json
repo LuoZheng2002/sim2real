@@ -1,0 +1,51 @@
+{"accuracy":0.88,"correct_count":44,"total_count":50}
+{"id":"special_irrelevant_0","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_1","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_2","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_3","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_4","valid":false,"error":"The model failed to identify that the question is irrelevant to the available functions.","model_raw_output":"[\"Missing necessary parameters (latitude, longitude, start_time, end_time, update_frequency) for the api (WeatherForecastingAPI)\"]"}
+{"id":"special_irrelevant_5","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_6","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_7","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_8","valid":false,"error":"The model failed to identify that the question is irrelevant to the available functions.","model_raw_output":"[\"Missing necessary parameters (timeRange) for the api (WeatherAPI_generateLongTermForecast)\"]"}
+{"id":"special_irrelevant_9","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_10","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_11","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_12","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_13","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_14","valid":false,"error":"The model failed to identify that the question is irrelevant to the available functions.","model_raw_output":"[\"Missing necessary parameters (caseDetails, courtAvailability) for the api (CaseScheduler_allocateCourtTime)\"]"}
+{"id":"special_irrelevant_15","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_16","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_17","valid":false,"error":"The model failed to identify that the question is irrelevant to the available functions.","model_raw_output":"[\"Missing necessary parameters (industry, project_scope) for the api (ai_feasibility_analysis)\"]"}
+{"id":"special_irrelevant_18","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_19","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_20","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_21","valid":false,"error":"The model failed to identify that the question is irrelevant to the available functions.","model_raw_output":"[\"Missing necessary parameters (timeFrame, details) for the api (CropProtectionForecast_getWeatherImpact)\"]"}
+{"id":"special_irrelevant_22","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_23","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_24","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_25","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_26","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_27","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_28","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_29","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_30","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_31","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_32","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_33","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_34","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_35","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_36","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_37","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_38","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_39","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_40","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_41","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_42","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_43","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_44","valid":false,"error":"The model failed to identify that the question is irrelevant to the available functions.","model_raw_output":"[\"Missing necessary parameters (title, themes) for the api (PhilosophyCinemaAnalyzer_analyzePhilosophicalThemes)\"]"}
+{"id":"special_irrelevant_45","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_46","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_47","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_48","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}
+{"id":"special_irrelevant_49","valid":true,"model_raw_output":"[\"Due to the limitations of the function, I cannot solve this problem.\"]"}

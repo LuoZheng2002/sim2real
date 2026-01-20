@@ -5,7 +5,7 @@ use indexmap::IndexMap;
 use ordered_float::NotNan;
 use serde::{Deserialize, Serialize};
 
-use crate::base_api::ExecutionResult;
+use crate::{base_api::ExecutionResult, travel};
 
 /// Travel system user
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -33,7 +33,7 @@ pub struct Flight {
 }
 
 /// Flight reservation
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Reservation {
     pub reservation_id: String,
     pub user_id: String,
@@ -44,8 +44,70 @@ pub struct Reservation {
     pub payment_method: String, // "cash" or "bank"
     pub cabin: String,          // "Economy Class" or "Business Class"
     pub baggage: u32,
-    pub origin: String,
-    pub destination: String,
+    #[serde(default)]
+    pub origin: Option<String>,
+    #[serde(default)]
+    pub destination: Option<String>,
+}
+
+impl Reservation {
+    pub fn equals_ground_truth(&self, ground_truth: &Reservation) -> Result<(), String> {
+        if self.reservation_id != ground_truth.reservation_id {
+            return Err(format!(
+                "reservation_id mismatch: {} != {}",
+                self.reservation_id, ground_truth.reservation_id
+            ));
+        }
+        if self.user_id != ground_truth.user_id {
+            return Err(format!(
+                "user_id mismatch: {} != {}",
+                self.user_id, ground_truth.user_id
+            ));
+        }
+        if self.flight_no != ground_truth.flight_no {
+            return Err(format!(
+                "flight_no mismatch: {} != {}",
+                self.flight_no, ground_truth.flight_no
+            ));
+        }
+        if self.payment_method != ground_truth.payment_method {
+            return Err(format!(
+                "payment_method mismatch: {} != {}",
+                self.payment_method, ground_truth.payment_method
+            ));
+        }
+        if self.cabin != ground_truth.cabin {
+            return Err(format!(
+                "cabin mismatch: {} != {}",
+                self.cabin, ground_truth.cabin
+            ));
+        }
+        if self.baggage != ground_truth.baggage {
+            return Err(format!(
+                "baggage mismatch: {} != {}",
+                self.baggage, ground_truth.baggage
+            ));
+        }
+        if let Some(ground_truth_origin) = &ground_truth.origin
+            && self.origin.as_ref().unwrap() != ground_truth_origin
+        {
+            return Err(format!(
+                "origin mismatch. Expected: {}, got: {}",
+                ground_truth_origin,
+                self.origin.as_ref().unwrap()
+            ));
+        }
+        if let Some(ground_truth_destination) = &ground_truth.destination
+            && self.destination.as_ref().unwrap() != ground_truth_destination
+        {
+            return Err(format!(
+                "destination mismatch. Expected: {}, got: {}",
+                ground_truth_destination,
+                self.destination.as_ref().unwrap()
+            ));
+        }
+        Ok(())
+    }
 }
 
 /// Travel API state (does NOT inherit from BaseApi)
@@ -53,7 +115,8 @@ pub struct Reservation {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Travel {
     pub users: IndexMap<String, TravelUser>, // key: user_id (e.g., "user1")
-    pub flights: Vec<Flight>,
+    #[serde(default)]
+    pub flights: Option<Vec<Flight>>,
     pub reservations: Vec<Reservation>,
 }
 
@@ -225,8 +288,8 @@ impl Default for Travel {
                 payment_method: "bank".to_string(),
                 cabin: "Economy Class".to_string(),
                 baggage: 1,
-                origin: "Beijing".to_string(),
-                destination: "Shanghai".to_string(),
+                origin: Some("Beijing".to_string()),
+                destination: Some("Shanghai".to_string()),
             },
             Reservation {
                 reservation_id: "res_2".to_string(),
@@ -236,8 +299,8 @@ impl Default for Travel {
                 payment_method: "bank".to_string(),
                 cabin: "Business Class".to_string(),
                 baggage: 1,
-                origin: "Shanghai".to_string(),
-                destination: "Beijing".to_string(),
+                origin: Some("Shanghai".to_string()),
+                destination: Some("Beijing".to_string()),
             },
             Reservation {
                 reservation_id: "res_3".to_string(),
@@ -247,8 +310,8 @@ impl Default for Travel {
                 payment_method: "bank".to_string(),
                 cabin: "Business Class".to_string(),
                 baggage: 1,
-                origin: "Xiamen".to_string(),
-                destination: "Chengdu".to_string(),
+                origin: Some("Xiamen".to_string()),
+                destination: Some("Chengdu".to_string()),
             },
             Reservation {
                 reservation_id: "res_4".to_string(),
@@ -258,10 +321,11 @@ impl Default for Travel {
                 payment_method: "bank".to_string(),
                 cabin: "Business Class".to_string(),
                 baggage: 1,
-                origin: "Chengdu".to_string(),
-                destination: "Xiamen".to_string(),
+                origin: Some("Chengdu".to_string()),
+                destination: Some("Xiamen".to_string()),
             },
         ];
+        let flights = Some(flights);
         Travel {
             users,
             flights,
@@ -334,7 +398,7 @@ impl Travel {
         origin: Option<String>,
         destination: Option<String>,
     ) -> ExecutionResult {
-        let mut flights = self.flights.clone();
+        let mut flights = self.flights.clone().unwrap();
         if let Some(orig) = origin {
             flights = flights
                 .into_iter()
@@ -395,6 +459,8 @@ impl Travel {
                 // only inject if can be found in self.flights
                 if let Some(flight) = self
                     .flights
+                    .as_ref()
+                    .unwrap()
                     .iter()
                     .find(|flight| flight.flight_no == res.flight_no)
                 {
@@ -410,8 +476,12 @@ impl Travel {
         ))
     }
     // helper function, not directly invoked
-    pub fn authenticate_user(&self, user_id: &str, password: &str) -> bool {
-        if let Some(user) = self.users.get(user_id) {
+    pub fn authenticate_user(
+        travel_users: &IndexMap<String, TravelUser>,
+        user_id: &str,
+        password: &str,
+    ) -> bool {
+        if let Some(user) = travel_users.get(user_id) {
             if user.password == Some(password.to_string()) {
                 return true;
             }
@@ -439,6 +509,8 @@ impl Travel {
         // Get flights from departure city to transfer city
         let first_leg_flights: Vec<&Flight> = self
             .flights
+            .as_ref()
+            .unwrap()
             .iter()
             .filter(|flight| {
                 flight.origin == origin_city
@@ -450,6 +522,8 @@ impl Travel {
         // Get flights from transfer city to destination city
         let second_leg_flights: Vec<&Flight> = self
             .flights
+            .as_ref()
+            .unwrap()
             .iter()
             .filter(|flight| {
                 flight.origin == transfer_city
@@ -512,8 +586,10 @@ impl Travel {
         }
         true
     }
-    pub fn reserve_flight(
-        &mut self,
+    pub fn reserve_flight_helper(
+        flights: &mut Vec<Flight>,
+        travel_users: &mut IndexMap<String, TravelUser>,
+        reservations: &mut Vec<Reservation>,
         user_id: String,
         password: String,
         flight_no: String,
@@ -521,9 +597,7 @@ impl Travel {
         payment_method: String,
         baggage_count: usize,
     ) -> ExecutionResult {
-        let mut flights = std::mem::take(&mut self.flights);
-        let mut travel_users = std::mem::take(&mut self.users);
-        if !self.authenticate_user(&user_id, &password) {
+        if !Self::authenticate_user(travel_users, &user_id, &password) {
             return ExecutionResult::error(
                 "Authentication failed. Incorrect username or password.".to_string(),
             );
@@ -540,9 +614,13 @@ impl Travel {
         let price = match cabin.as_str() {
             "Economy Class" => flight.economy_price,
             "Business Class" => flight.business_price,
-            _ => {
-                panic!("Unknown cabin class");
-            }
+            // _ => {
+            //     panic!("Unknown cabin class");
+            // }
+            _ => return ExecutionResult::error(
+                "Unknown cabin class. Please specify either 'Economy Class' or 'Business Class'."
+                    .to_string(),
+            ),
         };
         let mut total_cost: f64 = price as f64;
         let user = travel_users.get_mut(&user_id).unwrap();
@@ -556,7 +634,7 @@ impl Travel {
             ));
         }
         flight.seats_available -= 1;
-        let reservation_id = format!("res_{}", self.reservations.len() + 1);
+        let reservation_id = format!("res_{}", reservations.len() + 1);
         let reservation = Reservation {
             reservation_id: reservation_id.clone(),
             user_id: user_id.to_string(),
@@ -565,24 +643,50 @@ impl Travel {
             payment_method: payment_method.to_string(),
             cabin: cabin.to_string(),
             baggage: baggage_count as u32,
-            origin: flight.origin.clone(),
-            destination: flight.destination.clone(),
+            origin: Some(flight.origin.clone()),
+            destination: Some(flight.destination.clone()),
         };
-        self.reservations.push(reservation);
-
-        // return the flights back
-        self.flights = flights;
-        self.users = travel_users;
+        reservations.push(reservation);
         ExecutionResult::success(format!(
             "Booking successful. Reservation ID: {}. Total cost: {} yuan (including baggage fees).",
             reservation_id, total_cost
         ))
+    }
+    pub fn reserve_flight(
+        &mut self,
+        user_id: String,
+        password: String,
+        flight_no: String,
+        cabin: String,
+        payment_method: String,
+        baggage_count: usize,
+    ) -> ExecutionResult {
+        let mut travel_users = std::mem::take(&mut self.users);
+        let mut flights = std::mem::take(&mut self.flights).unwrap();
+        let mut reservations = std::mem::take(&mut self.reservations);
+        let result = Self::reserve_flight_helper(
+            &mut flights,
+            &mut travel_users,
+            &mut reservations,
+            user_id,
+            password,
+            flight_no,
+            cabin,
+            payment_method,
+            baggage_count,
+        );
+        // put back
+        self.users = travel_users;
+        self.flights = Some(flights);
+        self.reservations = reservations;
+        result
     }
     // helper function, not directly invoked
     fn calculate_price_difference(flight: &Flight, old_cabin: &str, new_cabin: &str) -> f64 {
         let old_price = match old_cabin {
             "Economy Class" => flight.economy_price,
             "Business Class" => flight.business_price,
+            // _ => return ExecutionResult::error("Unknown cabin class. Please specify either 'Economy Class' or 'Business Class'.".to_string()),
             _ => panic!("Unknown cabin class"),
         };
         let new_price = match new_cabin {
@@ -593,8 +697,10 @@ impl Travel {
         (new_price as f64) - (old_price as f64)
     }
 
-    pub fn modify_flight(
-        &mut self,
+    pub fn modify_flight_helper(
+        flights: &mut Vec<Flight>,
+        travel_users: &mut IndexMap<String, TravelUser>,
+        reservations: &mut Vec<Reservation>,
         user_id: String,
         reservation_id: String,
         new_flight_no: Option<String>,
@@ -602,11 +708,6 @@ impl Travel {
         add_baggage: Option<usize>,
         new_payment_method: Option<String>,
     ) -> ExecutionResult {
-        let mut reservations = std::mem::take(&mut self.reservations);
-        // the following is intentionally left to have a warning of "not need to be mutable", because it is likely we need to
-        // modify flight information in the future (seat availability when changing flight_no)
-        let mut flights = std::mem::take(&mut self.flights);
-        let mut travel_users = std::mem::take(&mut self.users);
         let Some(reservation) = reservations
             .iter_mut()
             .find(|res| res.reservation_id == reservation_id && res.user_id == user_id)
@@ -650,22 +751,30 @@ impl Travel {
         if let Some(new_cabin) = new_cabin
             && new_cabin != reservation.cabin
         {
-            let price_difference =
-                Self::calculate_price_difference(current_flight, &reservation.cabin, &new_cabin);
-            let paid_or_refunded = match price_difference >= 0.0 {
-                true => "paid",
-                false => "refunded",
-            };
-            if Self::update_balance(user, &payment_method, -price_difference) {
-                result_messages.push(format!(
-                    "Cabin change successful. Price difference {}: {}.",
-                    paid_or_refunded,
-                    price_difference.abs()
-                ));
-                reservation.cabin = new_cabin.to_string();
+            if !["Economy Class", "Business Class"].contains(&new_cabin.as_str()) {
+                result_messages.push("Cabin change failed: Invalid cabin class. Please specify either 'Economy Class' or 'Business Class'.".to_string());
             } else {
-                result_messages
-                    .push("Insufficient balance to pay the cabin price difference.".to_string());
+                let price_difference = Self::calculate_price_difference(
+                    current_flight,
+                    &reservation.cabin,
+                    &new_cabin,
+                );
+                let paid_or_refunded = match price_difference >= 0.0 {
+                    true => "paid",
+                    false => "refunded",
+                };
+                if Self::update_balance(user, &payment_method, -price_difference) {
+                    result_messages.push(format!(
+                        "Cabin change successful. Price difference {}: {}.",
+                        paid_or_refunded,
+                        price_difference.abs()
+                    ));
+                    reservation.cabin = new_cabin.to_string();
+                } else {
+                    result_messages.push(
+                        "Insufficient balance to pay the cabin price difference.".to_string(),
+                    );
+                }
             }
         }
         if let Some(add_baggage) = add_baggage
@@ -701,16 +810,44 @@ impl Travel {
         if result_messages.is_empty() {
             result_messages.push("Modification completed with no additional fees.".to_string());
         }
-        // put reservations and flights back
-        self.reservations = reservations;
-        self.flights = flights;
-        self.users = travel_users;
         let final_message = result_messages.join(" ");
         ExecutionResult::success(final_message)
     }
 
-    pub fn cancel_reservation(
+    pub fn modify_flight(
         &mut self,
+        user_id: String,
+        reservation_id: String,
+        new_flight_no: Option<String>,
+        new_cabin: Option<String>,
+        add_baggage: Option<usize>,
+        new_payment_method: Option<String>,
+    ) -> ExecutionResult {
+        let mut travel_users = std::mem::take(&mut self.users);
+        let mut flights = std::mem::take(&mut self.flights).unwrap();
+        let mut reservations = std::mem::take(&mut self.reservations);
+        let result = Self::modify_flight_helper(
+            &mut flights,
+            &mut travel_users,
+            &mut reservations,
+            user_id,
+            reservation_id,
+            new_flight_no,
+            new_cabin,
+            add_baggage,
+            new_payment_method,
+        );
+        // put back
+        self.users = travel_users;
+        self.flights = Some(flights);
+        self.reservations = reservations;
+        result
+    }
+
+    pub fn cancel_reservation_helper(
+        flights: &mut Vec<Flight>,
+        travel_users: &mut IndexMap<String, TravelUser>,
+        reservations: &mut Vec<Reservation>,
         user_id: String,
         reservation_id: String,
         reason: String,
@@ -719,9 +856,6 @@ impl Travel {
         let current_time =
             chrono::NaiveDateTime::parse_from_str("2024-07-14 06:00:00", "%Y-%m-%d %H:%M:%S")
                 .unwrap();
-        let mut reservations = std::mem::take(&mut self.reservations);
-        let mut flights = std::mem::take(&mut self.flights);
-        let mut travel_users = std::mem::take(&mut self.users);
 
         let Some(user) = travel_users.get_mut(&user_id) else {
             return ExecutionResult::error("Invalid user ID.".to_string());
@@ -756,6 +890,8 @@ impl Travel {
             "Business Class" => flight.business_price as f64,
             _ => panic!("Unknown cabin class"),
         };
+        // Need to store flight_no before the borrow of user ends
+        let reservation_flight_no = reservation.flight_no.clone();
         // Cancellation policy and refund calculation
         let execution_result = if reason == "The airline has canceled the flight." {
             // Airline cancels the flight, full refund
@@ -792,28 +928,90 @@ impl Travel {
         // Increase the available seats on the flight
         if let Some(flight) = flights
             .iter_mut()
-            .find(|f| f.flight_no == reservation.flight_no)
+            .find(|f| f.flight_no == reservation_flight_no)
         {
             flight.seats_available += 1;
         }
         // Remove the reservation
         reservations.retain(|r| r.reservation_id != reservation_id);
-        // put reservations and flights back
-        self.reservations = reservations;
-        self.flights = flights;
-        self.users = travel_users;
         execution_result
+    }
+
+    pub fn cancel_reservation(
+        &mut self,
+        user_id: String,
+        reservation_id: String,
+        reason: String,
+    ) -> ExecutionResult {
+        let mut travel_users = std::mem::take(&mut self.users);
+        let mut flights = std::mem::take(&mut self.flights).unwrap();
+        let mut reservations = std::mem::take(&mut self.reservations);
+        let result = Self::cancel_reservation_helper(
+            &mut flights,
+            &mut travel_users,
+            &mut reservations,
+            user_id,
+            reservation_id,
+            reason,
+        );
+        // put back
+        self.users = travel_users;
+        self.flights = Some(flights);
+        self.reservations = reservations;
+        result
     }
 
     pub fn equals_ground_truth(&self, ground_truth: &Travel) -> Result<(), String> {
         if self.users != ground_truth.users {
-            return Err(format!("Users do not match. Expected: {:?}, got: {:?}", ground_truth.users, self.users));
+            return Err(format!(
+                "Users do not match. Expected: {:?}, got: {:?}",
+                ground_truth.users, self.users
+            ));
         }
-        if self.flights != ground_truth.flights {
-            return Err(format!("Flights do not match. Expected: {:?}, got: {:?}", ground_truth.flights, self.flights));
+        // if self.flights != ground_truth.flights {
+        //     return Err(format!(
+        //         "Flights do not match. Expected: {:?}, got: {:?}",
+        //         ground_truth.flights, self.flights
+        //     ));
+        // }
+        if let Some(ground_truth_flights) = &ground_truth.flights && self.flights.as_ref().unwrap() != ground_truth_flights {
+            return Err(format!(
+                "Flights do not match. Expected: {:?}, got: {:?}",
+                ground_truth_flights, self.flights.as_ref().unwrap()
+            ));
         }
-        if self.reservations != ground_truth.reservations {
-            return Err(format!("Reservations do not match. Expected: {:?}, got: {:?}", ground_truth.reservations, self.reservations));
+        // if self.reservations != ground_truth.reservations {
+        //     return Err(format!("Reservations do not match. Expected: {:?}, got: {:?}", ground_truth.reservations, self.reservations));
+        // }
+        let self_reservation_map: IndexMap<String, Reservation> = self
+            .reservations
+            .iter()
+            .map(|r| (r.reservation_id.clone(), r.clone()))
+            .collect();
+        let ground_truth_reservation_map: IndexMap<String, Reservation> = ground_truth
+            .reservations
+            .iter()
+            .map(|r| (r.reservation_id.clone(), r.clone()))
+            .collect();
+        if self_reservation_map.len() != ground_truth_reservation_map.len() {
+            return Err(format!(
+                "Number of reservations do not match. Expected: {}, got: {}",
+                ground_truth_reservation_map.len(),
+                self_reservation_map.len()
+            ));
+        }
+        for (res_id, ground_truth_res) in ground_truth_reservation_map.iter() {
+            match self_reservation_map.get(res_id) {
+                Some(self_res) => {
+                    self_res.equals_ground_truth(ground_truth_res)?;
+                }
+                None => {
+                    return Err(format!(
+                        "Reservation does not exist in output. Expected reservation ID: {}",
+                        res_id
+                    ));
+                }
+            }
         }
         Ok(())
     }

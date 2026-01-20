@@ -216,7 +216,7 @@ impl MessageApi {
         if !self.inbox.contains_key(&message_id) {
             return ExecutionResult::error("Message ID does not exist".to_string());
         }
-        self.inbox.swap_remove(&message_id);
+        assert!(self.inbox.swap_remove(&message_id).is_some());
         ExecutionResult::success(format!("Message ID {} has been successfully deleted.", message_id))
     }
 

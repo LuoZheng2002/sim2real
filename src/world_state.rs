@@ -33,23 +33,63 @@ pub struct WorldState {
 }
 
 impl WorldState {
+    /// Populate the world state with default instances for each involved class.
+    /// Only sets defaults if the field is None (preserves values from initial_config).
+    /// Also propagates BaseApi config (wifi, logged_in) to nested base_api fields.
     pub fn populate_with_involved_classes(&mut self, involved_classes: &Vec<String>) {
+        // First pass: ensure BaseApi exists if needed
         for class_name in involved_classes.iter() {
             match class_name.as_str() {
                 "BaseApi" => {
-                    self.base_api = Some(BaseApi::default());
+                    if self.base_api.is_none() {
+                        self.base_api = Some(BaseApi::default());
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        // Get the base_api config to propagate to other APIs
+        let base_api_config = self.base_api.clone().unwrap_or_default();
+
+        // Second pass: populate other classes with base_api config propagated
+        for class_name in involved_classes.iter() {
+            match class_name.as_str() {
+                "BaseApi" => {
+                    // Already handled above
                 }
                 "MessageApi" => {
-                    self.message_api = Some(MessageApi::default());
+                    if self.message_api.is_none() {
+                        let mut api = MessageApi::default();
+                        api.base_api = base_api_config.clone();
+                        self.message_api = Some(api);
+                    } else if let Some(ref mut api) = self.message_api {
+                        // Propagate base_api config to existing MessageApi
+                        api.base_api = base_api_config.clone();
+                    }
                 }
                 "ReminderApi" => {
-                    self.reminder_api = Some(ReminderApi::default());
-                }                
+                    if self.reminder_api.is_none() {
+                        let mut api = ReminderApi::default();
+                        api.base_api = base_api_config.clone();
+                        self.reminder_api = Some(api);
+                    } else if let Some(ref mut api) = self.reminder_api {
+                        api.base_api = base_api_config.clone();
+                    }
+                }
                 "FoodPlatform" => {
-                    self.food_platform = Some(FoodPlatform::default());
+                    if self.food_platform.is_none() {
+                        let mut api = FoodPlatform::default();
+                        api.base_api = base_api_config.clone();
+                        self.food_platform = Some(api);
+                    } else if let Some(ref mut api) = self.food_platform {
+                        api.base_api = base_api_config.clone();
+                    }
                 }
                 "Travel" => {
-                    self.travel = Some(Travel::default());
+                    if self.travel.is_none() {
+                        self.travel = Some(Travel::default());
+                    }
                 }
                 _ => {
                     panic!("Unknown class name: {}", class_name);
@@ -63,7 +103,7 @@ impl WorldState {
     ) -> Vec<ExecutionResult> {
         let function_call_names: Vec<&str> =
             function_calls.iter().map(|fc| fc.name.as_str()).collect();
-        println!("function calls to execute: {:?}", function_call_names);
+        // println!("function calls to execute: {:?}", function_call_names);
         let mut execution_results: Vec<ExecutionResult> = Vec::new();
         for function_call in function_calls.iter() {
             let parameters = serde_json::to_value(function_call.parameters.clone()).unwrap();
@@ -412,6 +452,20 @@ impl WorldState {
                 "view_all_reminders" => {
                     if let Some(reminder_api) = &mut self.reminder_api {
                         execution_results.push(reminder_api.view_all_reminders());
+                    }
+                },
+                "search_reminders" => {
+                    if let Some(reminder_api) = &mut self.reminder_api {
+                        let execution_result = match serde_json::from_value::<reminder::SearchRemindersArgs>(
+                            parameters.clone(),
+                        ) {
+                            Ok(a) => reminder_api.search_reminders(a.keyword),
+                            Err(e) => ExecutionResult::error(format!(
+                                "Failed to parse parameters for search_reminders: {}",
+                                e
+                            )),
+                        };
+                        execution_results.push(execution_result);
                     }
                 },
                 _ => panic!("Unknown function call: {}", function_call.name),

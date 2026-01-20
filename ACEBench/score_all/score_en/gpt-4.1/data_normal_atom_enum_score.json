@@ -1,0 +1,2 @@
+{"accuracy": 0.98, "correct_count": 49, "total_count": 50}
+{"id": "normal_atom_enum_15", "valid": false, "error": "addition params: recipeComplexity", "error_type": "addition_args", "model_result": "[NutritionRecipeCollector_gatherLowCalorieRecipes(calorieLimit='300', cookingTime='30 minutes', recipeComplexity='Easy')]", "possible_answer": {"NutritionRecipeCollector_gatherLowCalorieRecipes": {"calorieLimit": "300", "cookingTime": "30 minutes"}}}
