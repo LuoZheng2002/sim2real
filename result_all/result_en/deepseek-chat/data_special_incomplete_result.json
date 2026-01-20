@@ -1,0 +1,50 @@
+{"id":"special_incomplete_0","result":"[\"Missing necessary parameters (propertyID, ownerID) for the api (RealEstateManager_manageProperty)\"]"}
+{"id":"special_incomplete_1","result":"[analyze_diplomatic_impact(country='UK', time_period={'start_date': '', 'end_date': ''})]"}
+{"id":"special_incomplete_2","result":"[OfficeInputValidator_checkIntegerValidity(numbers=[], validationTime='immediate')]"}
+{"id":"special_incomplete_3","result":"[climate_predict_sea_level_rise(location={'latitude': 40.7128, 'longitude': -74.0060}, time_frame={'start_year': 2030, 'end_year': 2050})]"}
+{"id":"special_incomplete_4","result":"[Adaptive_Traffic_Control_API(traffic_data=[{'intersection_id': 'A1', 'traffic_flow': []}], control_strategy='adaptive')]"}
+{"id":"special_incomplete_5","result":"[spreadsheet_chart_integration_create(spreadsheetId='?', chartType='bar', dataRange={'sheetName': '?', 'startCell': '?', 'endCell': '?'}, updateFrequency='?', options={'title': '?'})]"}
+{"id":"special_incomplete_6","result":"[ai_education_create_course(course_name='AI education course for young kids', age_range='5-7', modules=[{'module_title': 'Introduction to Programming Basics', 'duration': '30 minutes', 'topics': ['Basic programming concepts']}])]"}
+{"id":"special_incomplete_7","result":"[PrivacyCompliance_checkConsentStorage(consentData={'dataType': 'user consent data', 'dataUsage': 'marketing and analytics', 'storageDuration': '2 years'}, complianceRequirements=['GDPR'], securityMeasures=[{'measureType': 'encryption', 'implementationDate': '2023-01-15'}])]"}
+{"id":"special_incomplete_8","result":"[\"Missing necessary parameters (sessionDetails, performanceMetrics) for the api (HockeyConditioningMonitor_trackPlayerPerformance)\"]"}
+{"id":"special_incomplete_9","result":"[InheritanceDisputeResolution_queryLegalGrounds(jurisdiction='', timePeriod='', disputeDetails={'disputeType': '', 'involvedParties': []})]"}
+{"id":"special_incomplete_10","result":"[foodsurvey_market_analysis(regionType='urban', timePeriod={'startYear': 2015, 'endYear': 2020}, foodCategories=['dairy', 'grains'])]"}
+{"id":"special_incomplete_11","result":"[MealPlanner_generateAppetizerOptions(dietaryRestrictions=['gluten-free'], ingredients=[])]"}
+{"id":"special_incomplete_12","result":"[PolicyImpactSimulator_simulate(policyChanges=[{'policyName': 'ticket pricing policy', 'effect': 'neutral'}], historicalData=['previous event data'], simulationPeriod={'from': '2024-06-01', 'to': '2024-08-31'})]"}
+{"id":"special_incomplete_13","result":"[\"Missing necessary parameters (device_id, time_range) for the api (device_rollback_software_update)\"]"}
+{"id":"special_incomplete_14","result":"[\"Missing necessary parameters (vehicleId, brakingParameters) for the api (VehicleControl_adjustBrakingSystem)\"]"}
+{"id":"special_incomplete_15","result":"[\"Missing necessary parameters (literary_text, character_names) for the api (literature_character_analysis_tool)\"]"}
+{"id":"special_incomplete_16","result":"[FoodPopularityAnalysis_getDemographicImpact(region='North America', timePeriod='Last Year', ageGroups=[], culturalInfluences=[])]"}
+{"id":"special_incomplete_17","result":"[UrbanGreeningPlanner_optimizeStreetGreening(streetDetails={'length': 0, 'width': 0, 'existingTrees': []}, greeningOptions={'treePlanting': {'speciesOptions': [], 'plantingDensity': 0}, 'verticalGardens': {'wallCriteria': {'sunExposure': 0, 'material': ''}, 'irrigation': ''}})]"}
+{"id":"special_incomplete_18","result":"[ImmigrationAdvisor_findMovingService(currentCountry='', destinationCountry='Canada', movingDate='')]"}
+{"id":"special_incomplete_19","result":"[integrate_realtime_transit_data(platform='Android', transit_types=['bus'], api_key='', update_frequency=None, time_range=None)]"}
+{"id":"special_incomplete_20","result":"[\"Missing necessary parameters (fund_id, allocation_strategy.assets, allocation_strategy.time_frame, evaluation_period) for the api (fund_tactical_allocation)\"]"}
+{"id":"special_incomplete_21","result":"[SkillEvaluator_createTechnicalSkillAssessment(jobRole='Software Developer', evaluationMetrics=[{'metricName': 'Coding Proficiency', 'importanceLevel': 'High'}, {'metricName': 'Problem-Solving Skills', 'importanceLevel': 'High'}, {'metricName': 'Collaboration and Communication', 'importanceLevel': 'Medium'}], assessmentPeriod='Last 6 months')]"}
+{"id":"special_incomplete_22","result":"[\"Missing necessary parameters (eventName, eventType, eventDate) for the api (ArtPromotionManager_generatePressRelease)\"]"}
+{"id":"special_incomplete_23","result":"[\"Missing necessary parameters (data_entries, encryption_standards) for the api (health_insurance_data_encryption)\"]"}
+{"id":"special_incomplete_24","result":"[languageQuiz_create(quizTitle='French Language Quiz', language='French', difficultyLevel='Beginner', questionSet=[], timeLimit='No limit', analyticsFeatures={'trackProgress': False, 'reportType': 'Summary'})]"}
+{"id":"special_incomplete_25","result":"[InvestmentRiskAssessor_assessYieldCurveRisk(yieldCurveType='flat', analysisPeriod={'startDate': '', 'endDate': ''})]"}
+{"id":"special_incomplete_26","result":"[ai_budget_forecasting(project_type='computer vision', historical_data=[], forecast_period={'start_year': 2024, 'end_year': 2025})]"}
+{"id":"special_incomplete_27","result":"[globalCulturalExchange_createContent(contentDetails={'targetLanguages': ['English', 'French'], 'culturalThemes': ['traditional festivals']}, publishingOptions={'platforms': [], 'timeToPublish': 'Immediate'})]"}
+{"id":"special_incomplete_28","result":"[ActivityAdvisor_recommendCampingActivities(campsitePreferences={'privacyLevel': 'secluded', 'groundLevel': 'flat', 'proximityToWater': 'moderate distance'}, activityTime='evening', additionalConcerns=[])]"}
+{"id":"special_incomplete_29","result":"[\"Missing necessary parameters (conferenceDetails, personalInterests, timeAvailability) for the api (career_conferencePlanner)\"]"}
+{"id":"special_incomplete_30","result":"[star_evolution_tracker(star_id='WD1234', observation_period={'start_date': '', 'end_date': ''}, data_points=[], time_resolution='')]"}
+{"id":"special_incomplete_31","result":"[FamilyRoutineManager_createMorningRoutine(childProfile={'age': 8, 'preferences': ['Drawing']}, routineDetails=[])]"}
+{"id":"special_incomplete_32","result":"[NetworkTrafficRouter_configureRouting(routingProtocols=['OSPF', 'BGP'], interfaces=None)]"}
+{"id":"special_incomplete_33","result":"[UrbanLegendAnalyzer_analyzeFearImpact(legendDetails={'name': 'Choking Doberman', 'origin': '', 'incidents': []})]"}
+{"id":"special_incomplete_34","result":"[\"Missing necessary parameters (operationPeriod, licenses, internationalAgreements) for the api (SatelliteBroadcastCompliance_checkBroadcastCompliance)\"]"}
+{"id":"special_incomplete_35","result":"[\"Missing necessary parameters (longitude) for the api (GeoLocator_reverseGeocode)\"]"}
+{"id":"special_incomplete_36","result":"[MembershipAnalytics_performAnalysis(memberData=[], analysisPeriod={'startDate': '2023-10-01', 'endDate': '2023-12-31'})]"}
+{"id":"special_incomplete_37","result":"[home_smart_device_recommendation(home_network={'network_type': 'Wi-Fi', 'device_compatibility': []}, preferences={'security': True, 'energy_efficiency': True, 'budget': {'min': 0, 'max': 1000}}, time_of_day='Morning')]"}
+{"id":"special_incomplete_38","result":"[artScreenPrintingEnhancer_createArtwork(designParameters={'software': 'Adobe Photoshop', 'resolution': 300, 'colorScheme': ['red', 'blue', 'green']}, printingDetails={'screenType': 'silk', 'inkType': 'water-based'})]"}
+{"id":"special_incomplete_39","result":"[heritage_restorationPlanner(siteID='historical fort', restorationActivities=[{'activity': 'roof repair', 'priority': 'high', 'scheduledDates': {'start': '', 'end': ''}}])]"}
+{"id":"special_incomplete_40","result":"[simulate_dice_roll(dice_configurations=[{'sides': 12, 'rolls': 1, 'algorithm': 'mersenne_twister'}])]"}
+{"id":"special_incomplete_41","result":"[Missing necessary parameters (portionSizes, serviceTime) for the api (CateringWasteOptimizer_optimizeWasteReduction)]"}
+{"id":"special_incomplete_42","result":"[emergency_alert_broadcast(emergencyType='thunderstorm', message='', targetAreas=['downtown', 'northern areas'], broadcastTime='immediate')]"}
+{"id":"special_incomplete_43","result":"[\"Missing necessary parameters (travelDates, preferences) for the api (TripPlanner_internationalJourney)\"]"}
+{"id":"special_incomplete_44","result":"[Missing necessary parameters (userMeasurements) for the api (customwear_design_suit)]"}
+{"id":"special_incomplete_45","result":"[AudioPerformanceOptimizer_optimizeMicrophoneSettings(microphone={'type': 'dynamic', 'model': 'Shure SM58'}, performanceTime='evening')]"}
+{"id":"special_incomplete_46","result":"[\"Missing necessary parameters (length, width, archHeight) for the api (skate_fit_recommend)\"]"}
+{"id":"special_incomplete_47","result":"[HealthyMenuAnalyzer_analyzeNutrientProfile(menuItems=[], mealTime='Lunch')]"}
+{"id":"special_incomplete_48","result":"[PerformanceManager_setEmployeeGoals(employeeId='12345', evaluationPeriod={'start': '', 'end': ''}, goals=[{'goalDescription': '', 'goalType': '', 'metrics': {'metricName': '', 'targetValue': 0}}])]"}
+{"id":"special_incomplete_49","result":"[\"Missing necessary parameters (applicant_details, business_details, compliance_information) for the api (foodSafety_applyForLicense)\", \"Missing necessary parameters (applicant_details, business_details, compliance_information) for the api (foodSafety_licenseApplication)\"]"}

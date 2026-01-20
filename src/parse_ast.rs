@@ -155,7 +155,8 @@ pub fn ast_expr_to_structured(expr: &ast::Expr, raw_function_calls: &str) -> Res
             // let mut result = serde_json::Map::new();
             // result.insert(func_name, Value::Object(args_map));
             // Ok(Value::Object(result))
-            panic!("Function call expressions are not supported in parameter values: {:?}", c)
+            // panic!("Function call expressions are not supported in parameter values: {:?}, raw_functions: {}", c, raw_function_calls)
+            return Err("Function calls are not allowed in parameter values".to_string());
         }
         // _ => Err(format!("Unsupported AST type: {:?}", expr)),
         // _ => panic!("Unknown AST type: {:?}, raw function calls: {}", expr, raw_function_calls),

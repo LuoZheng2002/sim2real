@@ -128,8 +128,11 @@ Rules:
 - Generate only one line of content each time to simulate the user's message.
 - Do not reveal all instruction content at once. Only provide information needed for the current step.
 - Ensure that all information needed for the current step is provided completely. For example, when adding a reminder, you need to provide the reminder's description, title, and time, etc.
-- Do not speculate information not provided in the instructions. For example, if the Instruction does not directly specify takeout content, do not fabricate takeout content.
+- Avoid responding only with the raw content that the agent asks for. For example, if the agent asks for the message to text, do not respond only with the message content, but uses a complete sentence like "Please send the following message: ...".
+- Do not assume that the agent has successfully performed what you asked for unless it explicitly tells you. If you are not sure, ask for confirmation before finishing the conversation.
+- IMPORTANT: DO NOT make up information not provided in the instructions. For example, if the Instruction does not directly specify what food to order, do not fabricate one. If information needed for the current step is missing, consider if the information can be retrieved through looking up a reminder, message, etc.
 - When asked if you need further assistance, make sure whether all main tasks in the Instruction have been completed. If not, continue to provide the next step task to the agent.
+- If the agent recommends some further actions to perform, CHECK them against the Instruction. Any action not included in the Instruction should be REFUSED, but if the recommended action is included in the Instruction, CONFIRM it.
 - Names appearing in the Instruction are assumed to be the user's full names.
 - When the agent asks which message to delete, follow the Instruction's requirements to delete the message.
 - You cannot proactively offer help to the agent. Respond to the agent's questions as per the Instruction's requirements, and do not fabricate any information you do not know.
@@ -146,7 +149,10 @@ Instruction: {instruction}
 Rules:
 - Generate only one line of content each time to simulate the user's message.
 - Do not reveal all instruction content at once. Only provide information needed for the current step.
-- Do not speculate information not provided in the instructions. For example, if the agent asks for an order ID but it is not mentioned in the instructions, do not fabricate an order ID; instead, directly state that you do not remember or do not have it.
+- Avoid responding only with the raw content that the agent asks for. For example, if the agent asks for the message to text, do not respond only with the message content, but uses a complete sentence like "Please send the following message: ...".
+- Do not assume that the agent has successfully performed what you asked for unless it explicitly tells you. If you are not sure, ask for confirmation before finishing the conversation.
+- IMPORTANT: DO NOT make up information not provided in the instructions. For example, if the Instruction does not directly specify what food to order, do not fabricate one. If information needed for the current step is missing, consider if the information can be retrieved through looking up a reminder, message, etc.
+- If the agent recommends some further actions to perform, CHECK them against the Instruction. Any action not included in the Instruction should be REFUSED, but if the recommended action is included in the Instruction, CONFIRM it.
 - When information confirmation is needed, decide whether to confirm based on the content in the Instruction.
 - Do not repeat instruction content in the conversation; instead, express the same information in your own words.
 - Keep the dialogue natural and maintain the user's personality as described in the instructions.
@@ -201,10 +207,11 @@ If the user is a Silver/Gold member or traveling in business class, and files a 
 Unless the user explicitly complains and requests compensation, do not proactively offer these compensations.
 
 Function Calls:
-When a function call is needed, please strictly adhere to the above format requirements: [ApiName(key1='value1', key2='value2', ...)]
-
-When you believe the current task is completed, return "finish conversation" to end the dialogue."#.to_string()
+When a function call is needed, please strictly adhere to the above format requirements: [ApiName(key1='value1', key2='value2', ...)], Please remember that the function call must start with '[' and end with ']'!!!!!!
+You need to promptly feedback the task execution status to the user and do not repeatedly call the same function.
+"#.to_string()
 }
+// I think "finish conversation" should not be performed by the agent in mult-turn scenarios, but instead be performed by the user.
 
 /// Domain-specific prompt for BaseApi scenarios (messaging, reminders, food ordering)
 pub fn base_prompt_en() -> String {
@@ -241,6 +248,8 @@ When encountering takeout from different merchants, you need to order them one b
 If the balance is insufficient, you need to inform the user "Insufficient balance" and ask if they want to change the order.
 
 Function Calls:
-When a function call is needed, please strictly adhere to the above format requirements: [ApiName(key1='value1', key2='value2', ...)], Please remember that the function call must start with [ and end with ]!!!!!!
-You need to promptly feedback the task execution status to the user and do not repeatedly call the same function. When you believe the current task is completed, respond with "finish conversation" to end the dialogue."#.to_string()
+When a function call is needed, please strictly adhere to the above format requirements: [ApiName(key1='value1', key2='value2', ...)], Please remember that the function call must start with '[' and end with ']'!!!!!!
+You need to promptly feedback the task execution status to the user and do not repeatedly call the same function.
+"#.to_string()
 }
+// I think "finish conversation" should not be performed by the agent in mult-turn scenarios, but instead be performed by the user.
