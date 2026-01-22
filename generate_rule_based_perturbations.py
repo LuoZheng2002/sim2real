@@ -567,7 +567,7 @@ def main():
             dataset_file_path = args.dataset_folder_path / "original_modified" / file_name
             gt_file_path = args.dataset_folder_path / "original_modified" / "possible_answer_hygienic" / file_name
             output_file_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / file_name
-            output_answer_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / "possible_answer" / file_name
+            output_answer_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / "possible_answer_hygienic" / file_name
             print(f"Processing file: {dataset_file_path} -> {output_file_path}")
 
             # Load dataset file and ground truth info
@@ -598,7 +598,7 @@ def main():
             dataset_file_path = args.dataset_folder_path / "original_modified" / file_name
             gt_file_path = args.dataset_folder_path / "original_modified" / "possible_answer_hygienic" / file_name
             output_file_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / file_name
-            output_answer_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / "possible_answer" / file_name
+            output_answer_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / "possible_answer_hygienic" / file_name
             print(f"Processing agent file: {dataset_file_path} -> {output_file_path}")
 
             # Load dataset file and ground truth info

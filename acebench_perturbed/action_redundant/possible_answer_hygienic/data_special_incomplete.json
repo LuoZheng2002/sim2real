@@ -1,0 +1,50 @@
+{"id": "special_incomplete_0", "ground_truth": [{"name": "RealEstateManager_manageProperty", "values": ["propertyDetails", "rentalManagement", "maintenanceScheduling"]}]}
+{"id": "special_incomplete_1", "ground_truth": [{"name": "analyze_diplomatic_impact", "values": ["time_period"]}]}
+{"id": "special_incomplete_2", "ground_truth": [{"name": "OfficeInputValidator_checkIntegerValidity", "values": ["numbers"]}]}
+{"id": "special_incomplete_3", "ground_truth": [{"name": "climate_predict_sea_level_rise", "values": ["latitude", "longitude"]}]}
+{"id": "special_incomplete_4", "ground_truth": [{"name": "Adaptive_Traffic_Control_API", "values": ["traffic_data", "control_strategy"]}]}
+{"id": "special_incomplete_5", "ground_truth": [{"name": "spreadsheet_chart_integration_create", "values": ["spreadsheetId", "dataRange", "updateFrequency"]}]}
+{"id": "special_incomplete_6", "ground_truth": [{"name": "ai_education_create_course", "values": ["course_name", "age_range", "modules"]}]}
+{"id": "special_incomplete_7", "ground_truth": [{"name": "PrivacyCompliance_checkConsentStorage", "values": ["consentData", "securityMeasures"]}]}
+{"id": "special_incomplete_8", "ground_truth": [{"name": "HockeyConditioningMonitor_trackPlayerPerformance", "values": ["sessionDetails", "performanceMetrics"]}]}
+{"id": "special_incomplete_9", "ground_truth": [{"name": "InheritanceDisputeResolution_queryLegalGrounds", "values": ["jurisdiction", "timePeriod", "disputeDetails"]}]}
+{"id": "special_incomplete_10", "ground_truth": [{"name": "foodsurvey_market_analysis", "values": ["consumerDemographics", "surveyMethods"]}]}
+{"id": "special_incomplete_11", "ground_truth": [{"name": "MealPlanner_generateAppetizerOptions", "values": ["ingredients"]}]}
+{"id": "special_incomplete_12", "ground_truth": [{"name": "PolicyImpactSimulator_simulate", "values": ["historicalData", "simulationPeriod"]}]}
+{"id": "special_incomplete_13", "ground_truth": [{"name": "device_rollback_software_update", "values": ["device_id", "time_range"]}]}
+{"id": "special_incomplete_14", "ground_truth": [{"name": "VehicleControl_adjustBrakingSystem", "values": ["vehicleId", "brakingParameters"]}]}
+{"id": "special_incomplete_15", "ground_truth": [{"name": "literature_character_analysis_tool", "values": ["literary_text", "character_names"]}]}
+{"id": "special_incomplete_16", "ground_truth": [{"name": "FoodPopularityAnalysis_getDemographicImpact", "values": ["ageGroups", "culturalInfluences"]}]}
+{"id": "special_incomplete_17", "ground_truth": [{"name": "UrbanGreeningPlanner_optimizeStreetGreening", "values": ["streetDetails", "greeningOptions"]}]}
+{"id": "special_incomplete_18", "ground_truth": [{"name": "ImmigrationAdvisor_findMovingService", "values": ["currentCountry", "movingDate"]}]}
+{"id": "special_incomplete_19", "ground_truth": [{"name": "integrate_realtime_transit_data", "values": ["api_key"]}]}
+{"id": "special_incomplete_20", "ground_truth": [{"name": "fund_tactical_allocation", "values": ["fund_id", "time_frame", "assets"]}]}
+{"id": "special_incomplete_21", "ground_truth": [{"name": "SkillEvaluator_createTechnicalSkillAssessment", "values": ["evaluationMetrics", "assessmentPeriod"]}]}
+{"id": "special_incomplete_22", "ground_truth": [{"name": "ArtPromotionManager_generatePressRelease", "values": ["eventName", "eventDate", "mediaContacts"]}]}
+{"id": "special_incomplete_23", "ground_truth": [{"name": "health_insurance_data_encryption", "values": ["data_entries", "key_length"]}]}
+{"id": "special_incomplete_24", "ground_truth": [{"name": "languageQuiz_create", "values": ["quizTitle", "questionSet"]}]}
+{"id": "special_incomplete_25", "ground_truth": [{"name": "InvestmentRiskAssessor_assessYieldCurveRisk", "values": ["analysisPeriod"]}]}
+{"id": "special_incomplete_26", "ground_truth": [{"name": "ai_budget_forecasting", "values": ["historical_data", "forecast_period"]}]}
+{"id": "special_incomplete_27", "ground_truth": [{"name": "globalCulturalExchange_createContent", "values": ["platforms"]}]}
+{"id": "special_incomplete_28", "ground_truth": [{"name": "ActivityAdvisor_recommendCampingActivities", "values": ["proximityToWater"]}]}
+{"id": "special_incomplete_29", "ground_truth": [{"name": "career_conferencePlanner", "values": ["conferenceDetails", "personalInterests", "timeAvailability"]}]}
+{"id": "special_incomplete_30", "ground_truth": [{"name": "star_evolution_tracker", "values": ["observation_period", "data_points"]}]}
+{"id": "special_incomplete_31", "ground_truth": [{"name": "FamilyRoutineManager_createMorningRoutine", "values": ["routineDetails"]}]}
+{"id": "special_incomplete_32", "ground_truth": [{"name": "NetworkTrafficRouter_configureRouting", "values": ["interfaces"]}]}
+{"id": "special_incomplete_33", "ground_truth": [{"name": "UrbanLegendAnalyzer_analyzeFearImpact", "values": ["origin", "incidents"]}]}
+{"id": "special_incomplete_34", "ground_truth": [{"name": "SatelliteBroadcastCompliance_checkBroadcastCompliance", "values": ["operationPeriod", "complianceRequirements"]}]}
+{"id": "special_incomplete_35", "ground_truth": [{"name": "GeoLocator_reverseGeocode", "values": ["longitude"]}]}
+{"id": "special_incomplete_36", "ground_truth": [{"name": "MembershipAnalytics_performAnalysis", "values": ["memberData", "analysisPeriod"]}]}
+{"id": "special_incomplete_37", "ground_truth": [{"name": "home_smart_device_recommendation", "values": ["home_network", "preferences"]}]}
+{"id": "special_incomplete_38", "ground_truth": [{"name": "artScreenPrintingEnhancer_createArtwork", "values": ["resolution"]}]}
+{"id": "special_incomplete_39", "ground_truth": [{"name": "heritage_restorationPlanner", "values": ["siteID", "restorationActivities"]}]}
+{"id": "special_incomplete_40", "ground_truth": [{"name": "simulate_dice_roll", "values": ["rolls"]}]}
+{"id": "special_incomplete_41", "ground_truth": [{"name": "CateringWasteOptimizer_optimizeWasteReduction", "values": ["portionSizes", "serviceTime"]}]}
+{"id": "special_incomplete_42", "ground_truth": [{"name": "emergency_alert_broadcast", "values": ["message", "broadcastTime"]}]}
+{"id": "special_incomplete_43", "ground_truth": [{"name": "TripPlanner_internationalJourney", "values": ["travelDates", "preferences"]}]}
+{"id": "special_incomplete_44", "ground_truth": [{"name": "customwear_design_suit", "values": ["userMeasurements"]}]}
+{"id": "special_incomplete_45", "ground_truth": [{"name": "AudioPerformanceOptimizer_optimizeMicrophoneSettings", "values": ["performanceTime"]}]}
+{"id": "special_incomplete_46", "ground_truth": [{"name": "skate_fit_recommend", "values": ["footMeasurements"]}]}
+{"id": "special_incomplete_47", "ground_truth": [{"name": "HealthyMenuAnalyzer_analyzeNutrientProfile", "values": ["menuItems"]}]}
+{"id": "special_incomplete_48", "ground_truth": [{"name": "PerformanceManager_setEmployeeGoals", "values": ["evaluationPeriod", "goals"]}]}
+{"id": "special_incomplete_49", "ground_truth": [{"name": "foodSafety_applyForLicense", "values": ["applicant_details", "business_details", "compliance_information"]}]}
