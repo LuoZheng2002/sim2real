@@ -57,6 +57,10 @@ pub struct DialogueEntry {
 /// Multi-step: 2-party interaction (Agent ↔ Execution), inference_data uses "execution result:"
 pub struct AgentProblemState {
     // immutable fields
+    // Whether this problem has transition perturbation
+    pub has_transition_perturbation: bool,
+    // Whether the transition has been perturbed
+    pub perturbed: bool,
     /// Initial configuration used to initialize WorldState (kept for reference/reset)
     pub initial_config: WorldState,
     /// Classes involved in this task (e.g., ["BaseApi", "MessageApi"])
@@ -83,10 +87,13 @@ impl AgentProblemState {
         initial_config: WorldState,
         involved_classes: Vec<String>,
         question: &str,
+        has_transition_perturbation: bool,
     ) -> Self {
         let mut world_state = initial_config.clone();
         world_state.populate_with_involved_classes(&involved_classes);
         Self {
+            has_transition_perturbation,
+            perturbed: false,
             initial_config,
             involved_classes,
             question: None, // multi-step doesn't need user simulation
@@ -105,10 +112,13 @@ impl AgentProblemState {
         initial_config: WorldState,
         involved_classes: Vec<String>,
         question: &str,
+        has_transition_perturbation: bool,
     ) -> Self {
         let mut world_state = initial_config.clone();
         world_state.populate_with_involved_classes(&involved_classes);
         Self {
+            has_transition_perturbation,
+            perturbed: false,
             initial_config,
             involved_classes,
             question: Some(question.to_string()), // stored for user simulation
@@ -160,25 +170,21 @@ impl AgentProblemState {
         let last = self.dialogue_history.last().unwrap();
         last.recipient == DialogueParticipant::Execution
     }
-    // pub fn execute_function_calls(&mut self, function_calls: Vec<FunctionCallHygienic>) {
-    //     let execution_results = self
-    //         .world_state
-    //         .execute_function_calls(function_calls.clone());
-    //     let execution_message = serde_json::to_string(&execution_results)
-    //         .expect("failed to serialize execution results");
-    //     let new_history_entry = DialogueEntry {
-    //         sender: DialogueParticipant::Execution,
-    //         recipient: DialogueParticipant::Agent,
-    //         message: execution_message,
-    //     };
-    //     self.dialogue_history.push(new_history_entry);
-    // }
+}
+
+pub struct SingleTurnProblemState {
+    pub has_transition_perturbation: bool,
+    pub time: Option<String>,    // for normal and special
+    pub profile: Option<String>, // for preference
+    pub first_turn: bool,
+    pub question: String,
+    pub prev_llm_response: Option<String>,
 }
 
 pub enum AceProblemState {
-    SingleTurnNormal { time: String },
-    SingleTurnPreference { profile: String },
-    SingleTurnSpecial { time: String },
+    SingleTurnNormal(SingleTurnProblemState),
+    SingleTurnPreference(SingleTurnProblemState),
+    SingleTurnSpecial(SingleTurnProblemState),
     MultiTurn(AgentProblemState),
     MultiStep(AgentProblemState),
 }
@@ -202,11 +208,26 @@ impl AceProblem {
     /// after receiving the response, the internal state will be updated accordingly
     pub fn build_python_task(&self) -> PythonTask {
         match &self.state {
-            AceProblemState::SingleTurnNormal { time } => {
+            AceProblemState::SingleTurnNormal(single_turn_state) => {
                 let function_str =
                     serde_json::to_string(&self.function).expect("failed to serialize function");
-                let system_prompt = system_prompt_for_normal_data_en(time, &function_str);
-                let user_prompt = user_prompt_en(&self.question);
+                let system_prompt = system_prompt_for_normal_data_en(
+                    single_turn_state.time.as_ref().unwrap(),
+                    &function_str,
+                );
+                let user_prompt = if single_turn_state.has_transition_perturbation
+                    && !single_turn_state.first_turn
+                {
+                    let mut user_prompt = user_prompt_en(&single_turn_state.question);
+                    let Some(prev_response) = &single_turn_state.prev_llm_response else {
+                        panic!("Single-turn normal problem missing previous LLM response");
+                    };
+                    user_prompt.push_str(format!("\nassistant: {}\ntool: The API server is experiencing high latency due to network issues. Please retry your request.\nassistant: ", prev_response).as_str());
+                    user_prompt
+                } else {
+                    assert!(single_turn_state.first_turn);
+                    user_prompt_en(&single_turn_state.question)
+                };
                 PythonTask {
                     identifier: self.identifier.clone(),
                     system_prompt,
@@ -214,11 +235,26 @@ impl AceProblem {
                     role: "assistant".to_string(),
                 }
             }
-            AceProblemState::SingleTurnPreference { profile } => {
+            AceProblemState::SingleTurnPreference(single_turn_state) => {
                 let function_str =
                     serde_json::to_string(&self.function).expect("failed to serialize function");
-                let system_prompt = system_prompt_for_preference_data_en(profile, &function_str);
-                let user_prompt = user_prompt_en(&self.question);
+                let system_prompt = system_prompt_for_preference_data_en(
+                    single_turn_state.profile.as_ref().unwrap(),
+                    &function_str,
+                );
+                let user_prompt = if single_turn_state.has_transition_perturbation
+                    && !single_turn_state.first_turn
+                {
+                    let mut user_prompt = user_prompt_en(&single_turn_state.question);
+                    let Some(prev_response) = &single_turn_state.prev_llm_response else {
+                        panic!("Single-turn preference problem missing previous LLM response");
+                    };
+                    user_prompt.push_str(format!("\nassistant: {}\ntool: The API server is experiencing high latency due to network issues. Please retry your request.\nassistant: ", prev_response).as_str());
+                    user_prompt
+                } else {
+                    assert!(single_turn_state.first_turn);
+                    user_prompt_en(&single_turn_state.question)
+                };
                 PythonTask {
                     identifier: self.identifier.clone(),
                     system_prompt,
@@ -226,17 +262,23 @@ impl AceProblem {
                     role: "assistant".to_string(),
                 }
             }
-            AceProblemState::SingleTurnSpecial { time } => {
-                let function_str =
-                    serde_json::to_string(&self.function).expect("failed to serialize function");
-                let system_prompt = system_prompt_for_special_data_en(time, &function_str);
-                let user_prompt = user_prompt_en(&self.question);
-                PythonTask {
-                    identifier: self.identifier.clone(),
-                    system_prompt,
-                    user_prompt,
-                    role: "assistant".to_string(),
-                }
+            AceProblemState::SingleTurnSpecial(_single_turn_state) => {
+                // let function_str =
+                //     serde_json::to_string(&self.function).expect("failed to serialize function");
+                // let system_prompt = system_prompt_for_special_data_en(
+                //     single_turn_state.time.as_ref().unwrap(),
+                //     &function_str,
+                // );
+                // let user_prompt = user_prompt_en(&single_turn_state.question);
+                // PythonTask {
+                //     identifier: self.identifier.clone(),
+                //     system_prompt,
+                //     user_prompt,
+                //     role: "assistant".to_string(),
+                // }
+                panic!(
+                    "Single-turn special problems are not supported in the current implementation"
+                );
             }
             AceProblemState::MultiStep(agent_problem_state) => {
                 // Assert: state requires LLM response (not pending execution)
@@ -421,11 +463,16 @@ impl AceProblem {
         // the status will be updated outside the function
         // this function is to update the internal state based on the response
         match &mut self.state {
-            AceProblemState::SingleTurnNormal { .. }
-            | AceProblemState::SingleTurnPreference { .. }
-            | AceProblemState::SingleTurnSpecial { .. } => {
+            AceProblemState::SingleTurnNormal(single_turn_state)
+            | AceProblemState::SingleTurnPreference(single_turn_state)
+            | AceProblemState::SingleTurnSpecial(single_turn_state) => {
                 // Single-turn problems are completed after one response
                 // The response contains the LLM's API call output
+                if single_turn_state.has_transition_perturbation && single_turn_state.first_turn {
+                    single_turn_state.first_turn = false;
+                    single_turn_state.prev_llm_response = Some(response.response.clone());
+                    return false;
+                }
                 let normal_result_entry = NormalResultEntry {
                     id: self.id.clone(),
                     result: response.response,
@@ -473,17 +520,6 @@ impl AceProblem {
                     );
                     return true;
                 }
-                // execute the function call and get the result
-                // let Ok(function_call_list) = decode_function_list(&response.response) else {
-                //     let new_history_entry = DialogueEntry {
-                //         sender: DialogueParticipant::Execution,
-                //         recipient: DialogueParticipant::Agent,
-                //         message: "Please do not ask me any questions, use the known conditions to solve the problem".to_string(),
-                //     };
-                //     agent_problem_state.dialogue_history.push(new_history_entry);
-                //     println!("The agent is trying to ask a question: {}", response.response);
-                //     return false;
-                // };
                 let function_call_list = match decode_function_list(&response.response) {
                     Ok(funcs) => funcs,
                     Err(e) => {
@@ -512,20 +548,29 @@ impl AceProblem {
                 agent_problem_state
                     .mile_stones
                     .push(response.response.clone());
-                let execution_results = agent_problem_state
-                    .world_state
-                    .execute_function_calls(&function_call_list);
-
-                let execution_message = serde_json::to_string(&execution_results)
-                    .expect("failed to serialize execution results");
-                let new_history_entry = DialogueEntry {
-                    sender: DialogueParticipant::Execution,
-                    recipient: DialogueParticipant::Agent,
-                    message: execution_message,
-                };
-
-                agent_problem_state.dialogue_history.push(new_history_entry);
-
+                if agent_problem_state.has_transition_perturbation && !agent_problem_state.perturbed
+                {
+                    agent_problem_state.perturbed = true;
+                    // synthesize a dialogue entry from execution to agent
+                    let new_history_entry = DialogueEntry {
+                        sender: DialogueParticipant::Execution,
+                        recipient: DialogueParticipant::Agent,
+                        message: "The API server is experiencing high latency due to network issues. Please retry your request.".to_string(),
+                    };
+                    agent_problem_state.dialogue_history.push(new_history_entry);
+                } else {
+                    let execution_results = agent_problem_state
+                        .world_state
+                        .execute_function_calls(&function_call_list);
+                    let execution_message = serde_json::to_string(&execution_results)
+                        .expect("failed to serialize execution results");
+                    let new_history_entry = DialogueEntry {
+                        sender: DialogueParticipant::Execution,
+                        recipient: DialogueParticipant::Agent,
+                        message: execution_message,
+                    };
+                    agent_problem_state.dialogue_history.push(new_history_entry);
+                }
                 // println!("conversation: {}", agent_problem_state.get_inference_message());
                 println!(
                     "Problem {} turn {} response: {}",
@@ -624,7 +669,7 @@ impl AceProblem {
                             );
                             return true;
                         }
-                        
+
                         let function_call_list = match decode_function_list(&response.response) {
                             Ok(funcs) => funcs,
                             Err(e) => {
@@ -658,18 +703,32 @@ impl AceProblem {
                         agent_problem_state
                             .mile_stones
                             .push(response.response.clone());
-                        let execution_results = agent_problem_state
-                            .world_state
-                            .execute_function_calls(&function_call_list);
-                        let execution_message = serde_json::to_string(&execution_results)
-                            .expect("failed to serialize execution results");
 
-                        let new_history_entry = DialogueEntry {
-                            sender: DialogueParticipant::Execution,
-                            recipient: DialogueParticipant::Agent,
-                            message: execution_message,
-                        };
-                        agent_problem_state.dialogue_history.push(new_history_entry);
+                        if agent_problem_state.has_transition_perturbation
+                            && !agent_problem_state.perturbed
+                        {
+                            agent_problem_state.perturbed = true;
+                            // synthesize a dialogue entry from execution to agent
+                            let new_history_entry = DialogueEntry {
+                                sender: DialogueParticipant::Execution,
+                                recipient: DialogueParticipant::Agent,
+                                message: "The API server is experiencing high latency due to network issues. Please retry your request.".to_string(),
+                            };
+                            agent_problem_state.dialogue_history.push(new_history_entry);
+                        } else {
+                            let execution_results = agent_problem_state
+                                .world_state
+                                .execute_function_calls(&function_call_list);
+                            let execution_message = serde_json::to_string(&execution_results)
+                                .expect("failed to serialize execution results");
+
+                            let new_history_entry = DialogueEntry {
+                                sender: DialogueParticipant::Execution,
+                                recipient: DialogueParticipant::Agent,
+                                message: execution_message,
+                            };
+                            agent_problem_state.dialogue_history.push(new_history_entry);
+                        }
 
                         // println!("conversation: {}", agent_problem_state.get_inference_message());
                         println!(

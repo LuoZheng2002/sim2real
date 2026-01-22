@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     ace_problem::{
         AceProblem, AceProblemState, AgentProblemState, DialogueEntry, DialogueParticipant,
-        ProblemStatus,
+        ProblemStatus, SingleTurnProblemState,
     },
     datasets::DATASETS,
     paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH},
@@ -139,6 +139,10 @@ fn parse_entries_to_problems(
             output_file_path.as_ref().display()
         ));
     let output_file = Arc::new(AtomicRefCell::new(output_file));
+    let has_transition_perturbation = matches!(
+        perturbation_type,
+        PerturbationType::Transition
+    );
     match problem_type {
         ProblemType::SingleTurnNormal => {
             let mut problems: Vec<AceProblem> = Vec::new();
@@ -154,6 +158,18 @@ fn parse_entries_to_problems(
                     dataset_name,
                     entry.id
                 );
+                let time = entry
+                    .time
+                    .clone()
+                    .expect("Non-preference normal dataset should have time field");
+                let single_turn_state = SingleTurnProblemState {
+                    has_transition_perturbation,
+                    time: Some(time),
+                    profile: None,
+                    question: entry.question.clone(),
+                    first_turn: true,
+                    prev_llm_response: None,
+                };
                 let problem = AceProblem {
                     identifier,
                     perturbation_type: perturbation_type.to_folder_name(),
@@ -162,11 +178,7 @@ fn parse_entries_to_problems(
                     status: ProblemStatus::Waiting,
                     question: entry.question,
                     function: entry.function,
-                    state: AceProblemState::SingleTurnNormal {
-                        time: entry
-                            .time
-                            .expect("Non-preference normal dataset should have time field"),
-                    },
+                    state: AceProblemState::SingleTurnNormal(single_turn_state),
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);
@@ -187,6 +199,18 @@ fn parse_entries_to_problems(
                     dataset_name,
                     entry.id
                 );
+                let profile = entry
+                    .profile
+                    .clone()
+                    .expect("Preference normal dataset should have profile field");
+                let single_turn_state = SingleTurnProblemState {
+                    has_transition_perturbation,
+                    time: None,
+                    profile: Some(profile),
+                    question: entry.question.clone(),
+                    first_turn: true,
+                    prev_llm_response: None,
+                };
                 let problem = AceProblem {
                     identifier,
                     perturbation_type: perturbation_type.to_folder_name(),
@@ -195,11 +219,7 @@ fn parse_entries_to_problems(
                     status: ProblemStatus::Waiting,
                     question: entry.question,
                     function: entry.function,
-                    state: AceProblemState::SingleTurnPreference {
-                        profile: entry
-                            .profile
-                            .expect("Preference normal dataset should have profile field"),
-                    },
+                    state: AceProblemState::SingleTurnPreference(single_turn_state),
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);
@@ -207,37 +227,45 @@ fn parse_entries_to_problems(
             problems
         }
         ProblemType::SingleTurnSpecial => {
-            let mut problems: Vec<AceProblem> = Vec::new();
-            for entry_value in entries {
-                let entry: NormalEntry = serde_json::from_value(entry_value.clone())
-                    .expect("failed to parse NormalEntry for special");
-                if existing_ids.contains(&entry.id) {
-                    continue;
-                }
-                let identifier = format!(
-                    "{}_{}_{}",
-                    perturbation_type.to_folder_name(),
-                    dataset_name,
-                    entry.id
-                );
-                let problem = AceProblem {
-                    identifier,
-                    perturbation_type: perturbation_type.to_folder_name(),
-                    dataset_name: dataset_name.clone(),
-                    id: entry.id,
-                    status: ProblemStatus::Waiting,
-                    question: entry.question,
-                    function: entry.function,
-                    state: AceProblemState::SingleTurnSpecial {
-                        time: entry
-                            .time
-                            .expect("Non-preference normal dataset should have time field"),
-                    },
-                    output_file: output_file.clone(),
-                };
-                problems.push(problem);
-            }
-            problems
+            // let mut problems: Vec<AceProblem> = Vec::new();
+            // for entry_value in entries {
+            //     let entry: NormalEntry = serde_json::from_value(entry_value.clone())
+            //         .expect("failed to parse NormalEntry for special");
+            //     if existing_ids.contains(&entry.id) {
+            //         continue;
+            //     }
+            //     let identifier = format!(
+            //         "{}_{}_{}",
+            //         perturbation_type.to_folder_name(),
+            //         dataset_name,
+            //         entry.id
+            //     );
+            //     let time = entry
+            //         .time
+            //         .clone()
+            //         .expect("Non-preference normal dataset should have time field");
+            //     let single_turn_state = SingleTurnProblemState {
+            //         time: Some(time),
+            //         profile: None,
+            //         question: entry.question.clone(),
+            //         first_turn: true,
+            //         prev_llm_response: None,
+            //     };
+            //     let problem = AceProblem {
+            //         identifier,
+            //         perturbation_type: perturbation_type.to_folder_name(),
+            //         dataset_name: dataset_name.clone(),
+            //         id: entry.id,
+            //         status: ProblemStatus::Waiting,
+            //         question: entry.question,
+            //         function: entry.function,
+            //         state: AceProblemState::SingleTurnSpecial(single_turn_state),
+            //         output_file: output_file.clone(),
+            //     };
+            //     problems.push(problem);
+            // }
+            // problems
+            panic!("Special single-turn datasets are not supported in this project.");
         }
         ProblemType::AgentMultiTurn => {
             let mut problems: Vec<AceProblem> = Vec::new();
@@ -268,6 +296,7 @@ fn parse_entries_to_problems(
                         world_state.clone(),
                         entry.involved_classes.clone(),
                         &entry.question,
+                        has_transition_perturbation,
                     )),
                     output_file: output_file.clone(),
                 };
@@ -304,6 +333,7 @@ fn parse_entries_to_problems(
                         world_state.clone(),
                         entry.involved_classes.clone(),
                         &entry.question,
+                        has_transition_perturbation,
                     )),
                     output_file: output_file.clone(),
                 };
