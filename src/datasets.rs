@@ -107,26 +107,27 @@ pub static DATASETS: LazyLock<IndexMap<String, DatasetTrait>> = LazyLock::new(||
         },
     );
     // special datasets
-    m.insert(
-        "data_special_error_param".to_string(),
-        DatasetTrait {
-            problem_type: ProblemType::SingleTurnSpecial,
-            evaluation_type: EvaluationType::SpecialErrorParam,
-        },
-    );
-    m.insert(
-        "data_special_incomplete".to_string(),
-        DatasetTrait {
-            problem_type: ProblemType::SingleTurnSpecial,
-            evaluation_type: EvaluationType::SpecialIncomplete,
-        },
-    );
-    m.insert(
-        "data_special_irrelevant".to_string(),
-        DatasetTrait {
-            problem_type: ProblemType::SingleTurnSpecial,
-            evaluation_type: EvaluationType::SpecialIrrelevant,
-        },
-    );
+    // we do not test special datasets in this project
+    // m.insert(
+    //     "data_special_error_param".to_string(),
+    //     DatasetTrait {
+    //         problem_type: ProblemType::SingleTurnSpecial,
+    //         evaluation_type: EvaluationType::SpecialErrorParam,
+    //     },
+    // );
+    // m.insert(
+    //     "data_special_incomplete".to_string(),
+    //     DatasetTrait {
+    //         problem_type: ProblemType::SingleTurnSpecial,
+    //         evaluation_type: EvaluationType::SpecialIncomplete,
+    //     },
+    // );
+    // m.insert(
+    //     "data_special_irrelevant".to_string(),
+    //     DatasetTrait {
+    //         problem_type: ProblemType::SingleTurnSpecial,
+    //         evaluation_type: EvaluationType::SpecialIrrelevant,
+    //     },
+    // );
     m
 });

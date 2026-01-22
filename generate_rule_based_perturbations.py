@@ -178,6 +178,136 @@ def generate_abbreviated_name(full_name: str) -> str:
     return "_".join(parts)
 
 
+def get_tool_name_mapping(
+    perturbation_type: RuleBasedPerturbationType,
+    gt_tool_names: set[str],
+) -> dict[str, str]:
+    """
+    Get a mapping from original tool names to new tool names based on perturbation type.
+
+    For COST_ABBREVIATED and TIME_ABBREVIATED, the GT tool name is abbreviated.
+    For all other perturbation types, the tool name stays the same.
+
+    Args:
+        perturbation_type: The type of perturbation
+        gt_tool_names: Set of ground truth tool names
+
+    Returns:
+        Dictionary mapping original name -> new name
+    """
+    if perturbation_type in [
+        RuleBasedPerturbationType.COST_ABBREVIATED,
+        RuleBasedPerturbationType.TIME_ABBREVIATED,
+    ]:
+        return {name: generate_abbreviated_name(name) for name in gt_tool_names}
+    return {name: name for name in gt_tool_names}
+
+
+def transform_possible_answer_normal(
+    perturbation_type: RuleBasedPerturbationType,
+    gt_info: dict,
+) -> dict:
+    """
+    Transform a possible answer entry for normal datasets based on the perturbation type.
+
+    Args:
+        perturbation_type: The type of perturbation
+        gt_info: The original ground truth info
+
+    Returns:
+        The transformed ground truth info with updated tool names
+    """
+    result = copy.deepcopy(gt_info)
+    gt_tool_list = result.get("ground_truth", [])
+
+    if not gt_tool_list:
+        return result
+
+    # Get tool name mapping
+    gt_tool_names = set(tool["name"] for tool in gt_tool_list)
+    name_mapping = get_tool_name_mapping(perturbation_type, gt_tool_names)
+
+    # Update tool names in ground_truth
+    for tool in result["ground_truth"]:
+        original_name = tool["name"]
+        tool["name"] = name_mapping.get(original_name, original_name)
+
+    return result
+
+
+def transform_possible_answer_agent(
+    perturbation_type: RuleBasedPerturbationType,
+    gt_info: dict,
+    perturbed_gt_tool_name: str | None,
+    original_gt_tool_name: str | None,
+) -> dict:
+    """
+    Transform a possible answer entry for agent datasets based on the perturbation type.
+
+    For agent datasets, we only perturb one randomly chosen tool, so we need to know
+    which tool was perturbed to update the mile_stone correctly.
+
+    Args:
+        perturbation_type: The type of perturbation
+        gt_info: The original ground truth info
+        perturbed_gt_tool_name: The new name of the perturbed GT tool (after perturbation)
+        original_gt_tool_name: The original name of the perturbed GT tool
+
+    Returns:
+        The transformed ground truth info with updated tool names in mile_stone
+    """
+    result = copy.deepcopy(gt_info)
+
+    # Only COST_ABBREVIATED and TIME_ABBREVIATED change tool names
+    if perturbation_type not in [
+        RuleBasedPerturbationType.COST_ABBREVIATED,
+        RuleBasedPerturbationType.TIME_ABBREVIATED,
+    ]:
+        return result
+
+    if not original_gt_tool_name or not perturbed_gt_tool_name:
+        return result
+
+    if original_gt_tool_name == perturbed_gt_tool_name:
+        return result
+
+    # Update mile_stone by replacing the original tool name with the new one
+    mile_stone = result.get("mile_stone", [])
+    if mile_stone:
+        updated_mile_stone = _replace_tool_name_in_milestone(
+            mile_stone, original_gt_tool_name, perturbed_gt_tool_name
+        )
+        result["mile_stone"] = updated_mile_stone
+
+    return result
+
+
+def _replace_tool_name_in_milestone(
+    mile_stone: list,
+    original_name: str,
+    new_name: str,
+) -> list:
+    """
+    Replace tool name in mile_stone entries.
+
+    Mile_stone can be:
+    - A list of strings: ["[func1(...)]", "[func2(...)]"]
+    - A list of lists: [["[func1(...)]", "[func2(...)]"], ["[func1(...)]"]]
+    """
+    result = []
+    for item in mile_stone:
+        if isinstance(item, list):
+            # Nested list - recurse
+            result.append(_replace_tool_name_in_milestone(item, original_name, new_name))
+        elif isinstance(item, str):
+            # Replace the function name in the string
+            # The format is "[func_name(...)]" so we replace "func_name(" with "new_name("
+            result.append(item.replace(f"{original_name}(", f"{new_name}("))
+        else:
+            result.append(item)
+    return result
+
+
 def create_distractor_tool(
     perturbation_type: RuleBasedPerturbationType,
     gt_tool: dict,
@@ -345,7 +475,7 @@ def generate_one_agent(
     perturbation_type: RuleBasedPerturbationType,
     entry: dict,
     gt_info: dict,
-) -> dict:
+) -> tuple[dict, str | None, str | None]:
     """
     Generate a perturbed entry for agent datasets by adding a distractor tool
     for one randomly chosen GT function that appears in both the function list
@@ -357,14 +487,17 @@ def generate_one_agent(
         gt_info: The ground truth info containing mile_stone
 
     Returns:
-        The perturbed entry with distractor tool added for one GT function
+        Tuple of (perturbed_entry, original_tool_name, new_tool_name)
+        - perturbed_entry: The perturbed entry with distractor tool added for one GT function
+        - original_tool_name: The original name of the perturbed GT tool
+        - new_tool_name: The new name of the perturbed GT tool (may be same as original)
     """
     result = copy.deepcopy(entry)
 
     # Get the mile_stone from ground_truth info and convert to string
     mile_stone = gt_info.get("mile_stone", [])
     if not mile_stone:
-        return result  # No mile_stone, return as-is
+        return result, None, None  # No mile_stone, return as-is
 
     mile_stone_str = json.dumps(mile_stone, ensure_ascii=False)
 
@@ -377,7 +510,7 @@ def generate_one_agent(
             gt_tool_names_in_milestone.append(func_name)
 
     if not gt_tool_names_in_milestone:
-        return result  # No GT tools found in mile_stone
+        return result, None, None  # No GT tools found in mile_stone
 
     # Randomly choose one tool to perturb
     chosen_gt_name = random.choice(gt_tool_names_in_milestone)
@@ -393,7 +526,7 @@ def generate_one_agent(
             other_tools.append(func)
 
     if not chosen_gt_tool:
-        return result  # Chosen GT tool not found
+        return result, None, None  # Chosen GT tool not found
 
     # Create modified GT tool and distractor
     modified_gt, distractor = create_distractor_tool(perturbation_type, chosen_gt_tool, other_tools)
@@ -401,7 +534,8 @@ def generate_one_agent(
     # Combine: other tools first, then distractor, then modified GT tool
     result["function"] = other_tools + [distractor, modified_gt]
 
-    return result
+    # Return the original and new tool names for possible answer transformation
+    return result, chosen_gt_name, modified_gt["name"]
 
 
 def read_json_lines_from_file(file_path: Path) -> list[dict]:
@@ -433,22 +567,30 @@ def main():
             dataset_file_path = args.dataset_folder_path / "original_modified" / file_name
             gt_file_path = args.dataset_folder_path / "original_modified" / "possible_answer_hygienic" / file_name
             output_file_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / file_name
+            output_answer_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / "possible_answer" / file_name
             print(f"Processing file: {dataset_file_path} -> {output_file_path}")
 
             # Load dataset file and ground truth info
             dataset = read_json_lines_from_file(dataset_file_path)
             gt_info_map = load_gt_info_map(gt_file_path)
 
-            # Create output folder
+            # Create output folders
             output_file_path.parent.mkdir(parents=True, exist_ok=True)
+            output_answer_path.parent.mkdir(parents=True, exist_ok=True)
 
             # Process each entry in the dataset
-            with open(output_file_path, "w") as f:
+            with open(output_file_path, "w") as f, open(output_answer_path, "w") as f_answer:
                 for entry in dataset:
                     entry_id = entry["id"]
                     gt_info = gt_info_map.get(entry_id, {})
+
+                    # Generate perturbed dataset entry
                     result = generate_one_normal(perturbation_type, entry, gt_info)
                     f.write(json.dumps(result, ensure_ascii=False) + "\n")
+
+                    # Generate corresponding possible answer entry
+                    answer_result = transform_possible_answer_normal(perturbation_type, gt_info)
+                    f_answer.write(json.dumps(answer_result, ensure_ascii=False) + "\n")
 
     # Iterate over agent dataset files
     for perturbation_type in RuleBasedPerturbationType:
@@ -456,22 +598,32 @@ def main():
             dataset_file_path = args.dataset_folder_path / "original_modified" / file_name
             gt_file_path = args.dataset_folder_path / "original_modified" / "possible_answer_hygienic" / file_name
             output_file_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / file_name
+            output_answer_path = args.dataset_folder_path / PERTURBATION_TYPE_TO_FOLDER_NAME[perturbation_type] / "possible_answer" / file_name
             print(f"Processing agent file: {dataset_file_path} -> {output_file_path}")
 
             # Load dataset file and ground truth info
             dataset = read_json_lines_from_file(dataset_file_path)
             gt_info_map = load_gt_info_map(gt_file_path)
 
-            # Create output folder
+            # Create output folders
             output_file_path.parent.mkdir(parents=True, exist_ok=True)
+            output_answer_path.parent.mkdir(parents=True, exist_ok=True)
 
             # Process each entry in the dataset
-            with open(output_file_path, "w") as f:
+            with open(output_file_path, "w") as f, open(output_answer_path, "w") as f_answer:
                 for entry in dataset:
                     entry_id = entry["id"]
                     gt_info = gt_info_map.get(entry_id, {})
-                    result = generate_one_agent(perturbation_type, entry, gt_info)
+
+                    # Generate perturbed dataset entry
+                    result, original_name, new_name = generate_one_agent(perturbation_type, entry, gt_info)
                     f.write(json.dumps(result, ensure_ascii=False) + "\n")
+
+                    # Generate corresponding possible answer entry
+                    answer_result = transform_possible_answer_agent(
+                        perturbation_type, gt_info, new_name, original_name
+                    )
+                    f_answer.write(json.dumps(answer_result, ensure_ascii=False) + "\n")
 
 
 

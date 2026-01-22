@@ -185,6 +185,7 @@ pub enum AceProblemState {
 
 pub struct AceProblem {
     pub identifier: String,
+    pub perturbation_type: String,
     pub dataset_name: String,
     pub id: String,
     pub status: ProblemStatus,

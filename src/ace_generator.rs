@@ -18,6 +18,7 @@ use crate::{
     },
     datasets::DATASETS,
     paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH},
+    perturbations::PerturbationType,
     python_interface::PythonResponse,
     utils::{load_json_lines, write_json_lines_to_file},
     world_state::WorldState,
@@ -111,6 +112,7 @@ pub struct DatasetTrait {
 
 fn parse_entries_to_problems(
     entries: Vec<serde_json::Value>,
+    perturbation_type: PerturbationType,
     dataset_name: String,
     output_file_path: impl AsRef<Path>,
     problem_type: &ProblemType,
@@ -146,9 +148,15 @@ fn parse_entries_to_problems(
                 if existing_ids.contains(&entry.id) {
                     continue;
                 }
-                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let identifier = format!(
+                    "{}_{}_{}",
+                    perturbation_type.to_folder_name(),
+                    dataset_name,
+                    entry.id
+                );
                 let problem = AceProblem {
                     identifier,
+                    perturbation_type: perturbation_type.to_folder_name(),
                     dataset_name: dataset_name.clone(),
                     id: entry.id,
                     status: ProblemStatus::Waiting,
@@ -173,9 +181,15 @@ fn parse_entries_to_problems(
                 if existing_ids.contains(&entry.id) {
                     continue;
                 }
-                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let identifier = format!(
+                    "{}_{}_{}",
+                    perturbation_type.to_folder_name(),
+                    dataset_name,
+                    entry.id
+                );
                 let problem = AceProblem {
                     identifier,
+                    perturbation_type: perturbation_type.to_folder_name(),
                     dataset_name: dataset_name.clone(),
                     id: entry.id,
                     status: ProblemStatus::Waiting,
@@ -200,9 +214,15 @@ fn parse_entries_to_problems(
                 if existing_ids.contains(&entry.id) {
                     continue;
                 }
-                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let identifier = format!(
+                    "{}_{}_{}",
+                    perturbation_type.to_folder_name(),
+                    dataset_name,
+                    entry.id
+                );
                 let problem = AceProblem {
                     identifier,
+                    perturbation_type: perturbation_type.to_folder_name(),
                     dataset_name: dataset_name.clone(),
                     id: entry.id,
                     status: ProblemStatus::Waiting,
@@ -230,15 +250,25 @@ fn parse_entries_to_problems(
                 let world_state: WorldState =
                     serde_json::from_value(serde_json::to_value(&entry.initial_config).unwrap())
                         .unwrap_or_default();
-                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let identifier = format!(
+                    "{}_{}_{}",
+                    perturbation_type.to_folder_name(),
+                    dataset_name,
+                    entry.id
+                );
                 let problem = AceProblem {
                     identifier,
+                    perturbation_type: perturbation_type.to_folder_name(),
                     dataset_name: dataset_name.clone(),
                     id: entry.id,
                     status: ProblemStatus::Waiting,
                     question: entry.question.clone(),
                     function: entry.function,
-                    state: AceProblemState::MultiTurn(AgentProblemState::new_multi_turn(world_state.clone(), entry.involved_classes.clone(), &entry.question)),
+                    state: AceProblemState::MultiTurn(AgentProblemState::new_multi_turn(
+                        world_state.clone(),
+                        entry.involved_classes.clone(),
+                        &entry.question,
+                    )),
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);
@@ -256,15 +286,25 @@ fn parse_entries_to_problems(
                 let world_state: WorldState =
                     serde_json::from_value(serde_json::to_value(&entry.initial_config).unwrap())
                         .unwrap_or_default();
-                let identifier = format!("{}_{}", dataset_name, entry.id);
+                let identifier = format!(
+                    "{}_{}_{}",
+                    perturbation_type.to_folder_name(),
+                    dataset_name,
+                    entry.id
+                );
                 let problem = AceProblem {
                     identifier,
+                    perturbation_type: perturbation_type.to_folder_name(),
                     dataset_name: dataset_name.clone(),
                     id: entry.id,
                     status: ProblemStatus::Waiting,
                     question: entry.question.clone(),
                     function: entry.function,
-                    state: AceProblemState::MultiStep(AgentProblemState::new_multi_step(world_state.clone(), entry.involved_classes.clone(), &entry.question)),
+                    state: AceProblemState::MultiStep(AgentProblemState::new_multi_step(
+                        world_state.clone(),
+                        entry.involved_classes.clone(),
+                        &entry.question,
+                    )),
                     output_file: output_file.clone(),
                 };
                 problems.push(problem);
@@ -310,27 +350,45 @@ impl AceGenerator {
         let mut waiting_queue = VecDeque::new();
         let executing_pool = HashMap::new();
         let model_safe_name = model_name.replace("/", "-");
+        for perturbation_type in PerturbationType::all_perturbations() {
+            let perturbation_folder_name = perturbation_type.to_folder_name();
+            for (dataset_name, dataset_trait) in DATASETS.iter() {
+                // let dataset_path = BASE_DATASET_PATH
+                //     .join(perturbation_folder_name.clone())
+                //     .join(dataset_name.to_string() + ".json");
+                let dataset_path = match perturbation_type {
+                    PerturbationType::NoPerturbation | PerturbationType::Transition => {
+                        BASE_DATASET_PATH
+                            .join(model_safe_name.clone())
+                            .join("original_modified") // original dataset
+                            .join(dataset_name.to_string() + ".json")
+                    }
+                    _ => BASE_DATASET_PATH
+                        .join(model_safe_name.clone())
+                        .join(perturbation_folder_name.clone())
+                        .join(dataset_name.to_string() + ".json"),
+                };
+                let output_path = BASE_OUTPUT_PATH
+                    .join(model_safe_name.clone())
+                    .join(perturbation_folder_name.clone())
+                    .join(dataset_name.to_string() + "_result.json");
+                std::fs::create_dir_all(output_path.parent().unwrap())
+                    .expect("failed to create output directory");
 
-        for (dataset_name, dataset_trait) in DATASETS.iter() {
-            let dataset_path = BASE_DATASET_PATH.join(dataset_name.to_string() + ".json");
-            let output_path = BASE_OUTPUT_PATH
-                .join(model_safe_name.clone())
-                .join(dataset_name.to_string() + "_result.json");
-            std::fs::create_dir_all(output_path.parent().unwrap())
-                .expect("failed to create output directory");
-
-            // exit the program if any dataset fails to load
-            let dataset_entries = load_json_lines(&dataset_path).expect(&format!(
-                "Failed to load dataset from {}",
-                dataset_path.display()
-            ));
-            let problems = parse_entries_to_problems(
-                dataset_entries,
-                dataset_name.to_string(),
-                &output_path,
-                &dataset_trait.problem_type,
-            );
-            waiting_queue.extend(problems);
+                // exit the program if any dataset fails to load
+                let dataset_entries = load_json_lines(&dataset_path).expect(&format!(
+                    "Failed to load dataset from {}",
+                    dataset_path.display()
+                ));
+                let problems = parse_entries_to_problems(
+                    dataset_entries,
+                    perturbation_type,
+                    dataset_name.to_string(),
+                    &output_path,
+                    &dataset_trait.problem_type,
+                );
+                waiting_queue.extend(problems);
+            }
         }
         let total_num = waiting_queue.len();
         println!("Initialized ACEBenchRunner with {} problems.", total_num);
@@ -430,7 +488,11 @@ impl AceGenerator {
             });
 
             if let Err(e) = write_json_lines_to_file(&output_path, &entries) {
-                println!("Failed to write sorted file {}: {}", output_path.display(), e);
+                println!(
+                    "Failed to write sorted file {}: {}",
+                    output_path.display(),
+                    e
+                );
             } else {
                 println!("Sorted {}", output_path.display());
             }

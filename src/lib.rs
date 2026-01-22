@@ -16,6 +16,7 @@ pub mod reminder;
 pub mod travel;
 pub mod utils;
 pub mod world_state;
+pub mod perturbations;
 
 #[pymodule]
 pub mod rust_code {
