@@ -403,33 +403,7 @@ impl AceProblem {
                             }
                         }
                         DialogueParticipant::Execution => {
-                            // After execution, agent responds
-                            // This case should be handled similarly to Agent case
-                            let inference_message = agent_problem_state.get_inference_message();
-                            // Build system prompt with domain-specific rules
-                            let mut system_prompt = multi_turn_agent_prompt_system_en();
-                            if agent_problem_state
-                                .involved_classes
-                                .contains(&"Travel".to_string())
-                            {
-                                system_prompt.push_str(&travel_prompt_en());
-                            }
-                            if agent_problem_state
-                                .involved_classes
-                                .contains(&"BaseApi".to_string())
-                            {
-                                system_prompt.push_str(&base_prompt_en());
-                            }
-                            let functions_str = serde_json::to_string(&self.function)
-                                .expect("failed to serialize function");
-                            let user_prompt =
-                                multi_turn_agent_prompt_user_en(&functions_str, &inference_message);
-                            PythonTask {
-                                identifier: self.identifier.clone(),
-                                system_prompt,
-                                user_prompt,
-                                role: "assistant".to_string(),
-                            }
+                            panic!("Last recipient cannot be Execution when building Python task");
                         }
                     }
                 }
@@ -649,25 +623,7 @@ impl AceProblem {
                             );
                             return true;
                         }
-
-                        // Try to parse function calls
-                        // let Ok(function_call_list) = decode_function_list(&response.response)
-                        // else {
-                        //     // Agent is not making a function call, relay message to user
-                        //     // Change recipient from Execution to User
-                        //     agent_problem_state
-                        //         .dialogue_history
-                        //         .last_mut()
-                        //         .unwrap()
-                        //         .recipient = DialogueParticipant::User;
-                        //     println!("Agent message to user: {}", response.response);
-                        //     // Post-condition: now user needs to respond
-                        //     assert!(
-                        //         agent_problem_state.needs_llm_response(),
-                        //         "MultiTurn: after agent message to user, state should need LLM response"
-                        //     );
-                        //     return false;
-                        // };
+                        
                         let function_call_list = match decode_function_list(&response.response) {
                             Ok(funcs) => funcs,
                             Err(e) => {

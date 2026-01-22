@@ -1,0 +1,13 @@
+{
+    "id": "normal_atom_bool_0",
+    "ground_truth": [
+        {
+            "name": "ProteinRichMealPlanner_generateList",
+            "parameters": {
+                "meal_type": "dinner",
+                "include_vegetarian_options": true,
+                "cuisine_preference": "Asian"
+            }
+        }
+    ]
+}
