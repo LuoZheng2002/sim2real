@@ -10,7 +10,7 @@ use crate::{
     ace_generator::{EvaluationType, NormalResultEntry},
     datasets::DATASETS,
     evaluate_parse::FunctionCallHygienic,
-    paths::{BASE_DATASET_PATH, BASE_GROUND_TRUTH_PATH, BASE_OUTPUT_PATH, BASE_SCORE_PATH},
+    paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH, BASE_SCORE_PATH},
     utils::{load_json_lines, write_json_lines_to_file},
 };
 

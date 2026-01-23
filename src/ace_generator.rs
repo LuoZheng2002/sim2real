@@ -18,7 +18,7 @@ use crate::{
     },
     datasets::DATASETS,
     paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH},
-    perturbations::PerturbationType,
+    perturbations::{self, PerturbationType},
     python_interface::PythonResponse,
     utils::{load_json_lines, write_json_lines_to_file},
     world_state::WorldState,
@@ -139,10 +139,7 @@ fn parse_entries_to_problems(
             output_file_path.as_ref().display()
         ));
     let output_file = Arc::new(AtomicRefCell::new(output_file));
-    let has_transition_perturbation = matches!(
-        perturbation_type,
-        PerturbationType::Transition
-    );
+    let has_transition_perturbation = matches!(perturbation_type, PerturbationType::Transition);
     match problem_type {
         ProblemType::SingleTurnNormal => {
             let mut problems: Vec<AceProblem> = Vec::new();
@@ -389,12 +386,10 @@ impl AceGenerator {
                 let dataset_path = match perturbation_type {
                     PerturbationType::NoPerturbation | PerturbationType::Transition => {
                         BASE_DATASET_PATH
-                            .join(model_safe_name.clone())
                             .join("original_modified") // original dataset
                             .join(dataset_name.to_string() + ".json")
                     }
                     _ => BASE_DATASET_PATH
-                        .join(model_safe_name.clone())
                         .join(perturbation_folder_name.clone())
                         .join(dataset_name.to_string() + ".json"),
                 };
@@ -466,65 +461,69 @@ impl AceGenerator {
     }
 
     pub fn sort_all_files_after_generation_helper(&mut self) {
-        for (dataset_name, _) in DATASETS.iter() {
-            let output_path = BASE_OUTPUT_PATH
-                .join(self.model_safe_name.clone())
-                .join(dataset_name.to_string() + "_result.json");
+        for perturbation_type in PerturbationType::all_perturbations() {
+            let perturbation_folder_name = perturbation_type.to_folder_name();
+            for (dataset_name, _) in DATASETS.iter() {
+                let output_path = BASE_OUTPUT_PATH
+                    .join(self.model_safe_name.clone())
+                    .join(perturbation_folder_name.clone())
+                    .join(dataset_name.to_string() + "_result.json");
 
-            let entries = match load_json_lines(&output_path) {
-                Ok(entries) => entries,
-                Err(e) => {
-                    println!("Skipping {}: {}", output_path.display(), e);
-                    continue;
-                }
-            };
+                let entries = match load_json_lines(&output_path) {
+                    Ok(entries) => entries,
+                    Err(e) => {
+                        println!("Skipping {}: {}", output_path.display(), e);
+                        continue;
+                    }
+                };
 
-            let is_multi_turn = dataset_name.contains("normal_multi_turn");
+                let is_multi_turn = dataset_name.contains("normal_multi_turn");
 
-            let mut entries = entries;
-            entries.sort_by(|a, b| {
-                let id_a = a.get("id").and_then(|v| v.as_str()).unwrap_or("");
-                let id_b = b.get("id").and_then(|v| v.as_str()).unwrap_or("");
+                let mut entries = entries;
+                entries.sort_by(|a, b| {
+                    let id_a = a.get("id").and_then(|v| v.as_str()).unwrap_or("");
+                    let id_b = b.get("id").and_then(|v| v.as_str()).unwrap_or("");
 
-                if is_multi_turn {
-                    // For multi_turn datasets, IDs are like "123_456"
-                    // Compare by first number (major), then second number (minor)
-                    let parse_multi_turn_id = |id: &str| -> (i64, i64) {
-                        let parts: Vec<&str> = id.split('_').collect();
-                        let major = parts.first().and_then(|s| s.parse().ok()).unwrap_or(0);
-                        let minor = parts.get(1).and_then(|s| s.parse().ok()).unwrap_or(0);
-                        (major, minor)
-                    };
-                    let (major_a, minor_a) = parse_multi_turn_id(id_a);
-                    let (major_b, minor_b) = parse_multi_turn_id(id_b);
-                    (major_a, minor_a).cmp(&(major_b, minor_b))
+                    if is_multi_turn {
+                        // For multi_turn datasets, IDs are like "123_456"
+                        // Compare by first number (major), then second number (minor)
+                        let parse_multi_turn_id = |id: &str| -> (i64, i64) {
+                            let parts: Vec<&str> = id.split('_').collect();
+                            let major = parts.first().and_then(|s| s.parse().ok()).unwrap_or(0);
+                            let minor = parts.get(1).and_then(|s| s.parse().ok()).unwrap_or(0);
+                            (major, minor)
+                        };
+                        let (major_a, minor_a) = parse_multi_turn_id(id_a);
+                        let (major_b, minor_b) = parse_multi_turn_id(id_b);
+                        (major_a, minor_a).cmp(&(major_b, minor_b))
+                    } else {
+                        // For other datasets, extract trailing number from ID
+                        let extract_trailing_number = |id: &str| -> i64 {
+                            id.chars()
+                                .rev()
+                                .take_while(|c| c.is_ascii_digit())
+                                .collect::<String>()
+                                .chars()
+                                .rev()
+                                .collect::<String>()
+                                .parse()
+                                .unwrap_or(0)
+                        };
+                        let num_a = extract_trailing_number(id_a);
+                        let num_b = extract_trailing_number(id_b);
+                        num_a.cmp(&num_b)
+                    }
+                });
+
+                if let Err(e) = write_json_lines_to_file(&output_path, &entries) {
+                    println!(
+                        "Failed to write sorted file {}: {}",
+                        output_path.display(),
+                        e
+                    );
                 } else {
-                    // For other datasets, extract trailing number from ID
-                    let extract_trailing_number = |id: &str| -> i64 {
-                        id.chars()
-                            .rev()
-                            .take_while(|c| c.is_ascii_digit())
-                            .collect::<String>()
-                            .chars()
-                            .rev()
-                            .collect::<String>()
-                            .parse()
-                            .unwrap_or(0)
-                    };
-                    let num_a = extract_trailing_number(id_a);
-                    let num_b = extract_trailing_number(id_b);
-                    num_a.cmp(&num_b)
+                    println!("Sorted {}", output_path.display());
                 }
-            });
-
-            if let Err(e) = write_json_lines_to_file(&output_path, &entries) {
-                println!(
-                    "Failed to write sorted file {}: {}",
-                    output_path.display(),
-                    e
-                );
-            } else {
-                println!("Sorted {}", output_path.display());
             }
         }
     }

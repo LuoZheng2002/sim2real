@@ -110,7 +110,9 @@ Generate exactly {num_tools} new tools as a JSON array:"""
 # Prompt for realistic typos (obs_typos)
 REALISTIC_TYPOS_PROMPT = """Add realistic typing errors to the following query, simulating natural human typos.
 
-Original query: {query}
+[Original Query Start]
+{query}
+[Original Query End]
 
 Requirements:
 - Add 2-4 realistic typos that humans commonly make when typing quickly
@@ -118,20 +120,22 @@ Requirements:
 - DO NOT change any numbers, dates, proper nouns, or technical terms
 - DO NOT change the meaning or intent of the query
 - The query should still be understandable despite the typos
-- Output ONLY the query with typos (no explanation)
+- Output the entire content in between [Original Query Start] and [Original Query End] with typos included, but without [Original Query Start] and [Original Query End] tags.
 
 Query with typos:"""
 
 # Prompt for query paraphrase (obs_paraphrase)
 QUERY_PARAPHRASE_PROMPT = """Paraphrase the following user query while preserving its exact meaning and intent.
 
-Original query: {query}
+[Original Query Start]
+{query}
+[Original Query End]
 
 Requirements:
 - Use different wording but keep the same semantic meaning
 - DO NOT change any locations, person names, numbers, dates, or specific entities
 - Maintain all technical terms and important details
-- Output ONLY the paraphrased query (no explanation)
+- Please paraphrase the entire content in between [Original Query Start] and [Original Query End], but without [Original Query Start] and [Original Query End] tags.
 
 Paraphrased query:"""
 

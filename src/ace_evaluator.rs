@@ -16,7 +16,7 @@ use crate::{
         PossibleAnswerPointingOutHygienic,
     },
     parse_ast::{parse_from_ast_to_structured, parse_from_string_to_ast},
-    paths::{BASE_DATASET_PATH, BASE_GROUND_TRUTH_PATH, BASE_OUTPUT_PATH, BASE_SCORE_PATH},
+    paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH, BASE_SCORE_PATH},
     perturbations::PerturbationType,
     utils::{load_json_lines, write_json_lines_to_file},
     world_state::WorldState,
@@ -95,19 +95,19 @@ pub fn evaluate_all_results(model_name: String) {
             let problem_folder_path = match perturbation_type {
                 PerturbationType::NoPerturbation | PerturbationType::Transition => {
                     BASE_DATASET_PATH
-                        .join(model_safe_name.clone())
+                        // .join(model_safe_name.clone())
                         .join("original_modified") // original dataset
                         // .join(dataset_name.to_string() + "_result.json")
                 }
                 _ => BASE_DATASET_PATH
-                    .join(model_safe_name.clone())
+                    // .join(model_safe_name.clone())
                     .join(perturbation_folder_name.clone())
                     // .join(dataset_name.to_string() + "_result.json"),
             };
             let problem_path = problem_folder_path
                 .join(dataset_name.to_string() + ".json");
             let possible_answer_path = problem_folder_path
-                .join("possible_answer")
+                .join("possible_answer_hygienic")
                 .join(dataset_name.to_string() + ".json");
 
             let result_path = BASE_OUTPUT_PATH
