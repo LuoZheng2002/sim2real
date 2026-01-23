@@ -16,7 +16,7 @@ def create_vllm_backend(model_name: str, num_gpus:int):
         gpu_memory_utilization=0.9,
         trust_remote_code=True,
         enable_lora=False,
-        max_model_len=5000,
+        max_model_len=10000,
     )
     engine = AsyncLLMEngine.from_engine_args(engine_args)
 
@@ -24,7 +24,14 @@ def create_vllm_backend(model_name: str, num_gpus:int):
     print("vLLM backend created.")
     return engine, tokenizer
 
+
+def should_disable_thinking(model_name: str) -> bool:
+    name = model_name.lower()
+    return ("looptool" in name) or ("qwen3" in name) or ("mua-rl" in name)
+
+
 async def call_vllm_model_async(
+    model_name: str,
     engine,
     tokenizer,
     system_prompt: str,
@@ -36,11 +43,22 @@ async def call_vllm_model_async(
         {"role": "user", "content": user_prompt},
     ]
 
-    formatted_prompt = tokenizer.apply_chat_template(
-        messages,
-        add_generation_prompt=True,
-        tokenize=False,
-    )
+
+    disable_thinking = should_disable_thinking(model_name)
+
+    if disable_thinking:
+        formatted_prompt = tokenizer.apply_chat_template(
+            messages,
+            add_generation_prompt=True,
+            tokenize=False,
+            enable_thinking=False,
+        )
+    else:
+        formatted_prompt = tokenizer.apply_chat_template(
+            messages,
+            add_generation_prompt=True,
+            tokenize=False,
+        )
     # Use vLLM to generate the response
     from vllm.sampling_params import SamplingParams
     stop_token_ids = [tokenizer.eos_token_id]

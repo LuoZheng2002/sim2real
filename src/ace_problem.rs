@@ -203,6 +203,8 @@ pub struct AceProblem {
     pub output_file: Arc<AtomicRefCell<std::fs::File>>,
 }
 
+const MAX_TURNS: usize = 20;
+
 impl AceProblem {
     /// The LLM task is going to be executed by python, and it will produce a response with the same identifier
     /// after receiving the response, the internal state will be updated accordingly
@@ -497,6 +499,15 @@ impl AceProblem {
                 );
 
                 agent_problem_state.num_steps += 1;
+                if agent_problem_state.num_steps > MAX_TURNS {
+                    // to do: finalize and write to file
+                    Self::agent_finish_conversation(
+                        self.id.clone(),
+                        agent_problem_state,
+                        &self.output_file,
+                    );
+                    return true;
+                }
                 // when receiving the response, the last recipient must be the agent
                 let last_recipient = agent_problem_state
                     .dialogue_history
@@ -576,15 +587,7 @@ impl AceProblem {
                     "Problem {} turn {} response: {}",
                     self.id, agent_problem_state.num_steps, response.response
                 );
-                if agent_problem_state.num_steps > 40 {
-                    // to do: finalize and write to file
-                    Self::agent_finish_conversation(
-                        self.id.clone(),
-                        agent_problem_state,
-                        &self.output_file,
-                    );
-                    return true;
-                }
+                
                 // Post-condition: state should be ready for next LLM call
                 assert!(
                     agent_problem_state.needs_llm_response(),
@@ -735,7 +738,7 @@ impl AceProblem {
                             "Problem {} turn {} response: {}",
                             self.id, agent_problem_state.num_steps, response.response
                         );
-                        if agent_problem_state.num_steps > 40 {
+                        if agent_problem_state.num_steps > MAX_TURNS {
                             Self::agent_finish_conversation(
                                 self.id.clone(),
                                 agent_problem_state,

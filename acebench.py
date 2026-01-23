@@ -9,7 +9,7 @@ import asyncio
 import json
 
 from src_py.api_backend import call_api_model_async, create_api_backend
-from src_py.vllm_backend import call_vllm_model_async, call_vllm_model_async, create_vllm_backend
+from src_py.vllm_backend import call_vllm_model_async, create_vllm_backend
 load_dotenv(".env")
 
 api_backend_created = False
@@ -95,6 +95,7 @@ async def main():
                 )
             else:
                 response = await call_vllm_model_async(
+                    args.model_name,    
                     engine,
                     tokenizer,
                     task["system_prompt"],

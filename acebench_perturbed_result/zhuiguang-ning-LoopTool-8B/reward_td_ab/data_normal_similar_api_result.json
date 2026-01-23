@@ -1,0 +1,50 @@
+{"id":"normal_similar_api_14","result":"[C_I(location='Kyoto')]"}
+{"id":"normal_similar_api_7","result":"[L_P(language_name=\"Spanish\", notation_type=\"slash\")]"}
+{"id":"normal_similar_api_0","result":"[V_E(application_area='education', detail_level=5, include_examples=True)]"}
+{"id":"normal_similar_api_1","result":"[carbon_action_query_1(), C_A_Q(related_sectors=[\"energy\"])]"}
+{"id":"normal_similar_api_10","result":"[S_C(birth_dates=[\"1992-11-05\"])]"}
+{"id":"normal_similar_api_9","result":"[phrase_interpret_a_1(phrase=\"A stitch in time saves nine\", language=\"en\")]"}
+{"id":"normal_similar_api_5","result":"[C_F(input_string='Hello, World! This is a test.', case_sensitive=True, file_path='/user/data/results.txt')]"}
+{"id":"normal_similar_api_23","result":"[S_P_A(sentence=\"Il mange une pomme.\", language=\"fr\")]"}
+{"id":"normal_similar_api_6","result":"[Headache_Relief_b_1(), H_R_B(outdoor_activity_level=8, hydration_level='medium', stress_level=True)]"}
+{"id":"normal_similar_api_28","result":"[C_R(algorithm_type=\"PoW\", risk_factor=7)]"}
+{"id":"normal_similar_api_17","result":"[B_H_B(diet_preference=\"try to eat healthy\", sleep_duration=6, stress_level=10)]"}
+{"id":"normal_similar_api_37","result":"[H_P_A(duration_hours=5, weather=\"sunny\")]"}
+{"id":"normal_similar_api_3","result":"[baby_health_check_A(duration_days=5, additional_symptoms=[\"crying\", \"decreased appetite\"], baby_state=\"crying levels, sleep patterns\")]"}
+{"id":"normal_similar_api_27","result":"[E_V_B(city_name=\"Tokyo\", impact_areas=[\"education\", \"community\"])]"}
+{"id":"normal_similar_api_39","result":"[H_W_S(hamster_type=\"golden\", age=6)]"}
+{"id":"normal_similar_api_22","result":"[T_M_B(team_size=5, communication_tool=\"Teams\", incentive_types=[\"monetary\", \"career development\"])]"}
+{"id":"normal_similar_api_38","result":"[M_O_S(responsive_design=True, load_speed=2.3)]"}
+{"id":"normal_similar_api_13","result":"[plot_summary_generator_d_1(), P_S_G_D(theme_keywords=[\"AI governance\", \"urban exploration\"], conflict_element=\"conflict over AI control\")]"}
+{"id":"normal_similar_api_26","result":"[W_T_A(writing_level='intermediate', topics_of_interest=['technology', 'science'])]"}
+{"id":"normal_similar_api_47","result":"[M_S_A(title='Inception', year=2010)]"}
+{"id":"normal_similar_api_4","result":"[A_I_B(appliance_type=\"washing machine\", usage_frequency=5, environment_conditions={\"humidity_level\": 60, \"temperature_range\": \"18 to 25\"})]"}
+{"id":"normal_similar_api_20","result":"[V_S_G(lookup_value=\"Widget A\", table_array=\"A2:B20\", column_index_number=2, range_lookup=false)]"}
+{"id":"normal_similar_api_46","result":"[V_I_X(range='A2:A50', columns=['A'])]"}
+{"id":"normal_similar_api_30","result":"[clarity_guide_b_1(), C_G_B(problem_description=\"software application not starting after a recent update\")]"}
+{"id":"normal_similar_api_35","result":"[M_P_G(session_time=5, current_level=\"intermediate\", learning_method=\"self-teaching\")]"}
+{"id":"normal_similar_api_11","result":"[slide_create_A_1(), S_C_A(title='Innovations in AI Customer Service', author='John Doe', date='2020-08-12')]"}
+{"id":"normal_similar_api_33","result":"[C_F_A(funding_id=\"FGH5678EZT\", activity_tag=\"tax evasion\", suspicion_level=6)]"}
+{"id":"normal_similar_api_29","result":"[health_tips_b(preferences=\"diet\", medical_conditions=[])], [H_T_A(preferences=\"diet\", age=30)]"}
+{"id":"normal_similar_api_41","result":"[M_S_B(current_relationships=[{\"relation\": \"coworker\", \"status\": \"often disagree on sales techniques\"}])]"}
+{"id":"normal_similar_api_48","result":"[M_AG(title='AI applications in oncology', word_count=1500, focus_area='oncology')]"}
+{"id":"normal_similar_api_45","result":"[H_C(age=75, health_factors={\"gender\": \"male\", \"conditions\": [\"hypertension\", \"arthritis\"]})]"}
+{"id":"normal_similar_api_42","result":"[Love_Importance_A_1(), L_I_A(theme='importance of love', aspects=['individual', 'societal'], language_level='advanced')]"}
+{"id":"normal_similar_api_19","result":"[confidence_boost_a(personal_traits={\"strengths\": [\"communication\", \"empathy\"], \"weaknesses\": [\"time management\"], \"goals\": \"being a leader\"}), C_B_B(age_group=2)]"}
+{"id":"normal_similar_api_24","result":"[design_suggestions_A_1(), D_S_A(theme_color='vintage', device_types=['mobile', 'tablet', 'desktop'], content_layout='timeline', interactive_elements=['search', 'maps'])]"}
+{"id":"normal_similar_api_34","result":"[M_S_A(market_data=[{\"trend\": \"Sales increase\", \"sales\": 150000, \"customer_feedback\": \"Customers appreciate the new features.\"}])]"}
+{"id":"normal_similar_api_49","result":"[A_P_S(audience={\"age_range\": \"20-30\", \"location\": \"California\", \"interests\": [\"organic skincare\"]})]"}
+{"id":"normal_similar_api_15","result":"[K_E_B(text=\"I have a document I want to analyze for repeated keywords and phrases. The text is quite lengthy, and I'm interested in words or phrases that appear at least 5 times.\", highlight_styles=[\"bold\", \"italics\"])]"}
+{"id":"normal_similar_api_43","result":"[I_B_A(target_market={\"age_group\": 25, \"interests\": [\"sustainable living\"]}, current_brand_status=\"fairly new and currently not well-known in the general market\")]"}
+{"id":"normal_similar_api_16","result":"[M_S_P(target_market=\"women aged 30-45 in urban areas\", marketing_objective=\"increase brand awareness and sales\", budget=500000, timeframe=12, strategies=[\"social media\", \"influencer partnerships\", \"online advertising\"])]"}
+{"id":"normal_similar_api_40","result":"[poetry_analysis_b(poem_text=\"The gentle flow of notes under the moon, a symphony of unity embracing the land.\"), P_A_A(poem_text=\"The gentle flow of notes under the moon, a symphony of unity embracing the land.\")]"}
+{"id":"normal_similar_api_32","result":"[F_A_T_B(topic=\"Autonomous Vehicles\", year=\"2040\", related_technologies=[{\"name\":\"AI\", \"impact_level\":5}, {\"name\":\"Machine Learning\", \"impact_level\":4}, {\"name\":\"IoT\", \"impact_level\":3}])]"}
+{"id":"normal_similar_api_21","result":"[finance_advisor_b(investment_preferences=['technology', 'renewable energy'], risk_tolerance='8', financial_status={'assets': 1000000, 'liabilities': 100000}, goals=['Increase wealth substantially in the next 10 years', 'Have some liquidity for potential short-term opportunities'])]"}
+{"id":"normal_similar_api_36","result":"[analyze_social_data_a(data_source=\"scraping tool\", preprocess_rules={\"clean_data\": true, \"deduplicate\": true, \"normalize_text\": true}, features_to_extract=[\"gender\", \"age\", \"interests\"], algorithm=\"neural network\", evaluation_metrics=[\"accuracy\", \"recall\", \"F1 score\"])]"}
+{"id":"normal_similar_api_31","result":"[M_O_Y(dataset=[{\"features\": {\"F1\": 0.1, \"F2\": 0.2}, \"target\": 0.5}, {\"features\": {\"F1\": 0.15, \"F2\": 0.25}, \"target\": 0.6}], techniques=[\"filter\"])]"}
+{"id":"normal_similar_api_2","result":"[T_M_A(tasks=[{\"task_name\": \"Write report\", \"importance_level\": 8, \"deadline\": \"2022-04-20\"}, {\"task_name\": \"Team meeting\", \"importance_level\": 5, \"deadline\": \"2022-04-16\"}, {\"task_name\": \"Email client\", \"importance_level\": 9, \"deadline\": \"2022-04-15\"}])]"}
+{"id":"normal_similar_api_25","result":"[style_recommendation_b(personal_info={'gender': 'male', 'age_range': '25-30', 'height': 180, 'body_type': 'medium build', 'skin_tone': 'fair'}, preferences={'weight_loss_goals': {'target_weight': 75, 'time_frame': '3 months'}, 'preferred_colors': ['blue', 'gray'], 'disliked_styles': ['formal']})]"}
+{"id":"normal_similar_api_12","result":"[S_S_A(market_analysis=({'competitor_analysis': 'Description of major competitors and their market strategies.', 'customer_demographics': [{'age': 25, 'gender': 'female', 'income_level': 'middle'}, {'age': 35, 'gender': 'male', 'income_level': 'high'}]}), business_goals=['increasing brand awareness', 'market penetration'], evaluation_criteria={'customer_growth': 'Customer growth metrics such as the number of new customers acquired.', 'revenue_increase': 'Revenue increase metrics such as percentage growth in sales.', 'brand_recognition_improvement': 'Brand recognition improvement metrics such as survey results or social media engagement.'})]"}
+{"id":"normal_similar_api_44","result":"[A_U_F(social_media_feedback=[{\"feedback_text\": \"Just got my new summer dress from the collection and I love it!\", \"feedback_time\": \"2020-08-22T16:45:00Z\"}, {\"feedback_text\": \"The new line is amazing, especially the eco-friendly materials used!\", \"feedback_time\": \"2020-08-23T13:15:00Z\"}], brand_mentions=[{\"brand_name\": \"OurBrand\", \"sentiment_score\": 0.8}, {\"brand_name\": \"OurBrand\", \"sentiment_score\": 0.9}])]"}
+{"id":"normal_similar_api_18","result":"[task_schedule_a(tasks=[{\"task_name\": \"Review Project Report\", \"priority\": \"High\", \"estimated_time\": 3, \"resources\": {\"human\": 2, \"material\": [\"computer\"]}}, {\"task_name\": \"Team Meeting\", \"priority\": \"Medium\", \"estimated_time\": 2, \"resources\": {\"human\": 5, \"material\": [\"conference room\"]}}, {\"task_name\": \"Update Software\", \"priority\": \"Low\", \"estimated_time\": 4, \"resources\": {\"human\": 1, \"material\": [\"computer\"]}}, {\"task_name\": \"Prepare Presentation\", \"priority\": \"Urgent\", \"estimated_time\": 2, \"resources\": {\"human\": 1, \"material\": [\"projector\"]}}])]"}
+{"id":"normal_similar_api_8","result":"[D_A_T(dataset={\"sales_data\": [{\"month\": \"Jan\", \"total_sales\": 4000}, {\"month\": \"Feb\", \"total_sales\": 4500}, {\"month\": \"Mar\", \"total_sales\": 4800}, {\"month\": \"Apr\", \"total_sales\": 5000}, {\"month\": \"May\", \"total_sales\": 4700}, {\"month\": \"Jun\", \"total_sales\": 5200}, {\"month\": \"Jul\", \"total_sales\": 5500}, {\"month\": \"Aug\", \"total_sales\": 5300}, {\"month\": \"Sep\", \"total_sales\": 5400}, {\"month\": \"Oct\", \"total_sales\": 5800}, {\"month\": \"Nov\", \"total_sales\": 6000}, {\"month\": \"Dec\", \"total_sales\": 6200}], \"analysis_type\": \"trend\")]"}

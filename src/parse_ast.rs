@@ -88,9 +88,9 @@ pub fn ast_expr_to_structured(expr: &ast::Expr, raw_function_calls: &str) -> Res
             )),
             ast::Constant::Bool(b) => Ok(serde_json::Value::Bool(*b)),
             ast::Constant::None => Ok(serde_json::Value::Null),
-            // ast::Constant::Ellipsis => Ok(serde_json::Value::String("...".to_string())),
-            // _ => Err(format!("Unsupported constant type: {:?}", c.value)),
-            _ => panic!("Unsupported constant type: {:?}", c.value),
+            ast::Constant::Ellipsis => Ok(serde_json::Value::String("...".to_string())),
+            _ => Err(format!("Unsupported constant type: {:?}", c.value)),
+            // _ => panic!("Unsupported constant type: {:?}", c.value),
         },
         ast::Expr::UnaryOp(u) => {
             match u.op {
@@ -100,7 +100,7 @@ pub fn ast_expr_to_structured(expr: &ast::Expr, raw_function_calls: &str) -> Res
                     Ok(negated)
                 }
                 // _ => Err(format!("Unsupported unary operator: {:?}", u.op)),
-                _ => panic!("Unsupported unary operator: {:?}", u.op),
+                _ => Err(format!("Unsupported unary operator: {:?}", u.op)),
             }
         }
         ast::Expr::List(l) => {
@@ -121,7 +121,7 @@ pub fn ast_expr_to_structured(expr: &ast::Expr, raw_function_calls: &str) -> Res
                     let key_str = match key_val {
                         serde_json::Value::String(s) => s,
                         // _ => key_val.to_string(),
-                        _ => panic!("Unsupported dict key type: {:?}", key_val),
+                        _ => Err(format!("Unsupported dict key type: {:?}", key_val))?,
                     };
                     let val = ast_expr_to_structured(value, raw_function_calls)?;
                     map.insert(key_str, val);

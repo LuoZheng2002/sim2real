@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=sim2real       # Job name
-#SBATCH --output=z_sim2real_%j.out        # Standard output log (%j = job ID)
-#SBATCH --error=z_sim2real_%j.err         # Error log
-#SBATCH --time=00:30:00                 # Max runtime (HH:MM:SS)
+#SBATCH --job-name=sim2real2       # Job name
+#SBATCH --output=z_sim2real2_%j.out        # Standard output log (%j = job ID)
+#SBATCH --error=z_sim2real2_%j.err         # Error log
+#SBATCH --time=02:00:00                 # Max runtime (HH:MM:SS)
 # #SBATCH --partition=gpu                  # Partition/queue with GPU
 # #SBATCH --mail-type=BEGIN,END,FAIL
 # #SBATCH --mail-user=luozheng@usc.edu
