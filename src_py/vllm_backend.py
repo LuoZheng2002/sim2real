@@ -3,9 +3,11 @@
 
 
 def create_vllm_backend(model_name: str):
+    print("importing vllm and transformers...")
     from vllm import LLMEngine
     from transformers import AutoTokenizer
-
+    print("vllm and transformers imported.")
+    print("Creating vLLM backend...")
     engine = LLMEngine.from_pretrained(
         model_name,
         tensor_parallel_size=1,
@@ -19,6 +21,7 @@ def create_vllm_backend(model_name: str):
     )
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
+    print("vLLM backend created.")
     return engine, tokenizer
 
 async def call_vllm_model_async(

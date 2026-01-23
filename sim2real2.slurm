@@ -7,7 +7,7 @@
 # #SBATCH --mail-type=BEGIN,END,FAIL
 # #SBATCH --mail-user=luozheng@usc.edu
 # #SBATCH --partition=gpuH200x8
-#SBATCH --gres=gpu:1                     # Request 1 GPU
+#SBATCH --gres=gpu:2                     # Request 2 GPUs
 #SBATCH --cpus-per-task=4                # CPU cores
 #SBATCH --mem=32G                        # RAM
 #SBATCH --account=bfdz-delta-gpu    # Your Slurm account/project
@@ -26,4 +26,4 @@ export HF_HOME=/work/nvme/bfdz/zluo8/huggingface
 
 # Run the training script
 
-python acebench.py --model-name zzwkk/MUA-RL-32B --user-api-model-name gpt-4.1 --use-api-for-all false
+python acebench.py --model-name zzwkk/MUA-RL-32B --user-api-model-name gpt-4.1

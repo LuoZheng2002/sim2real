@@ -1,0 +1,204 @@
+🔗 Found pyo3 bindings
+🐍 Found CPython 3.13 at /projects/bfdz/zluo8/sim2real/.venv/bin/python
+warning: unused import: `std::collections::HashMap`
+ --> src/ace_evaluator.rs:1:5
+  |
+1 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `regex::Regex`
+ --> src/ace_evaluator.rs:5:5
+  |
+5 | use regex::Regex;
+  |     ^^^^^^^^^^^^
+
+warning: unused imports: `Mode`, `ast`, and `parse`
+ --> src/ace_evaluator.rs:6:25
+  |
+6 | use rustpython_parser::{Mode, ast, parse};
+  |                         ^^^^  ^^^  ^^^^^
+
+warning: unused import: `Value`
+ --> src/ace_evaluator.rs:8:18
+  |
+8 | use serde_json::{Value, json};
+  |                  ^^^^^
+
+warning: unused imports: `LazyLock`, `PathBuf`, `cell::RefCell`, and `rc::Rc`
+ --> src/ace_generator.rs:2:5
+  |
+2 |     cell::RefCell,
+  |     ^^^^^^^^^^^^^
+3 |     collections::{HashMap, HashSet, VecDeque},
+4 |     path::{Path, PathBuf},
+  |                  ^^^^^^^
+5 |     rc::Rc,
+  |     ^^^^^^
+6 |     sync::{Arc, LazyLock},
+  |                 ^^^^^^^^
+
+warning: unused imports: `DialogueEntry`, `DialogueParticipant`, and `self`
+  --> src/ace_generator.rs:16:57
+   |
+16 |         AceProblem, AceProblemState, AgentProblemState, DialogueEntry, DialogueParticipant,
+   |                                                         ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^
+...
+21 |     perturbations::{self, PerturbationType},
+   |                     ^^^^
+
+warning: unused import: `cell::RefCell`
+ --> src/ace_problem.rs:1:11
+  |
+1 | use std::{cell::RefCell, sync::Arc};
+  |           ^^^^^^^^^^^^^
+
+warning: unused import: `indexmap::IndexMap`
+ --> src/ace_problem.rs:4:5
+  |
+4 | use indexmap::IndexMap;
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `base_api::BaseApi`, `evaluate_parse::FunctionCallHygienic`, `food_services::FoodPlatform`, `message::MessageApi`, `reminder::ReminderApi`, `system_prompt_for_special_data_en`, and `travel::Travel`
+  --> src/ace_problem.rs:8:5
+   |
+ 8 |     base_api::BaseApi,
+   |     ^^^^^^^^^^^^^^^^^
+ 9 |     evaluate_parse::FunctionCallHygienic,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10 |     food_services::FoodPlatform,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+11 |     message::MessageApi,
+   |     ^^^^^^^^^^^^^^^^^^^
+...
+17 |         system_prompt_for_special_data_en, travel_prompt_en, user_prompt_en,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+22 |     reminder::ReminderApi,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+23 |     travel::Travel,
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `std::cell::RefCell`
+ --> src/food_services.rs:1:5
+  |
+1 | use std::cell::RefCell;
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+ --> src/parse_ast.rs:1:5
+  |
+1 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `regex::Regex`
+ --> src/parse_ast.rs:4:5
+  |
+4 | use regex::Regex;
+  |     ^^^^^^^^^^^^
+
+warning: unused import: `parse`
+ --> src/parse_ast.rs:5:36
+  |
+5 | use rustpython_parser::{Mode, ast, parse};
+  |                                    ^^^^^
+
+warning: unused imports: `Deserialize` and `Serialize`
+ --> src/parse_ast.rs:6:13
+  |
+6 | use serde::{Deserialize, Serialize};
+  |             ^^^^^^^^^^^  ^^^^^^^^^
+
+warning: unused import: `json`
+ --> src/parse_ast.rs:7:18
+  |
+7 | use serde_json::{json};
+  |                  ^^^^
+
+warning: unused imports: `BASE_DATASET_PATH`, `BASE_OUTPUT_PATH`, `BASE_SCORE_PATH`, `EvaluationType`, `NormalResultEntry`, `datasets::DATASETS`, `load_json_lines`, and `write_json_lines_to_file`
+  --> src/parse_ast.rs:10:21
+   |
+10 |     ace_generator::{EvaluationType, NormalResultEntry},
+   |                     ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+11 |     datasets::DATASETS,
+   |     ^^^^^^^^^^^^^^^^^^
+12 |     evaluate_parse::FunctionCallHygienic,
+13 |     paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH, BASE_SCORE_PATH},
+   |             ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^
+14 |     utils::{load_json_lines, write_json_lines_to_file},
+   |             ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::result`
+ --> src/travel.rs:2:5
+  |
+2 | use std::result;
+  |     ^^^^^^^^^^^
+
+warning: unused import: `travel`
+ --> src/travel.rs:8:40
+  |
+8 | use crate::{base_api::ExecutionResult, travel};
+  |                                        ^^^^^^
+
+warning: unused import: `indexmap::IndexMap`
+ --> src/world_state.rs:1:5
+  |
+1 | use indexmap::IndexMap;
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ordered_float::NotNan`
+ --> src/world_state.rs:2:5
+  |
+2 | use ordered_float::NotNan;
+  |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `GetFlightDetailsArgs`
+  --> src/world_state.rs:11:20
+   |
+11 |     travel::{self, GetFlightDetailsArgs, Travel},
+   |                    ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `problem_entries_parsed`
+   --> src/ace_evaluator.rs:558:9
+    |
+558 |     let problem_entries_parsed: IndexMap<String, NormalEntry> = problem_entries
+    |         ^^^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_problem_entries_parsed`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `c`
+   --> src/parse_ast.rs:143:25
+    |
+143 |         ast::Expr::Call(c) => {
+    |                         ^ help: if this is intentional, prefix it with an underscore: `_c`
+
+warning: `rust_code` (lib) generated 23 warnings (run `cargo fix --lib -p rust_code` to apply 21 suggestions)
+    Finished `release` profile [optimized] target(s) in 1.59s
+📦 Built wheel for CPython 3.13 to /tmp/.tmpfyONza/rust_code-0.1.0-cp313-cp313-linux_x86_64.whl
+🛠 Installed rust_code-0.1.0
+Traceback (most recent call last):
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 120, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^
+  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 112, in main
+    await asyncio.gather(*workers)
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 109, in worker
+    response_dict = await process_single_task_async(task)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 80, in process_single_task_async
+    engine, tokenizer = create_vllm_backend(args.model_name)
+                        ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/projects/bfdz/zluo8/sim2real/src_py/vllm_backend.py", line 11, in create_vllm_backend
+    engine = LLMEngine.from_pretrained(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'LLMEngine' has no attribute 'from_pretrained'
