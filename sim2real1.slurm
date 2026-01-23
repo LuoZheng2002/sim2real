@@ -26,4 +26,4 @@ export HF_HOME=/work/nvme/bfdz/zluo8/huggingface
 
 # Run the training script
 
-python acebench.py --model-name zhuiguang-ning/LoopTool-8B --user-api-model-name gpt-4.1
+python acebench.py --model-name zhuiguang-ning/LoopTool-8B --user-api-model-name gpt-4.1 --num-gpus 1

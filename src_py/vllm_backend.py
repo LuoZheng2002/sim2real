@@ -2,25 +2,25 @@
 
 
 
-def create_vllm_backend(model_name: str):
+def create_vllm_backend(model_name: str, num_gpus:int):
     print("importing vllm and transformers...")
-    from vllm import LLMEngine
+    from vllm import AsyncLLMEngine
+    from vllm.engine.arg_utils import AsyncEngineArgs
     from transformers import AutoTokenizer
     print("vllm and transformers imported.")
     print("Creating vLLM backend...")
-    engine = LLMEngine.from_pretrained(
-        model_name,
-        tensor_parallel_size=1,
-        max_batch_size=16,
-        max_input_length=2048,
-        max_output_length=1024,
-        temperature=0.7,
-        top_p=0.9,
-        repetition_penalty=1.0,
-        device="cuda",
+    # Create engine args
+    engine_args = AsyncEngineArgs(
+        model=model_name,
+        tensor_parallel_size=num_gpus,
+        gpu_memory_utilization=0.9,
+        trust_remote_code=True,
+        enable_lora=False,
+        max_model_len=5000,
     )
+    engine = AsyncLLMEngine.from_engine_args(engine_args)
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     print("vLLM backend created.")
     return engine, tokenizer
 
@@ -30,25 +30,46 @@ async def call_vllm_model_async(
     system_prompt: str,
     user_prompt: str,
 ) -> str:
-    from vllm import SamplingParams, Request, Batch
-    import asyncio
+    from vllm import SamplingParams
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
 
-    prompt = f"{system_prompt}\n{user_prompt}"
-    inputs = tokenizer(prompt, return_tensors="pt")
-    input_ids = inputs["input_ids"][0].tolist()
+    formatted_prompt = tokenizer.apply_chat_template(
+        messages,
+        add_generation_prompt=True,
+        tokenize=False,
+    )
+    # Use vLLM to generate the response
+    from vllm.sampling_params import SamplingParams
+    stop_token_ids = [tokenizer.eos_token_id]
 
-    request = Request(
-        input_ids=input_ids,
-        sampling_params=SamplingParams(
-            max_tokens=1000,
-            temperature=0.7,
-            top_p=0.9,
-        ),
+    eot_id = tokenizer.convert_tokens_to_ids("<|eot_id|>")
+    if eot_id is not None and eot_id != tokenizer.unk_token_id:
+        stop_token_ids.append(eot_id)
+    sampling_params = SamplingParams(
+        temperature=0.0,  # Greedy decoding for tool calls
+        max_tokens=2048,
+        stop_token_ids=stop_token_ids,
+    )
+    import uuid
+    # Generate with vLLM engine
+    request_id = f"tool_call_{uuid.uuid4()}"
+    results_generator = engine.generate(
+        formatted_prompt,
+        sampling_params,
+        request_id
     )
 
-    batch = Batch(requests=[request])
-    outputs = await engine.generate_async(batch)
+    # Wait for completion
+    final_output = None
+    async for request_output in results_generator:
+        final_output = request_output
 
-    response_ids = outputs[0].sequences[0][len(input_ids):]
-    response = tokenizer.decode(response_ids, skip_special_tokens=True)
-    return response
+    if final_output is None:
+        raise RuntimeError("vLLM generation returned no output")
+
+    # Extract the generated text
+    generated_text = final_output.outputs[0].text.strip()
+    return generated_text

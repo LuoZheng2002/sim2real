@@ -41,6 +41,13 @@ parser.add_argument(
     action="store_true",
     help="Whether to use API backend",
 )
+parser.add_argument(
+    "--num-gpus",
+    type=int,
+    default=1,
+    help="Number of GPUs to use for local inference (default: 1)"
+)
+
 
 args = parser.parse_args()
 
@@ -77,7 +84,7 @@ async def main():
                 client = create_api_backend(args.user_api_model_name)
                 api_backend_created = True
             elif not currently_using_api and not vllm_backend_created:
-                engine, tokenizer = create_vllm_backend(args.model_name)
+                engine, tokenizer = create_vllm_backend(args.model_name, args.num_gpus)
                 vllm_backend_created = True
             if currently_using_api:
                 response = await call_api_model_async(
