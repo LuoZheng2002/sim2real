@@ -38,8 +38,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--use-api-for-all",
-    type=bool,
-    required=True,
+    action="store_true",
     help="Whether to use API backend",
 )
 
@@ -67,6 +66,7 @@ from rust_code import *
 
 
 async def main():
+    print("use_api_for_all:", args.use_api_for_all)
 
     # create a AceGenerator instance
     runner = AceGenerator(args.model_name)
