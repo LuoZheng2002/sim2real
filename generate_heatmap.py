@@ -76,6 +76,8 @@ def plot_heatmap(df, model_name, output_path=None):
         annot=True,
         fmt=".3f",
         cmap="RdYlGn",
+        vmin=0,
+        vmax=1,
         linewidths=0.5,
         cbar_kws={"label": "Accuracy"},
     )
