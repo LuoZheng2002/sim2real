@@ -41,7 +41,7 @@
 {"id":"normal_atom_enum_40","result":"[BBQWeatherAlert_setAlertPreferences(alertType='Rain', contactMethod='SMS', location='Austin, Texas')]"}
 {"id":"normal_atom_enum_41","result":"[PersonalChefService_recommendMealPlan(dietaryPreference='Vegetarian', chefAvailability='weekends')]"}
 {"id":"normal_atom_enum_42","result":"[SupplierRecommendation_getTopSuppliers(equipmentType='Robots', region='Europe', deliveryTime='within the next month')]"}
-{"id":"normal_atom_enum_43","result":"[AudienceActivityAnalyzer_getActiveTimes(platform='Instagram', timezone='Eastern Standard Time (EST)')]"}
+{"id":"normal_atom_enum_43","result":"[AudienceActivityAnalyzer_getActiveTimes(platform='Instagram', timezone='EST')]"}
 {"id":"normal_atom_enum_44","result":"[MediaExposureEstimator_predictMediaCoverage(venueType='Conference Center', mediaInterest='high')]"}
 {"id":"normal_atom_enum_45","result":"[MarketAnalysis_getAutomationTrends(industryFocus='Automotive', reportFormat='PDF')]"}
 {"id":"normal_atom_enum_46","result":"[GameDiscovery_findNewGamesByInterest(interest='Strategy', rating='high')]"}

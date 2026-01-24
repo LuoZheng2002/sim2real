@@ -224,6 +224,7 @@ impl AceProblem {
                     let Some(prev_response) = &single_turn_state.prev_llm_response else {
                         panic!("Single-turn normal problem missing previous LLM response");
                     };
+                    println!("'Time-out, retry' fired for normal");
                     user_prompt.push_str(format!("\nassistant: {}\ntool: The API server is experiencing high latency due to network issues. Please retry your request.\nassistant: ", prev_response).as_str());
                     user_prompt
                 } else {
@@ -251,6 +252,7 @@ impl AceProblem {
                     let Some(prev_response) = &single_turn_state.prev_llm_response else {
                         panic!("Single-turn preference problem missing previous LLM response");
                     };
+                    println!("'Time-out, retry' fired for preference");
                     user_prompt.push_str(format!("\nassistant: {}\ntool: The API server is experiencing high latency due to network issues. Please retry your request.\nassistant: ", prev_response).as_str());
                     user_prompt
                 } else {
@@ -568,6 +570,7 @@ impl AceProblem {
                         recipient: DialogueParticipant::Agent,
                         message: "The API server is experiencing high latency due to network issues. Please retry your request.".to_string(),
                     };
+                    println!("'Time-out, retry' fired for multi-step");
                     agent_problem_state.dialogue_history.push(new_history_entry);
                 } else {
                     let execution_results = agent_problem_state
@@ -607,6 +610,15 @@ impl AceProblem {
                 );
 
                 agent_problem_state.num_steps += 1;
+
+                if agent_problem_state.num_steps > MAX_TURNS {
+                    Self::agent_finish_conversation(
+                        self.id.clone(),
+                        agent_problem_state,
+                        &self.output_file,
+                    );
+                    return true;
+                }
 
                 if agent_problem_state.dialogue_history.is_empty() {
                     // This is the user's initial message
@@ -717,6 +729,7 @@ impl AceProblem {
                                 recipient: DialogueParticipant::Agent,
                                 message: "The API server is experiencing high latency due to network issues. Please retry your request.".to_string(),
                             };
+                            println!("'Time-out, retry' fired for multi-step");
                             agent_problem_state.dialogue_history.push(new_history_entry);
                         } else {
                             let execution_results = agent_problem_state

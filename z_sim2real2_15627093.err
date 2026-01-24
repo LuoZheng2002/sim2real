@@ -198,3 +198,53 @@ The argument `trust_remote_code` is to be used with Auto classes. It has no effe
 [0;36m(EngineCore_DP0 pid=409902)[0;0m [0;36m(Worker_TP0 pid=409908)[0;0m 
 [0;36m(EngineCore_DP0 pid=409902)[0;0m [0;36m(Worker_TP0 pid=409908)[0;0m Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   3%|▎         | 1/35 [00:00<00:15,  2.13it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   6%|▌         | 2/35 [00:00<00:08,  3.93it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   9%|▊         | 3/35 [00:00<00:05,  5.39it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  11%|█▏        | 4/35 [00:00<00:04,  6.52it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  17%|█▋        | 6/35 [00:00<00:03,  8.18it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  23%|██▎       | 8/35 [00:01<00:02,  9.13it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  29%|██▊       | 10/35 [00:01<00:02,  9.71it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  34%|███▍      | 12/35 [00:01<00:02, 10.07it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  40%|████      | 14/35 [00:01<00:02, 10.30it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  46%|████▌     | 16/35 [00:01<00:01, 10.45it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  51%|█████▏    | 18/35 [00:02<00:01, 10.63it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  57%|█████▋    | 20/35 [00:02<00:01, 10.74it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  63%|██████▎   | 22/35 [00:02<00:01, 10.38it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  69%|██████▊   | 24/35 [00:02<00:01, 10.55it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  74%|███████▍  | 26/35 [00:02<00:00, 10.70it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  80%|████████  | 28/35 [00:03<00:00, 10.81it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  86%|████████▌ | 30/35 [00:03<00:00, 10.89it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  91%|█████████▏| 32/35 [00:03<00:00, 10.41it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  97%|█████████▋| 34/35 [00:03<00:00, 10.65it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 35/35 [00:03<00:00,  9.44it/s]
 [0;36m(EngineCore_DP0 pid=409902)[0;0m [0;36m(Worker_TP0 pid=409908)[0;0m Capturing CUDA graphs (decode, FULL):   0%|          | 0/19 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL):   5%|▌         | 1/19 [00:00<00:09,  1.81it/s]Capturing CUDA graphs (decode, FULL):  16%|█▌        | 3/19 [00:00<00:03,  4.74it/s]Capturing CUDA graphs (decode, FULL):  26%|██▋       | 5/19 [00:00<00:02,  6.69it/s]Capturing CUDA graphs (decode, FULL):  37%|███▋      | 7/19 [00:01<00:01,  8.01it/s]Capturing CUDA graphs (decode, FULL):  47%|████▋     | 9/19 [00:01<00:01,  8.97it/s]Capturing CUDA graphs (decode, FULL):  58%|█████▊    | 11/19 [00:01<00:00,  9.67it/s]Capturing CUDA graphs (decode, FULL):  68%|██████▊   | 13/19 [00:01<00:00, 10.17it/s]Capturing CUDA graphs (decode, FULL):  79%|███████▉  | 15/19 [00:01<00:00, 10.51it/s]Capturing CUDA graphs (decode, FULL):  89%|████████▉ | 17/19 [00:01<00:00, 10.80it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:02<00:00, 11.00it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:02<00:00,  8.80it/s]
+Traceback (most recent call last):
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 128, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^
+  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 120, in main
+    await asyncio.gather(*workers)
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 117, in worker
+    response_dict = await process_single_task_async(task)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 97, in process_single_task_async
+    response = await call_vllm_model_async(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/projects/bfdz/zluo8/sim2real/src_py/vllm_backend.py", line 85, in call_vllm_model_async
+    async for request_output in results_generator:
+        final_output = request_output
+  File "/projects/bfdz/zluo8/sim2real/.venv/lib/python3.13/site-packages/vllm/v1/engine/async_llm.py", line 419, in generate
+    q = await self.add_request(
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/projects/bfdz/zluo8/sim2real/.venv/lib/python3.13/site-packages/vllm/v1/engine/async_llm.py", line 315, in add_request
+    request = self.input_processor.process_inputs(
+        request_id,
+    ...<7 lines>...
+        data_parallel_rank,
+    )
+  File "/projects/bfdz/zluo8/sim2real/.venv/lib/python3.13/site-packages/vllm/v1/engine/input_processor.py", line 528, in process_inputs
+    self._validate_model_inputs(encoder_inputs, decoder_inputs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/projects/bfdz/zluo8/sim2real/.venv/lib/python3.13/site-packages/vllm/v1/engine/input_processor.py", line 608, in _validate_model_inputs
+    self._validate_model_input(decoder_inputs, prompt_type="decoder")
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/projects/bfdz/zluo8/sim2real/.venv/lib/python3.13/site-packages/vllm/v1/engine/input_processor.py", line 683, in _validate_model_input
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: The decoder prompt (length 10036) is longer than the maximum model length of 10000. Make sure that `max_model_len` is no smaller than the number of text tokens.

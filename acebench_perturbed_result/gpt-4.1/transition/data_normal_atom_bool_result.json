@@ -27,14 +27,14 @@
 {"id":"normal_atom_bool_26","result":"[WeeklyWeatherSummary_generate(region='New York', include_sunrise_sunset=True)]"}
 {"id":"normal_atom_bool_27","result":"[AudienceSegmentationTool(behavior_data='Engagements: 1200 likes, 300 comments on posts related to outdoor activities over the last week.')]"}
 {"id":"normal_atom_bool_28","result":"[AirQualityDataFetcher(target_city='Paris', include_pollutants=True)]"}
-{"id":"normal_atom_bool_29","result":"[StreamingPlatformLocator(tv_show='Stranger Things', include_subscription_info=true)]"}
+{"id":"normal_atom_bool_29","result":"[StreamingPlatformLocator(tv_show='Stranger Things', include_subscription_info=True)]"}
 {"id":"normal_atom_bool_30","result":"[SignalAccuracyEvaluator(device_id='GPS-7524')]"}
 {"id":"normal_atom_bool_31","result":"[DailyTrafficRuleNotifier(area_code='10001')]"}
-{"id":"normal_atom_bool_32","result":"[ClothingRecommendationBasedOnWeather(city='Austin')]"}
+{"id":"normal_atom_bool_32","result":"[ClothingRecommendationBasedOnWeather(city='Austin', consider_temperature=true)]"}
 {"id":"normal_atom_bool_33","result":"[AudienceEngagementProfiler(engagement_data='High attendance on weekends, with notable interest from ages 25-34. Popularity peaks in urban areas. Most attendees use mobile devices.', include_age_group_analysis=True, include_location_analysis=True, include_device_usage=True)]"}
 {"id":"normal_atom_bool_34","result":"[KidsArtProgramSelector_select(program_name='Creative Kids Studio')]"}
 {"id":"normal_atom_bool_35","result":"[BrightnessController_adjustBrightness(brightness_level='low', device_name='iPhone')]"}
-{"id":"normal_atom_bool_36","result":"[EcoFriendlyPlantGuide_recommend(allergy_safe=true, space_availability='medium')]"}
+{"id":"normal_atom_bool_36","result":"[EcoFriendlyPlantGuide_recommend(allergy_safe=True, space_availability='medium')]"}
 {"id":"normal_atom_bool_37","result":"[NanoTechResearchAggregator(research_topic='enhancing photovoltaic efficiency using nanomaterials', include_market_analysis=True)]"}
 {"id":"normal_atom_bool_38","result":"[OceanicBiodiversityData_fetch(zone_identifier='Great Barrier Reef')]"}
 {"id":"normal_atom_bool_39","result":"[EcoDiversityMonitor_assessVegetation(area_identifier='Amazon rainforest', detailed_report=True)]"}
@@ -47,4 +47,4 @@
 {"id":"normal_atom_bool_46","result":"[VegetarianFamilyRestaurantSearch(search_area='San Francisco', offers_gluten_free=True)]"}
 {"id":"normal_atom_bool_47","result":"[SoyMilkFlavorCustomizer_createOptions(flavor_intensity='strong', include_fruit_flavors=True, use_organic_ingredients=True, include_herb_options=True)]"}
 {"id":"normal_atom_bool_48","result":"[WeekendWeatherChecker(location='Yosemite National Park')]"}
-{"id":"normal_atom_bool_49","result":"[TemplateRecommender_suggestTemplates(industry='technology startup', modern_design=True, mobile_friendly=True)]"}
+{"id":"normal_atom_bool_49","result":"[TemplateRecommender_suggestTemplates(industry='technology', modern_design=True, mobile_friendly=True)]"}
