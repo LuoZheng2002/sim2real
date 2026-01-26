@@ -1,47 +1,47 @@
-{"id":"normal_atom_bool_1","result":"[SNMI(region_focus='Europe')]"}
 {"id":"normal_atom_bool_0","result":"[PRMP_L(meal_type='dinner', include_vegetarian_options=True, cuisine_preference='Asian')]"}
+{"id":"normal_atom_bool_1","result":"[SNMI(region_focus='Europe')]"}
 {"id":"normal_atom_bool_2","result":"[ETE_D(trend_type='emerging', include_case_studies=True)]"}
 {"id":"normal_atom_bool_3","result":"[RTA_J(departure_point='Los Angeles', arrival_point='San Francisco')]"}
-{"id":"normal_atom_bool_5","result":"[ERA(export_category='electronic gadgets', include_legal_requirements=True)]"}
 {"id":"normal_atom_bool_4","result":"[PFRSF(location='New York City', include_ratings=True, service_type='noise reduction')]"}
-{"id":"normal_atom_bool_7","result":"[CSA_P(style_description='minimalist', room_function='bedroom')]"}
+{"id":"normal_atom_bool_5","result":"[ERA(export_category='electronic gadgets', include_legal_requirements=True)]"}
 {"id":"normal_atom_bool_6","result":"[FRI_S(customer_id='C12345', purchase_receipt='R7890')]"}
+{"id":"normal_atom_bool_7","result":"[CSA_P(style_description='minimalist', room_function='bedroom')]"}
+{"id":"normal_atom_bool_8","result":"[SRA(surgery_details='knee surgery', age_group='30-40', include_exercise_videos=True)]"}
 {"id":"normal_atom_bool_9","result":"[SHIC(consultation_mode='online', device_list='smart bulbs, thermostat')]"}
 {"id":"normal_atom_bool_10","result":"[TMA_S(work_focus=False, leisure_activities=\"yoga, reading\", rest_periods=True)]"}
-{"id":"normal_atom_bool_14","result":"[LCRS(cuisine_preference='Italian')]"}
-{"id":"normal_atom_bool_12","result":"[CES_E(partner_email='john.doe@example.com')]"}
-{"id":"normal_atom_bool_8","result":"[SRA(surgery_details='knee surgery', age_group='30-40', include_exercise_videos=True)]"}
 {"id":"normal_atom_bool_11","result":"[RND(noise_level='loud rattling', include_diy_solutions=True)]"}
+{"id":"normal_atom_bool_12","result":"[CES_E(partner_email='john.doe@example.com')]"}
 {"id":"normal_atom_bool_13","result":"[AQI_R(email_address='john.doe@example.com', include_health_advice=True)]"}
+{"id":"normal_atom_bool_14","result":"[LCRS(cuisine_preference='Italian')]"}
+{"id":"normal_atom_bool_15","result":"[SMFC_O(flavor_intensity='strong', include_fruit_flavors=True, use_organic_ingredients=True)]"}
 {"id":"normal_atom_bool_16","result":"[HWA(hiking_location='Alps', provide_indoor_options=True)]"}
 {"id":"normal_atom_bool_17","result":"[FHT_P(site_type='museum', has_parking=true)]"}
-{"id":"normal_atom_bool_15","result":"[SMFC_O(flavor_intensity='strong', include_fruit_flavors=True, use_organic_ingredients=True)]"}
 {"id":"normal_atom_bool_18","result":"[HPA_O(beginner_friendly=True, seasonal_variation=True)]"}
-{"id":"normal_atom_bool_20","result":"[ASPF(artist_name='Jack Robinson', include_contact_info=True)]"}
 {"id":"normal_atom_bool_19","result":"[TPIS(simulation_scenario='worst case', include_graphical_analysis=True)]"}
-{"id":"normal_atom_bool_22","result":"[SDE_I(cuisine_focus='Thai')]"}
+{"id":"normal_atom_bool_20","result":"[ASPF(artist_name='Jack Robinson', include_contact_info=True)]"}
 {"id":"normal_atom_bool_21","result":"[VFRF(location='downtown Los Angeles', include_vegan_options=True)]"}
-{"id":"normal_atom_bool_25","result":"[MPPC(include_trending=True, platform_region=\"Japan\")]"}
-{"id":"normal_atom_bool_24","result":"[SLD_G(habitat_type='coral reef', include_migratory_patterns=True, report_language='Spanish')]"}
+{"id":"normal_atom_bool_22","result":"[SDE_I(cuisine_focus='Thai')]"}
 {"id":"normal_atom_bool_23","result":"[ETTP(training_routine_data='detailed training schedules of top players like Federer and Nadal', pattern_detection=True, include_visualization=True, focus_on_physical_training=True)]"}
+{"id":"normal_atom_bool_24","result":"[SLD_G(habitat_type='coral reef', include_migratory_patterns=True, report_language='Spanish')]"}
+{"id":"normal_atom_bool_25","result":"[MPPC(include_trending=True, platform_region=\"Japan\")]"}
 {"id":"normal_atom_bool_26","result":"[WWS_G(region='New York', include_sunrise_sunset=True)]"}
+{"id":"normal_atom_bool_27","result":"[AST(behavior_data='Engagements: 1200 likes, 300 comments on posts related to outdoor activities over the last week.', include_demographic_info=True)]"}
 {"id":"normal_atom_bool_28","result":"[AQDF(target_city='Paris', include_pollutants=True)]"}
 {"id":"normal_atom_bool_29","result":"[SPL(tv_show='Stranger Things', include_subscription_info=True)]"}
 {"id":"normal_atom_bool_30","result":"[SAE(device_id='GPS-7524')]"}
-{"id":"normal_atom_bool_27","result":"[AST(behavior_data='Engagements: 1200 likes, 300 comments on posts related to outdoor activities over the last week.', include_demographic_info=True)]"}
 {"id":"normal_atom_bool_31","result":"[DTRN(area_code='10001', include_weekend_rules=True)]"}
 {"id":"normal_atom_bool_32","result":"[CRBOW(city='Austin', consider_temperature=True)]"}
-{"id":"normal_atom_bool_34","result":"[KAPS_S(program_name='Creative Kids Studio', consider_teacher_experience=True)]"}
 {"id":"normal_atom_bool_33","result":"[AEP(engagement_data='High attendance on weekends, with notable interest from ages 25-34. Popularity peaks in urban areas. Most attendees use mobile devices.', include_age_group_analysis=True, include_location_analysis=True, include_device_usage=True)]"}
+{"id":"normal_atom_bool_34","result":"[KAPS_S(program_name='Creative Kids Studio', consider_teacher_experience=True)]"}
 {"id":"normal_atom_bool_35","result":"[BC_B(brightness_level='low', device_name='iPhone')]"}
 {"id":"normal_atom_bool_36","result":"[EFPG_R(allergy_safe=True, space_availability=\"medium\")]"}
 {"id":"normal_atom_bool_37","result":"[NTRA(research_topic='enhancing photovoltaic efficiency using nanomaterials', include_market_analysis=True)]"}
 {"id":"normal_atom_bool_38","result":"[OBD_F(zone_identifier='Great Barrier Reef', include_population_estimates=True, data_format='JSON')]"}
 {"id":"normal_atom_bool_39","result":"[EDM_V(area_identifier='Amazon Rainforest', detailed_report=True)]"}
-{"id":"normal_atom_bool_42","result":"[DBD_FL(log_file='security_logs.txt', notify_on_detection=True)]"}
-{"id":"normal_atom_bool_43","result":"[BBQEW_S(event_location='San Diego', alert_on_rain=True, alert_on_temperature_drop=True)]"}
 {"id":"normal_atom_bool_40","result":"[WWI_R(target_city='Austin', detailed_temperature_analysis=True, detailed_rainfall_analysis=True, include_humidity_trend=True)]"}
 {"id":"normal_atom_bool_41","result":"[CSM_CS(color_scheme='sepia', apply_to_all_apps=True, user_id='user123', device_type='tablet')]"}
+{"id":"normal_atom_bool_42","result":"[DBD_FL(log_file='security_logs.txt', notify_on_detection=True)]"}
+{"id":"normal_atom_bool_43","result":"[BBQEW_S(event_location='San Diego', alert_on_rain=True, alert_on_temperature_drop=True)]"}
 {"id":"normal_atom_bool_44","result":"[FLBA(lecture_date='2026-10-15', number_of_seats='3')]"}
 {"id":"normal_atom_bool_45","result":"[ACO(audience_data='young adult demographic', optimize_for_engagement=True, include_performance_metrics=False)]"}
 {"id":"normal_atom_bool_46","result":"[VFRS(search_area='San Francisco', offers_gluten_free=True)]"}

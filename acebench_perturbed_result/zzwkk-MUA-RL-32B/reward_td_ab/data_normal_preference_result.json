@@ -1,38 +1,38 @@
-{"id":"normal_preference_1","result":"[UE(UserInterfaceTheme='Dark', ContentTailoring=True, Username='John Doe')]"}
-{"id":"normal_preference_4","result":"[TC(ProductName='Nike sneakers', Quantity=1, UserPreferredCategories='Sports', HomeLocation='Los Angeles, CA', PreferDiscounts=True)]"}
-{"id":"normal_preference_3","result":"[SC(UserHomeLocation='New York, NY', PackageDimensions='15x10x8', PreferredShippingMethod='Overnight', UserMemberStatus='Silver')]"}
-{"id":"normal_preference_7","result":"[U(email='jessica.l@example.com', password='Jessie90#new')]"}
-{"id":"normal_preference_6","result":"[S(TrackingNumber='TR1234567890', UserName='Michael Smith', UserHomeLocation='Los Angeles, CA')]"}
 {"id":"normal_preference_0","result":"[P(email='john.doe@example.com', newPassword='newSecurePassword123', confirmNewPassword='newSecurePassword123', securityQuestion='What was the name of your first pet?', securityAnswer='Buddy')]"}
+{"id":"normal_preference_1","result":"[UE(UserInterfaceTheme='Dark', ContentTailoring=True, Username='John Doe')]"}
 {"id":"normal_preference_2","result":"[UP(UserName='Emily Johnson', UserEmail='emily.j@example.com', UserHomeLocation='New York, NY', UserLanguage='English', UserTimeZone='EST', UserBirthday='1992-11-15')]"}
+{"id":"normal_preference_3","result":"[SC(UserHomeLocation='New York, NY', PackageDimensions='15x10x8', PreferredShippingMethod='Overnight', UserMemberStatus='Silver')]"}
+{"id":"normal_preference_4","result":"[TC(ProductName='Nike sneakers', Quantity=1, UserPreferredCategories='Sports', HomeLocation='Los Angeles, CA', PreferDiscounts=True)]"}
 {"id":"normal_preference_5","result":"[UP(UserName='Michael Smith', UserEmail='mike.smith@example.com', UserHomeLocation='Los Angeles, CA', UserLanguage='Spanish', UserTimeZone='PST', UserBirthday='1978-04-23')]"}
-{"id":"normal_preference_11","result":"[UE(UserInterfaceTheme='Dark', ContentTailoring=True, Username='Robert Brown')]"}
+{"id":"normal_preference_6","result":"[S(TrackingNumber='TR1234567890', UserName='Michael Smith', UserHomeLocation='Los Angeles, CA')]"}
+{"id":"normal_preference_7","result":"[U(email='jessica.l@example.com', password='Jessie90#new')]"}
+{"id":"normal_preference_8","result":"[UP(UserName='Jessica Lee', UserEmail='jessica_new@example.com', UserHomeLocation='Near Austin, TX', UserLanguage='Spanish', UserTimeZone='CST', UserBirthday='1990-03-05')]"}
 {"id":"normal_preference_9","result":"[SC(UserHomeLocation='Austin, TX', PackageDimensions='18x24x12', PreferredShippingMethod='Express', UserMemberStatus='Gold')]"}
 {"id":"normal_preference_10","result":"[P(Amount=250, Currency='USD', PaymentMethodName='Mobile Payment', UserSpendingLimit=1000, UserPreferredNotificationMethod='SMS')]"}
-{"id":"normal_preference_8","result":"[UP(UserName='Jessica Lee', UserEmail='jessica_new@example.com', UserHomeLocation='Near Austin, TX', UserLanguage='Spanish', UserTimeZone='CST', UserBirthday='1990-03-05')]"}
+{"id":"normal_preference_11","result":"[UE(UserInterfaceTheme='Dark', ContentTailoring=True, Username='Robert Brown')]"}
 {"id":"normal_preference_12","result":"[SC(UserHomeLocation='Seattle, WA', PackageDimensions='12x24x36', PreferredShippingMethod='Express', UserMemberStatus='Platinum')]"}
 {"id":"normal_preference_13","result":"[TC(ProductName='yoga mat', Quantity=1, UserPreferredCategories='Books, Wellness', HomeLocation='Miami, FL', PreferDiscounts=True)]"}
+{"id":"normal_preference_14","result":"[UP(UserName='Daniel Jackson', UserEmail='d.jackson88@example.net', UserHomeLocation='San Francisco, CA', UserLanguage='Spanish', UserTimeZone='MST', UserBirthday='1988-09-16')]"}
 {"id":"normal_preference_15","result":"[SC(UserHomeLocation='Denver, CO', PackageDimensions='10x15x5', PreferredShippingMethod='Express', UserMemberStatus='Platinum')]"}
 {"id":"normal_preference_16","result":"[P(Amount=75, Currency='USD', PaymentMethodName='Debit Card', UserSpendingLimit=350, UserPreferredNotificationMethod='SMS')]"}
-{"id":"normal_preference_14","result":"[UP(UserName='Daniel Jackson', UserEmail='d.jackson88@example.net', UserHomeLocation='San Francisco, CA', UserLanguage='Spanish', UserTimeZone='MST', UserBirthday='1988-09-16')]"}
 {"id":"normal_preference_17","result":"[UP(UserName='Lucy Kim', UserEmail='lucy.kim56@example.org', UserHomeLocation='San Diego, California', UserLanguage='Korean', UserTimeZone='PST', UserBirthday='1990-02-13')]"}
-{"id":"normal_preference_19","result":"[P(Amount=150, Currency='USD', PaymentMethodName='Credit Card', UserSpendingLimit=1000, UserPreferredNotificationMethod='Email')]"}
 {"id":"normal_preference_18","result":"[SC(UserHomeLocation='San Francisco, CA', PackageDimensions='12x8x10', PreferredShippingMethod='Overnight', UserMemberStatus='Platinum')]"}
-{"id":"normal_preference_22","result":"[SC(UserHomeLocation='San Diego, CA', PackageDimensions='15x10x8', PreferredShippingMethod='Express', UserMemberStatus='Silver')]"}
+{"id":"normal_preference_19","result":"[P(Amount=150, Currency='USD', PaymentMethodName='Credit Card', UserSpendingLimit=1000, UserPreferredNotificationMethod='Email')]"}
+{"id":"normal_preference_20","result":"[fetchUserPreferences(Username='Harold Finch', PreferenceType='Privacy Settings', UserDeviceType='Desktop PC'), SC(UserHomeLocation='New York, NY', PackageDimensions='30x30x15', PreferredShippingMethod='Express', UserMemberStatus='Platinum')]"}
 {"id":"normal_preference_21","result":"[UP(UserName='Grace Hopper', UserEmail='new.email@example.com', UserHomeLocation='New City, CA', UserLanguage='English', UserTimeZone='PST', UserBirthday='1989-12-09')]"}
+{"id":"normal_preference_22","result":"[SC(UserHomeLocation='San Diego, CA', PackageDimensions='15x10x8', PreferredShippingMethod='Express', UserMemberStatus='Silver')]"}
+{"id":"normal_preference_23","result":"[PR(UserName='Grace Hopper', ProductName='100 Cryptography Facts', ReviewText='Thorough and insightful! A must-read for anyone interested in the field.', Rating=5)]"}
 {"id":"normal_preference_24","result":"[MI(RestaurantName='Olive Garden', MenuItem='Vegetarian Delight Pizza', UserDietaryPreference='Vegetarian')]"}
 {"id":"normal_preference_25","result":"[OU(UserName='John Doe', OrderStatus='Out for Delivery', HomeLocation='Chicago, IL')]"}
-{"id":"normal_preference_20","result":"[fetchUserPreferences(Username='Harold Finch', PreferenceType='Privacy Settings', UserDeviceType='Desktop PC'), SC(UserHomeLocation='New York, NY', PackageDimensions='30x30x15', PreferredShippingMethod='Express', UserMemberStatus='Platinum')]"}
-{"id":"normal_preference_27","result":"[OU(UserName='Emily Johnson', OrderStatus='Out for Delivery', HomeLocation='New York, NY')]"}
-{"id":"normal_preference_23","result":"[PR(UserName='Grace Hopper', ProductName='100 Cryptography Facts', ReviewText='Thorough and insightful! A must-read for anyone interested in the field.', Rating=5)]"}
 {"id":"normal_preference_26","result":"[MI(RestaurantName='Chez Jacques', MenuItem='Gratin Dauphinois', UserDietaryPreference='Shellfish-Free')]"}
+{"id":"normal_preference_27","result":"[OU(UserName='Emily Johnson', OrderStatus='Out for Delivery', HomeLocation='New York, NY')]"}
 {"id":"normal_preference_28","result":"[RI(RestaurantName='Taco Fiesta', UserHomeLocation='Los Angeles, CA', UserCuisinePreference='Mexican')]"}
-{"id":"normal_preference_32","result":"[R(RestaurantName='Burger Place by Elm Park', MinRating=4, MaxRating=5)]"}
-{"id":"normal_preference_30","result":"[UP(userFullName='Jessica Lee', newEmail='newemail@example.com', newPassword='Jessie90#new', preferredNotificationMethod='Email')]"}
-{"id":"normal_preference_33","result":"[MI(RestaurantName='Green Panda', MenuItem='Vegan Spring Rolls', UserDietaryPreference='Vegan')]"}
 {"id":"normal_preference_29","result":"[P(OrderName='Mexican meal', UserPreferredPaymentMethod='Debit Card', Amount=45, UserLoyaltyStatus='Silver', HomeLocation='Los Angeles, CA')]"}
-{"id":"normal_preference_34","result":"[MI(RestaurantName='Indian restaurant', MenuItem='Chana Masala', UserDietaryPreference='Vegetarian, Gluten-Free')]"}
+{"id":"normal_preference_30","result":"[UP(userFullName='Jessica Lee', newEmail='newemail@example.com', newPassword='Jessie90#new', preferredNotificationMethod='Email')]"}
 {"id":"normal_preference_31","result":"[P(OrderName='Dinner Order', UserPreferredPaymentMethod='Credit Card', Amount=23, UserLoyaltyStatus='Gold', HomeLocation='Austin, TX')]"}
+{"id":"normal_preference_32","result":"[R(RestaurantName='Burger Place by Elm Park', MinRating=4, MaxRating=5)]"}
+{"id":"normal_preference_33","result":"[MI(RestaurantName='Green Panda', MenuItem='Vegan Spring Rolls', UserDietaryPreference='Vegan')]"}
+{"id":"normal_preference_34","result":"[MI(RestaurantName='Indian restaurant', MenuItem='Chana Masala', UserDietaryPreference='Vegetarian, Gluten-Free')]"}
 {"id":"normal_preference_35","result":"[P(OrderName='Dinner Order', UserPreferredPaymentMethod='Credit Card', Amount=25, UserLoyaltyStatus='Gold', HomeLocation='Miami, FL')]"}
 {"id":"normal_preference_36","result":"[OU(UserName='Samantha Carter', OrderStatus='Out for Delivery', HomeLocation='Miami, FL')]"}
 {"id":"normal_preference_37","result":"[UP(userFullName='Daniel Jackson', homeLocation='1234 Newline Ave, Denver, CO')]"}
@@ -42,9 +42,9 @@
 {"id":"normal_preference_41","result":"[OU(UserName='Daniel Jackson', OrderStatus='Out for Delivery', HomeLocation='Denver, CO')]"}
 {"id":"normal_preference_42","result":"[RI(RestaurantName='Seoul Delights', UpdatedCuisineType='Vegan', UserHomeLocation='San Francisco, CA')]"}
 {"id":"normal_preference_43","result":"[MI(RestaurantName='Kimchi Palace', MenuItem='Spicy Kimchi Stew', UserDietaryPreference='')]"}
-{"id":"normal_preference_48","result":"[UP(userFullName='Grace Hopper', homeLocation='San Diego, CA')]"}
-{"id":"normal_preference_47","result":"[R(RestaurantName='The Modern', MinRating=4, MaxRating=5)]"}
-{"id":"normal_preference_45","result":"[UP(userFullName='Harold Finch', newEmail='new@email.com', preferredNotificationMethod='Push Notification')]"}
 {"id":"normal_preference_44","result":"[R(OrderName='spicy noodle dish', UserName='Lucy Kim', Amount=0, UserRefundPreference='Original Method')]"}
+{"id":"normal_preference_45","result":"[UP(userFullName='Harold Finch', newEmail='new@email.com', preferredNotificationMethod='Push Notification')]"}
 {"id":"normal_preference_46","result":"[MI(RestaurantName='Central Perk', MenuItem='Low Sodium Grilled Chicken', UserDietaryPreference='Nut-Free')]"}
+{"id":"normal_preference_47","result":"[R(RestaurantName='The Modern', MinRating=4, MaxRating=5)]"}
+{"id":"normal_preference_48","result":"[UP(userFullName='Grace Hopper', homeLocation='San Diego, CA')]"}
 {"id":"normal_preference_49","result":"[MI(RestaurantName='Tasty Taco Co.', MenuItem='Avocado Salad', UserDietaryPreference='Vegetarian, Gluten-Free')]"}
