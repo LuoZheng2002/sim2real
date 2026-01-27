@@ -1,5 +1,6 @@
 🔗 Found pyo3 bindings
 🐍 Found CPython 3.13 at /projects/bfdz/zluo8/sim2real/.venv/bin/python
+   Compiling rust_code v0.1.0 (/projects/bfdz/zluo8/sim2real)
 warning: unused import: `std::collections::HashMap`
  --> src/ace_evaluator.rs:1:5
   |
@@ -72,12 +73,12 @@ warning: unused imports: `base_api::BaseApi`, `evaluate_parse::FunctionCallHygie
 11 |     message::MessageApi,
    |     ^^^^^^^^^^^^^^^^^^^
 ...
-17 |         system_prompt_for_special_data_en, travel_prompt_en, user_prompt_en,
+19 |         system_prompt_for_special_data_en, travel_prompt_en, user_prompt_en,
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ...
-22 |     reminder::ReminderApi,
+24 |     reminder::ReminderApi,
    |     ^^^^^^^^^^^^^^^^^^^^^
-23 |     travel::Travel,
+25 |     travel::Travel,
    |     ^^^^^^^^^^^^^^
 
 warning: unused import: `std::cell::RefCell`
@@ -160,9 +161,9 @@ warning: unused import: `GetFlightDetailsArgs`
    |                    ^^^^^^^^^^^^^^^^^^^^
 
 warning: unused variable: `problem_entries_parsed`
-   --> src/ace_evaluator.rs:558:9
+   --> src/ace_evaluator.rs:562:9
     |
-558 |     let problem_entries_parsed: IndexMap<String, NormalEntry> = problem_entries
+562 |     let problem_entries_parsed: IndexMap<String, NormalEntry> = problem_entries
     |         ^^^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_problem_entries_parsed`
     |
     = note: `#[warn(unused_variables)]` on by default
@@ -174,19 +175,19 @@ warning: unused variable: `c`
     |                         ^ help: if this is intentional, prefix it with an underscore: `_c`
 
 warning: `rust_code` (lib) generated 23 warnings (run `cargo fix --lib -p rust_code` to apply 21 suggestions)
-    Finished `release` profile [optimized] target(s) in 1.67s
-📦 Built wheel for CPython 3.13 to /tmp/.tmpl38DU7/rust_code-0.1.0-cp313-cp313-linux_x86_64.whl
+    Finished `release` profile [optimized] target(s) in 24.84s
+📦 Built wheel for CPython 3.13 to /tmp/.tmp4tViJH/rust_code-0.1.0-cp313-cp313-linux_x86_64.whl
 🛠 Installed rust_code-0.1.0
 The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
 The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
 The explicitly set RoPE scaling factor (config.rope_scaling['factor'] = 2.0) does not match the ratio implicitly set by other parameters (implicit factor = post-yarn context length / pre-yarn context length = config.max_position_embeddings / config.rope_scaling['original_max_position_embeddings'] = 1.25). Using the explicit factor (2.0) in YaRN. This may cause unexpected behaviour in model usage, please correct the 'max_position_embeddings' fields in the model config.
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:00<00:02,  1.19it/s]
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:03<00:03,  1.68s/it]
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:05<00:01,  2.00s/it]
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:08<00:00,  2.52s/it]
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:08<00:00,  2.20s/it]
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m 
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   6%|▌         | 2/35 [00:00<00:01, 18.74it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  14%|█▍        | 5/35 [00:00<00:01, 19.85it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  23%|██▎       | 8/35 [00:00<00:01, 20.71it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  31%|███▏      | 11/35 [00:00<00:01, 21.29it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  40%|████      | 14/35 [00:00<00:01, 12.37it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  49%|████▊     | 17/35 [00:01<00:01, 14.65it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  57%|█████▋    | 20/35 [00:01<00:00, 16.61it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  66%|██████▌   | 23/35 [00:01<00:00, 18.18it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  74%|███████▍  | 26/35 [00:01<00:00, 19.49it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  83%|████████▎ | 29/35 [00:01<00:00, 20.54it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  91%|█████████▏| 32/35 [00:01<00:00, 15.81it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 35/35 [00:02<00:00, 10.11it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 35/35 [00:02<00:00, 14.42it/s]
-[0;36m(EngineCore_DP0 pid=1503453)[0;0m Capturing CUDA graphs (decode, FULL):   0%|          | 0/19 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL):   5%|▌         | 1/19 [00:01<00:34,  1.90s/it]Capturing CUDA graphs (decode, FULL):  21%|██        | 4/19 [00:02<00:05,  2.52it/s]Capturing CUDA graphs (decode, FULL):  37%|███▋      | 7/19 [00:02<00:02,  4.83it/s]Capturing CUDA graphs (decode, FULL):  53%|█████▎    | 10/19 [00:02<00:01,  7.36it/s]Capturing CUDA graphs (decode, FULL):  68%|██████▊   | 13/19 [00:02<00:00, 10.00it/s]Capturing CUDA graphs (decode, FULL):  84%|████████▍ | 16/19 [00:02<00:00, 12.60it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:02<00:00, 14.54it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:02<00:00,  7.05it/s]
-[2026-01-22T20:35:07.166] error: *** JOB 15619465 ON gpua025 CANCELLED AT 2026-01-22T20:35:07 DUE to SIGNAL Terminated ***
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:01<00:03,  1.21s/it]
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:04<00:04,  2.23s/it]
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:07<00:02,  2.62s/it]
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:10<00:00,  2.79s/it]
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:10<00:00,  2.57s/it]
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m 
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   6%|▌         | 2/35 [00:00<00:02, 14.39it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  14%|█▍        | 5/35 [00:00<00:01, 18.32it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  23%|██▎       | 8/35 [00:00<00:01, 19.79it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  31%|███▏      | 11/35 [00:00<00:01, 20.72it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  40%|████      | 14/35 [00:01<00:01, 11.05it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  49%|████▊     | 17/35 [00:01<00:01, 13.44it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  57%|█████▋    | 20/35 [00:01<00:00, 15.61it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  66%|██████▌   | 23/35 [00:01<00:00, 17.44it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  74%|███████▍  | 26/35 [00:01<00:00, 18.02it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  83%|████████▎ | 29/35 [00:01<00:00, 19.49it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  91%|█████████▏| 32/35 [00:01<00:00, 18.05it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 35/35 [00:02<00:00,  9.95it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 35/35 [00:02<00:00, 13.90it/s]
+[0;36m(EngineCore_DP0 pid=3242354)[0;0m Capturing CUDA graphs (decode, FULL):   0%|          | 0/19 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL):   5%|▌         | 1/19 [00:02<00:38,  2.14s/it]Capturing CUDA graphs (decode, FULL):  21%|██        | 4/19 [00:02<00:06,  2.28it/s]Capturing CUDA graphs (decode, FULL):  37%|███▋      | 7/19 [00:02<00:02,  4.42it/s]Capturing CUDA graphs (decode, FULL):  53%|█████▎    | 10/19 [00:02<00:01,  6.83it/s]Capturing CUDA graphs (decode, FULL):  68%|██████▊   | 13/19 [00:02<00:00,  9.42it/s]Capturing CUDA graphs (decode, FULL):  84%|████████▍ | 16/19 [00:02<00:00, 12.05it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:02<00:00, 14.32it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:02<00:00,  6.56it/s]
+[2026-01-27T00:56:19.284] error: *** JOB 15663466 ON gpua078 CANCELLED AT 2026-01-27T00:56:19 DUE to SIGNAL Terminated ***

@@ -1,227 +1,0 @@
-🔗 Found pyo3 bindings
-🐍 Found CPython 3.13 at /projects/bfdz/zluo8/sim2real/.venv/bin/python
-   Compiling rust_code v0.1.0 (/projects/bfdz/zluo8/sim2real)
-warning: unused import: `std::collections::HashMap`
- --> src/ace_evaluator.rs:1:5
-  |
-1 | use std::collections::HashMap;
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
-  |
-  = note: `#[warn(unused_imports)]` on by default
-
-warning: unused import: `regex::Regex`
- --> src/ace_evaluator.rs:5:5
-  |
-5 | use regex::Regex;
-  |     ^^^^^^^^^^^^
-
-warning: unused imports: `Mode`, `ast`, and `parse`
- --> src/ace_evaluator.rs:6:25
-  |
-6 | use rustpython_parser::{Mode, ast, parse};
-  |                         ^^^^  ^^^  ^^^^^
-
-warning: unused import: `Value`
- --> src/ace_evaluator.rs:8:18
-  |
-8 | use serde_json::{Value, json};
-  |                  ^^^^^
-
-warning: unused imports: `LazyLock`, `PathBuf`, `cell::RefCell`, and `rc::Rc`
- --> src/ace_generator.rs:2:5
-  |
-2 |     cell::RefCell,
-  |     ^^^^^^^^^^^^^
-3 |     collections::{HashMap, HashSet, VecDeque},
-4 |     path::{Path, PathBuf},
-  |                  ^^^^^^^
-5 |     rc::Rc,
-  |     ^^^^^^
-6 |     sync::{Arc, LazyLock},
-  |                 ^^^^^^^^
-
-warning: unused imports: `DialogueEntry`, `DialogueParticipant`, and `self`
-  --> src/ace_generator.rs:16:57
-   |
-16 |         AceProblem, AceProblemState, AgentProblemState, DialogueEntry, DialogueParticipant,
-   |                                                         ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^
-...
-21 |     perturbations::{self, PerturbationType},
-   |                     ^^^^
-
-warning: unused import: `cell::RefCell`
- --> src/ace_problem.rs:1:11
-  |
-1 | use std::{cell::RefCell, sync::Arc};
-  |           ^^^^^^^^^^^^^
-
-warning: unused import: `indexmap::IndexMap`
- --> src/ace_problem.rs:4:5
-  |
-4 | use indexmap::IndexMap;
-  |     ^^^^^^^^^^^^^^^^^^
-
-warning: unused imports: `base_api::BaseApi`, `evaluate_parse::FunctionCallHygienic`, `food_services::FoodPlatform`, `message::MessageApi`, `reminder::ReminderApi`, `system_prompt_for_special_data_en`, and `travel::Travel`
-  --> src/ace_problem.rs:8:5
-   |
- 8 |     base_api::BaseApi,
-   |     ^^^^^^^^^^^^^^^^^
- 9 |     evaluate_parse::FunctionCallHygienic,
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10 |     food_services::FoodPlatform,
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-11 |     message::MessageApi,
-   |     ^^^^^^^^^^^^^^^^^^^
-...
-17 |         system_prompt_for_special_data_en, travel_prompt_en, user_prompt_en,
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-...
-22 |     reminder::ReminderApi,
-   |     ^^^^^^^^^^^^^^^^^^^^^
-23 |     travel::Travel,
-   |     ^^^^^^^^^^^^^^
-
-warning: unused import: `std::cell::RefCell`
- --> src/food_services.rs:1:5
-  |
-1 | use std::cell::RefCell;
-  |     ^^^^^^^^^^^^^^^^^^
-
-warning: unused import: `std::collections::HashMap`
- --> src/parse_ast.rs:1:5
-  |
-1 | use std::collections::HashMap;
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
-
-warning: unused import: `regex::Regex`
- --> src/parse_ast.rs:4:5
-  |
-4 | use regex::Regex;
-  |     ^^^^^^^^^^^^
-
-warning: unused import: `parse`
- --> src/parse_ast.rs:5:36
-  |
-5 | use rustpython_parser::{Mode, ast, parse};
-  |                                    ^^^^^
-
-warning: unused imports: `Deserialize` and `Serialize`
- --> src/parse_ast.rs:6:13
-  |
-6 | use serde::{Deserialize, Serialize};
-  |             ^^^^^^^^^^^  ^^^^^^^^^
-
-warning: unused import: `json`
- --> src/parse_ast.rs:7:18
-  |
-7 | use serde_json::{json};
-  |                  ^^^^
-
-warning: unused imports: `BASE_DATASET_PATH`, `BASE_OUTPUT_PATH`, `BASE_SCORE_PATH`, `EvaluationType`, `NormalResultEntry`, `datasets::DATASETS`, `load_json_lines`, and `write_json_lines_to_file`
-  --> src/parse_ast.rs:10:21
-   |
-10 |     ace_generator::{EvaluationType, NormalResultEntry},
-   |                     ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
-11 |     datasets::DATASETS,
-   |     ^^^^^^^^^^^^^^^^^^
-12 |     evaluate_parse::FunctionCallHygienic,
-13 |     paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH, BASE_SCORE_PATH},
-   |             ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^
-14 |     utils::{load_json_lines, write_json_lines_to_file},
-   |             ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^
-
-warning: unused import: `std::result`
- --> src/travel.rs:2:5
-  |
-2 | use std::result;
-  |     ^^^^^^^^^^^
-
-warning: unused import: `travel`
- --> src/travel.rs:8:40
-  |
-8 | use crate::{base_api::ExecutionResult, travel};
-  |                                        ^^^^^^
-
-warning: unused import: `indexmap::IndexMap`
- --> src/world_state.rs:1:5
-  |
-1 | use indexmap::IndexMap;
-  |     ^^^^^^^^^^^^^^^^^^
-
-warning: unused import: `ordered_float::NotNan`
- --> src/world_state.rs:2:5
-  |
-2 | use ordered_float::NotNan;
-  |     ^^^^^^^^^^^^^^^^^^^^^
-
-warning: unused import: `GetFlightDetailsArgs`
-  --> src/world_state.rs:11:20
-   |
-11 |     travel::{self, GetFlightDetailsArgs, Travel},
-   |                    ^^^^^^^^^^^^^^^^^^^^
-
-warning: unused variable: `problem_entries_parsed`
-   --> src/ace_evaluator.rs:558:9
-    |
-558 |     let problem_entries_parsed: IndexMap<String, NormalEntry> = problem_entries
-    |         ^^^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_problem_entries_parsed`
-    |
-    = note: `#[warn(unused_variables)]` on by default
-
-warning: unused variable: `c`
-   --> src/parse_ast.rs:143:25
-    |
-143 |         ast::Expr::Call(c) => {
-    |                         ^ help: if this is intentional, prefix it with an underscore: `_c`
-
-warning: `rust_code` (lib) generated 23 warnings (run `cargo fix --lib -p rust_code` to apply 21 suggestions)
-    Finished `release` profile [optimized] target(s) in 22.76s
-📦 Built wheel for CPython 3.13 to /tmp/.tmpew7FXq/rust_code-0.1.0-cp313-cp313-linux_x86_64.whl
-🛠 Installed rust_code-0.1.0
-The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
-The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:   0% Completed | 0/14 [00:00<?, ?it/s]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:   7% Completed | 1/14 [00:03<00:43,  3.37s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  14% Completed | 2/14 [00:06<00:40,  3.37s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  21% Completed | 3/14 [00:10<00:37,  3.44s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  29% Completed | 4/14 [00:13<00:34,  3.45s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  36% Completed | 5/14 [00:16<00:30,  3.35s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  43% Completed | 6/14 [00:19<00:26,  3.25s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  50% Completed | 7/14 [00:23<00:22,  3.21s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  57% Completed | 8/14 [00:26<00:19,  3.21s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  64% Completed | 9/14 [00:29<00:16,  3.29s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  71% Completed | 10/14 [00:32<00:12,  3.06s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  79% Completed | 11/14 [00:35<00:08,  2.97s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  86% Completed | 12/14 [00:37<00:05,  2.93s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards:  93% Completed | 13/14 [00:44<00:04,  4.19s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards: 100% Completed | 14/14 [00:48<00:00,  3.93s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Loading safetensors checkpoint shards: 100% Completed | 14/14 [00:48<00:00,  3.45s/it]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m 
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   3%|▎         | 1/35 [00:00<00:15,  2.22it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   6%|▌         | 2/35 [00:00<00:08,  4.05it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):   9%|▊         | 3/35 [00:00<00:05,  5.49it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  14%|█▍        | 5/35 [00:00<00:04,  7.40it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  20%|██        | 7/35 [00:01<00:03,  8.52it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  26%|██▌       | 9/35 [00:01<00:02,  9.25it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  31%|███▏      | 11/35 [00:01<00:02,  9.70it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  37%|███▋      | 13/35 [00:01<00:02, 10.00it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  43%|████▎     | 15/35 [00:01<00:01, 10.21it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  49%|████▊     | 17/35 [00:01<00:01, 10.36it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  54%|█████▍    | 19/35 [00:02<00:01, 10.51it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  60%|██████    | 21/35 [00:02<00:02,  6.58it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  66%|██████▌   | 23/35 [00:02<00:01,  7.43it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  69%|██████▊   | 24/35 [00:03<00:01,  7.60it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  71%|███████▏  | 25/35 [00:03<00:01,  7.87it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  74%|███████▍  | 26/35 [00:03<00:01,  8.21it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  80%|████████  | 28/35 [00:03<00:00,  8.98it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  86%|████████▌ | 30/35 [00:03<00:00,  9.58it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  89%|████████▊ | 31/35 [00:03<00:00,  7.87it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE):  94%|█████████▍| 33/35 [00:04<00:00,  8.79it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 35/35 [00:04<00:00,  7.02it/s]Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████| 35/35 [00:04<00:00,  7.92it/s]
-[0;36m(EngineCore_DP0 pid=924782)[0;0m [0;36m(Worker_TP0 pid=924788)[0;0m Capturing CUDA graphs (decode, FULL):   0%|          | 0/19 [00:00<?, ?it/s]Capturing CUDA graphs (decode, FULL):   5%|▌         | 1/19 [00:01<00:31,  1.74s/it]Capturing CUDA graphs (decode, FULL):  16%|█▌        | 3/19 [00:01<00:08,  1.93it/s]Capturing CUDA graphs (decode, FULL):  26%|██▋       | 5/19 [00:02<00:04,  3.34it/s]Capturing CUDA graphs (decode, FULL):  37%|███▋      | 7/19 [00:02<00:02,  4.72it/s]Capturing CUDA graphs (decode, FULL):  47%|████▋     | 9/19 [00:02<00:01,  6.01it/s]Capturing CUDA graphs (decode, FULL):  58%|█████▊    | 11/19 [00:02<00:01,  7.16it/s]Capturing CUDA graphs (decode, FULL):  68%|██████▊   | 13/19 [00:02<00:00,  8.12it/s]Capturing CUDA graphs (decode, FULL):  79%|███████▉  | 15/19 [00:03<00:00,  8.90it/s]Capturing CUDA graphs (decode, FULL):  89%|████████▉ | 17/19 [00:03<00:00,  9.54it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:03<00:00, 10.03it/s]Capturing CUDA graphs (decode, FULL): 100%|██████████| 19/19 [00:03<00:00,  5.64it/s]
-
-thread '<unnamed>' panicked at src/ace_evaluator.rs:128:64:
-Failed to read result file: "Unable to parse JSON: trailing characters at line 1 column 13348"
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-Traceback (most recent call last):
-  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 128, in <module>
-    asyncio.run(main())
-    ~~~~~~~~~~~^^^^^^^^
-  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/runners.py", line 195, in run
-    return runner.run(main)
-           ~~~~~~~~~~^^^^^^
-  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "/sw/rh9.4/spack/v1.0.0/sw/linux-x86_64_v2/python-3.13.5-7bp2p4z/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
-    return future.result()
-           ~~~~~~~~~~~~~^^
-  File "/projects/bfdz/zluo8/sim2real/acebench.py", line 124, in main
-    evaluate_all_results(args.model_name)
-    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
-pyo3_runtime.PanicException: Failed to read result file: "Unable to parse JSON: trailing characters at line 1 column 13348"
-Exception ignored in: <function AsyncLLM.__del__ at 0x7fea175191c0>
-Traceback (most recent call last):
-  File "/projects/bfdz/zluo8/sim2real/.venv/lib/python3.13/site-packages/vllm/v1/engine/async_llm.py", line 245, in __del__
-  File "/projects/bfdz/zluo8/sim2real/.venv/lib/python3.13/site-packages/vllm/v1/engine/async_llm.py", line 250, in shutdown
-TypeError: 'NoneType' object is not callable
