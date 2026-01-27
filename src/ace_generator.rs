@@ -449,7 +449,7 @@ impl AceGenerator {
             .executing_pool
             .remove(&response.identifier)
             .expect("The problem is not in the executing pool");
-        let completed = problem.handle_python_response(response);
+        let completed = problem.handle_python_response(response, self.enable_fc);
         if !completed {
             problem.status = ProblemStatus::Waiting;
             println!(

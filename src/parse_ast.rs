@@ -180,3 +180,66 @@ pub fn negate_json_value(value: &serde_json::Value) -> Result<serde_json::Value,
         _ => Err("Cannot negate non-numeric value".to_string()),
     }
 }
+
+/// Parse FC (Function Calling) format tool calls from model output
+/// Format: <tool_call>{"name":"func_name","arguments":{"key":"value"}}</tool_call>
+/// Returns a list of FunctionCallHygienic or error
+pub fn decode_tool_call_format(response: &str) -> Result<Vec<FunctionCallHygienic>, String> {
+    let re = Regex::new(r"(?s)<tool_call>\s*(.*?)\s*</tool_call>")
+        .map_err(|e| format!("Failed to compile regex: {}", e))?;
+
+    let mut function_calls = Vec::new();
+
+    for cap in re.captures_iter(response) {
+        let json_str = cap.get(1).map_or("", |m| m.as_str());
+        let parsed: serde_json::Value = serde_json::from_str(json_str)
+            .map_err(|e| format!("Failed to parse tool call JSON '{}': {}", json_str, e))?;
+
+        let name = parsed.get("name")
+            .and_then(|v| v.as_str())
+            .ok_or_else(|| format!("Tool call missing 'name' field: {}", json_str))?
+            .to_string();
+
+        let arguments = parsed.get("arguments")
+            .ok_or_else(|| format!("Tool call missing 'arguments' field: {}", json_str))?;
+
+        let parameters: IndexMap<String, serde_json::Value> = match arguments {
+            serde_json::Value::Object(map) => {
+                map.iter()
+                    .map(|(k, v)| (k.clone(), v.clone()))
+                    .collect()
+            }
+            _ => return Err(format!("Tool call 'arguments' must be an object: {}", json_str)),
+        };
+
+        function_calls.push(FunctionCallHygienic {
+            name,
+            parameters,
+        });
+    }
+
+    if function_calls.is_empty() {
+        return Err("No <tool_call> tags found in response".to_string());
+    }
+
+    Ok(function_calls)
+}
+
+/// Check if a response contains any tool calls in FC format
+pub fn contains_tool_calls_fc(response: &str) -> bool {
+    response.contains("<tool_call>")
+}
+
+/// Decode function list with FC mode awareness
+/// In FC mode, tries to parse <tool_call> format first
+/// In non-FC mode, uses Python AST parsing
+pub fn decode_function_list_with_fc_mode(
+    function_calls: &str,
+    enable_fc: bool,
+) -> Result<Vec<FunctionCallHygienic>, String> {
+    if enable_fc {
+        decode_tool_call_format(function_calls)
+    } else {
+        decode_function_list(function_calls)
+    }
+}

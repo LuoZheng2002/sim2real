@@ -15,7 +15,7 @@ use crate::{
         PossibleAnswerIrrelevantHygienic, PossibleAnswerNormalHygienic,
         PossibleAnswerPointingOutHygienic,
     },
-    parse_ast::{parse_from_ast_to_structured, parse_from_string_to_ast},
+    parse_ast::{decode_tool_call_format, parse_from_ast_to_structured, parse_from_string_to_ast},
     paths::{BASE_DATASET_PATH, BASE_OUTPUT_PATH, BASE_SCORE_PATH},
     perturbations::PerturbationType,
     utils::{load_json_lines, write_json_lines_to_file},
@@ -138,11 +138,13 @@ pub fn evaluate_all_results(model_name: String, enable_fc: bool) {
                     &result_entries,
                     &problem_entries,
                     &possible_answer_entries,
+                    enable_fc,
                 ),
                 EvaluationType::NormalMultiTurn => evaluate_normal_multi_turn(
                     &result_entries,
                     &problem_entries,
                     &possible_answer_entries,
+                    enable_fc,
                 ),
                 EvaluationType::SpecialIncomplete
                 | EvaluationType::SpecialErrorParam
@@ -232,6 +234,7 @@ pub fn evaluate_normal_multi_turn(
     result_entries: &Vec<serde_json::Value>,
     problem_entries: &Vec<serde_json::Value>,
     possible_answer_entries: &Vec<serde_json::Value>,
+    enable_fc: bool,
 ) -> Vec<serde_json::Value> {
     let result_len = result_entries.len();
     let problem_len = problem_entries.len();
@@ -302,7 +305,7 @@ pub fn evaluate_normal_multi_turn(
             .expect("Failed to parse item index");
 
         let evaluation_result =
-            evaluate_one_normal(&result_entry.result, &possible_answer_entry.ground_truth);
+            evaluate_one_normal(&result_entry.result, &possible_answer_entry.ground_truth, enable_fc);
         match evaluation_result {
             Ok(_) => {
                 correct_count += 1;
@@ -363,6 +366,7 @@ pub fn evaluate_normal_single_turn(
     result_entries: &Vec<serde_json::Value>,
     problem_entries: &Vec<serde_json::Value>,
     possible_answer_entries: &Vec<serde_json::Value>,
+    enable_fc: bool,
 ) -> Vec<serde_json::Value> {
     let result_len = result_entries.len();
     let problem_len = problem_entries.len();
@@ -416,7 +420,7 @@ pub fn evaluate_normal_single_turn(
             .get(id)
             .expect("Missing possible answer entry");
 
-        match evaluate_one_normal(&result_entry.result, &possible_answer_entry.ground_truth) {
+        match evaluate_one_normal(&result_entry.result, &possible_answer_entry.ground_truth, enable_fc) {
             Ok(_) => {
                 correct_count += 1;
                 results.push(NormalEvaluationResult {
@@ -486,17 +490,25 @@ pub fn check_functions_all_match(
 pub fn evaluate_one_normal(
     model_result_raw: &str,
     possible_answer_function_calls: &Vec<FunctionCallHygienic>,
+    enable_fc: bool,
 ) -> Result<(), String> {
-    let decoded_ast = parse_from_string_to_ast(model_result_raw)?;
-    let mut decodeded_function_calls =
-        parse_from_ast_to_structured(&decoded_ast, model_result_raw)?;
+    // Parse function calls based on mode
+    let mut decoded_function_calls = if enable_fc {
+        // FC mode: parse <tool_call> format
+        decode_tool_call_format(model_result_raw)?
+    } else {
+        // Non-FC mode: parse Python AST format [ApiName(key='value')]
+        let decoded_ast = parse_from_string_to_ast(model_result_raw)?;
+        parse_from_ast_to_structured(&decoded_ast, model_result_raw)?
+    };
+
     // check function equivalence
-    if decodeded_function_calls.len() != possible_answer_function_calls.len() {
+    if decoded_function_calls.len() != possible_answer_function_calls.len() {
         return Err("The number of function calls does not match the possible answer.".to_string());
     }
 
     for possible_answer_function_call in possible_answer_function_calls.iter() {
-        let Some(pos) = decodeded_function_calls
+        let Some(pos) = decoded_function_calls
             .iter()
             .position(|fa| functions_equivalent(&possible_answer_function_call, fa))
         else {
@@ -506,7 +518,7 @@ pub fn evaluate_one_normal(
             ));
         };
         // remove the matched one
-        decodeded_function_calls.swap_remove(pos);
+        decoded_function_calls.swap_remove(pos);
     }
     Ok(())
 }

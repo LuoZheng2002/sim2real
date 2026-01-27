@@ -9,7 +9,7 @@ use crate::{
     evaluate_parse::FunctionCallHygienic,
     food_services::FoodPlatform,
     message::MessageApi,
-    parse_ast::decode_function_list,
+    parse_ast::{contains_tool_calls_fc, decode_function_list, decode_tool_call_format},
     prompts::{
         base_prompt_en, multi_step_agent_prompt_system_en, multi_step_agent_prompt_user_en,
         multi_step_agent_prompt_user_fc_en, multi_turn_agent_prompt_system_en,
@@ -508,7 +508,7 @@ impl AceProblem {
     /// The file writing happens inside the function
     /// later we need to add a shared file object to ACEProblem that share the same output file, and use a lock to avoid race condition
     /// to avoid complexity, for the agent tasks, we will write the output after the entire task is done
-    pub fn handle_python_response(&mut self, response: PythonResponse) -> bool {
+    pub fn handle_python_response(&mut self, response: PythonResponse, enable_fc: bool) -> bool {
         assert!(self.identifier == response.identifier);
         // the status will be updated outside the function
         // this function is to update the internal state based on the response
@@ -579,29 +579,61 @@ impl AceProblem {
                     );
                     return true;
                 }
-                let function_call_list = match decode_function_list(&response.response) {
-                    Ok(funcs) => funcs,
-                    Err(e) => {
-                        if !response.response.starts_with("[") {
-                            let new_history_entry = DialogueEntry {
-                                sender: DialogueParticipant::Execution,
-                                recipient: DialogueParticipant::Agent,
-                                message: "Please do not ask me any questions, use the known conditions to solve the problem".to_string(),
-                            };
-                            println!(
-                                "The agent is trying to ask a question: {}",
-                                response.response
-                            );
-                            agent_problem_state.dialogue_history.push(new_history_entry);
-                        } else {
-                            let new_history_entry = DialogueEntry {
-                                sender: DialogueParticipant::Execution,
-                                recipient: DialogueParticipant::Agent,
-                                message: format!("Failed to parse function calls: {}", e),
-                            };
-                            agent_problem_state.dialogue_history.push(new_history_entry);
+                // Parse function calls based on FC mode
+                let function_call_list = if enable_fc {
+                    // FC mode: parse <tool_call> format
+                    match decode_tool_call_format(&response.response) {
+                        Ok(funcs) => funcs,
+                        Err(e) => {
+                            // In FC mode, if no <tool_call> tags found, it's likely a question
+                            if !contains_tool_calls_fc(&response.response) {
+                                let new_history_entry = DialogueEntry {
+                                    sender: DialogueParticipant::Execution,
+                                    recipient: DialogueParticipant::Agent,
+                                    message: "Please do not ask me any questions, use the known conditions to solve the problem".to_string(),
+                                };
+                                println!(
+                                    "The agent is trying to ask a question: {}",
+                                    response.response
+                                );
+                                agent_problem_state.dialogue_history.push(new_history_entry);
+                            } else {
+                                let new_history_entry = DialogueEntry {
+                                    sender: DialogueParticipant::Execution,
+                                    recipient: DialogueParticipant::Agent,
+                                    message: format!("Failed to parse function calls: {}", e),
+                                };
+                                agent_problem_state.dialogue_history.push(new_history_entry);
+                            }
+                            return false;
                         }
-                        return false;
+                    }
+                } else {
+                    // Non-FC mode: parse Python AST format [ApiName(key='value')]
+                    match decode_function_list(&response.response) {
+                        Ok(funcs) => funcs,
+                        Err(e) => {
+                            if !response.response.starts_with("[") {
+                                let new_history_entry = DialogueEntry {
+                                    sender: DialogueParticipant::Execution,
+                                    recipient: DialogueParticipant::Agent,
+                                    message: "Please do not ask me any questions, use the known conditions to solve the problem".to_string(),
+                                };
+                                println!(
+                                    "The agent is trying to ask a question: {}",
+                                    response.response
+                                );
+                                agent_problem_state.dialogue_history.push(new_history_entry);
+                            } else {
+                                let new_history_entry = DialogueEntry {
+                                    sender: DialogueParticipant::Execution,
+                                    recipient: DialogueParticipant::Agent,
+                                    message: format!("Failed to parse function calls: {}", e),
+                                };
+                                agent_problem_state.dialogue_history.push(new_history_entry);
+                            }
+                            return false;
+                        }
                     }
                 };
                 agent_problem_state
@@ -731,32 +763,67 @@ impl AceProblem {
                             return true;
                         }
 
-                        let function_call_list = match decode_function_list(&response.response) {
-                            Ok(funcs) => funcs,
-                            Err(e) => {
-                                if !response.response.starts_with("[") {
-                                    // Agent is not making a function call, relay message to user
-                                    // Change recipient from Execution to User
-                                    agent_problem_state
-                                        .dialogue_history
-                                        .last_mut()
-                                        .unwrap()
-                                        .recipient = DialogueParticipant::User;
-                                    println!("Agent message to user: {}", response.response);
-                                    // Post-condition: now user needs to respond
-                                    assert!(
-                                        agent_problem_state.needs_llm_response(),
-                                        "MultiTurn: after agent message to user, state should need LLM response"
-                                    );
-                                } else {
-                                    let new_history_entry = DialogueEntry {
-                                        sender: DialogueParticipant::Execution,
-                                        recipient: DialogueParticipant::Agent,
-                                        message: format!("Failed to parse function calls: {}", e),
-                                    };
-                                    agent_problem_state.dialogue_history.push(new_history_entry);
+                        // Parse function calls based on FC mode
+                        let function_call_list = if enable_fc {
+                            // FC mode: parse <tool_call> format
+                            match decode_tool_call_format(&response.response) {
+                                Ok(funcs) => funcs,
+                                Err(e) => {
+                                    // In FC mode, if no <tool_call> tags found, it's a message to user
+                                    if !contains_tool_calls_fc(&response.response) {
+                                        // Agent is not making a function call, relay message to user
+                                        // Change recipient from Execution to User
+                                        agent_problem_state
+                                            .dialogue_history
+                                            .last_mut()
+                                            .unwrap()
+                                            .recipient = DialogueParticipant::User;
+                                        println!("Agent message to user: {}", response.response);
+                                        // Post-condition: now user needs to respond
+                                        assert!(
+                                            agent_problem_state.needs_llm_response(),
+                                            "MultiTurn: after agent message to user, state should need LLM response"
+                                        );
+                                    } else {
+                                        let new_history_entry = DialogueEntry {
+                                            sender: DialogueParticipant::Execution,
+                                            recipient: DialogueParticipant::Agent,
+                                            message: format!("Failed to parse function calls: {}", e),
+                                        };
+                                        agent_problem_state.dialogue_history.push(new_history_entry);
+                                    }
+                                    return false;
                                 }
-                                return false;
+                            }
+                        } else {
+                            // Non-FC mode: parse Python AST format [ApiName(key='value')]
+                            match decode_function_list(&response.response) {
+                                Ok(funcs) => funcs,
+                                Err(e) => {
+                                    if !response.response.starts_with("[") {
+                                        // Agent is not making a function call, relay message to user
+                                        // Change recipient from Execution to User
+                                        agent_problem_state
+                                            .dialogue_history
+                                            .last_mut()
+                                            .unwrap()
+                                            .recipient = DialogueParticipant::User;
+                                        println!("Agent message to user: {}", response.response);
+                                        // Post-condition: now user needs to respond
+                                        assert!(
+                                            agent_problem_state.needs_llm_response(),
+                                            "MultiTurn: after agent message to user, state should need LLM response"
+                                        );
+                                    } else {
+                                        let new_history_entry = DialogueEntry {
+                                            sender: DialogueParticipant::Execution,
+                                            recipient: DialogueParticipant::Agent,
+                                            message: format!("Failed to parse function calls: {}", e),
+                                        };
+                                        agent_problem_state.dialogue_history.push(new_history_entry);
+                                    }
+                                    return false;
+                                }
                             }
                         };
 
