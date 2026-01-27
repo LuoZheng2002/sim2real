@@ -11,8 +11,9 @@ use crate::{
     message::MessageApi,
     parse_ast::{contains_tool_calls_fc, decode_function_list, decode_tool_call_format},
     prompts::{
-        base_prompt_en, multi_step_agent_prompt_system_en, multi_step_agent_prompt_user_en,
-        multi_step_agent_prompt_user_fc_en, multi_turn_agent_prompt_system_en,
+        base_prompt_en, multi_step_agent_prompt_system_en, multi_step_agent_prompt_system_fc_en,
+        multi_step_agent_prompt_user_en, multi_step_agent_prompt_user_fc_en,
+        multi_turn_agent_prompt_system_en, multi_turn_agent_prompt_system_fc_en,
         multi_turn_agent_prompt_user_en, multi_turn_agent_prompt_user_fc_en,
         system_prompt_for_normal_data_en, system_prompt_for_normal_data_fc_en,
         system_prompt_for_preference_data_en, system_prompt_for_preference_data_fc_en,
@@ -331,7 +332,11 @@ impl AceProblem {
                 let inference_message = agent_problem_state.get_inference_message();
                 // Multi-step uses different prompts - agent decides when to finish
                 // Note: Multi-step does NOT use travel_prompt or base_prompt (unlike multi-turn)
-                let system_prompt = multi_step_agent_prompt_system_en();
+                let system_prompt = if enable_fc {
+                    multi_step_agent_prompt_system_fc_en()
+                } else {
+                    multi_step_agent_prompt_system_en()
+                };
                 let user_prompt = if enable_fc {
                     multi_step_agent_prompt_user_fc_en(&inference_message)
                 } else {
@@ -462,7 +467,11 @@ impl AceProblem {
                             // Agent needs to respond
                             let inference_message = agent_problem_state.get_inference_message();
                             // Build system prompt with domain-specific rules
-                            let mut system_prompt = multi_turn_agent_prompt_system_en();
+                            let mut system_prompt = if enable_fc {
+                                multi_turn_agent_prompt_system_fc_en()
+                            } else {
+                                multi_turn_agent_prompt_system_en()
+                            };
                             if agent_problem_state
                                 .involved_classes
                                 .contains(&"Travel".to_string())

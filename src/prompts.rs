@@ -133,6 +133,23 @@ pub fn multi_step_agent_prompt_user_fc_en(history: &str) -> String {
     format!("Conversation history: {}\n", history)
 }
 
+/// Multi-step agent prompt for FC mode (tools passed via apply_chat_template)
+pub fn multi_step_agent_prompt_system_fc_en() -> String {
+    r#"You are an AI agent with the role of 'agent'. Based on the provided API documentation and the conversation history from steps 1 to t, generate the appropriate content for the 'agent' role in step t+1.
+1. If the information provided in the previous step is complete and allows for a successful API call, you should call the appropriate API function(s).
+   - If the API parameter description does not specify otherwise, the parameter is optional (only include parameters mentioned in the user input; if not mentioned, do not include them).
+   - If the API parameter description does not specify a required value format, use the user's original input for the parameter value.
+2. If a task requires multiple steps to complete (with strict sequential relationships between steps), execute them step by step, and decide how to proceed based on the results returned from each execution.
+3. Generally do not use parallel calls, meaning only one function is called at a time.
+
+When you believe the task is completed, return "finish conversation" to end the dialogue.
+
+Role Descriptions:
+user: The user
+agent: The AI agent role that performs API requests
+execution: Executes API calls and returns results"#.to_string()
+}
+
 /// Multi-turn agent prompt (user simulation decides when to finish)
 /// Used for data_agent_multi_turn - agent interacts with simulated user
 pub fn multi_turn_agent_prompt_system_en() -> String {
@@ -160,6 +177,23 @@ pub fn multi_turn_agent_prompt_user_en(functions: &str, history: &str) -> String
 // FC mode: tools passed separately, so user prompt only includes history
 pub fn multi_turn_agent_prompt_user_fc_en(history: &str) -> String {
     format!("Conversation history 1..t:\n{}", history)
+}
+
+/// Multi-turn agent prompt for FC mode (tools passed via apply_chat_template)
+pub fn multi_turn_agent_prompt_system_fc_en() -> String {
+    r#"You are an AI agent with the role of 'agent'. Based on the provided API documentation and conversation history from steps 1 to t, generate the appropriate content for step t+1 for the 'agent' role.
+1. If the information provided in the previous step is complete and the API call can be executed normally, you should call the appropriate API function(s).
+   - If the API parameter description does not specify otherwise, the parameter is optional (only include parameters mentioned in the user input; if not mentioned, do not include them).
+   - If the API parameter description does not specify the required format for the value, use the user's original text for the parameter value.
+2. If the information you received is incomplete, you need to ask the user for more information to obtain the complete details. You should not pretend to be the user to answer some clarifying questions; instead, promptly ask the user for clarification.
+
+Role Descriptions:
+user: The user
+agent: The AI agent role that makes API requests
+execution: Executes the API call and returns the result
+
+The rules you need to follow are as follows:
+"#.to_string()
 }
 
 pub fn user_simulation_system_prompt_base_en(instruction: &str) -> String {
