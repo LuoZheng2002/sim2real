@@ -1,0 +1,496 @@
+✏️ Setting installed package as editable
+Initialized ACEBenchRunner with 15714 problems.
+Acquiring build lock...
+Building Rust extension with maturin develop...
+Installed Rust extension successfully.
+Released build lock.
+use_api_for_all: False
+fc (function calling): True
+importing vllm and transformers...
+vllm and transformers imported.
+Creating vLLM backend...
+INFO 01-27 01:23:30 [model.py:530] Resolved architecture: Qwen3ForCausalLM
+INFO 01-27 01:23:30 [model.py:1545] Using max model len 15000
+INFO 01-27 01:23:31 [scheduler.py:229] Chunked prefill is enabled with max_num_batched_tokens=2048.
+INFO 01-27 01:23:31 [vllm.py:630] Asynchronous scheduling is enabled.
+INFO 01-27 01:23:31 [vllm.py:637] Disabling NCCL for DP synchronization when using async scheduling.
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:23:32 [core.py:97] Initializing a V1 LLM engine (v0.14.0) with config: model='zzwkk/MUA-RL-32B', speculative_config=None, tokenizer='zzwkk/MUA-RL-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=15000, download_dir=None, load_format=auto, tensor_parallel_size=2, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=zzwkk/MUA-RL-32B, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'level': None, 'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::kda_attention', 'vllm::sparse_attn_indexer'], 'compile_mm_encoder': False, 'compile_sizes': [], 'compile_ranges_split_points': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'eliminate_noops': True, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 256, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': True}, 'local_cache_dir': None}
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m WARNING 01-27 01:23:32 [multiproc_executor.py:880] Reducing Torch parallelism from 4 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:23:37 [parallel_state.py:1214] world_size=2 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:55171 backend=nccl
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:23:37 [parallel_state.py:1214] world_size=2 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:55171 backend=nccl
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:23:39 [pynccl.py:111] vLLM is using nccl==2.27.5
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m WARNING 01-27 01:23:39 [symm_mem.py:67] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m WARNING 01-27 01:23:39 [symm_mem.py:67] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:23:39 [parallel_state.py:1425] rank 1 in world size 2 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 1, EP rank N/A
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:23:39 [parallel_state.py:1425] rank 0 in world size 2 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:23:42 [gpu_model_runner.py:3808] Starting to load model zzwkk/MUA-RL-32B...
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:23:44 [cuda.py:351] Using FLASH_ATTN attention backend out of potential backends: ('FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION')
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:24:59 [default_loader.py:291] Loading weights took 73.89 seconds
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:00 [gpu_model_runner.py:3905] Model loading took 30.59 GiB memory and 76.773665 seconds
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:22 [backends.py:644] Using cache directory: /u/zluo8/.cache/vllm/torch_compile_cache/fe7e8b0fee/rank_0_0/backbone for vLLM's torch.compile
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:22 [backends.py:704] Dynamo bytecode transform time: 22.02 s
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP1 pid=2923425)[0;0m INFO 01-27 01:25:42 [backends.py:226] Directly load the compiled graph(s) for compile range (1, 2048) from the cache, took 10.405 s
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:42 [backends.py:226] Directly load the compiled graph(s) for compile range (1, 2048) from the cache, took 10.363 s
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:42 [monitor.py:34] torch.compile takes 32.38 s in total
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:44 [gpu_worker.py:358] Available KV cache memory: 4.08 GiB
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:25:44 [kv_cache_utils.py:1305] GPU KV cache size: 33,376 tokens
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:25:44 [kv_cache_utils.py:1310] Maximum concurrency for 15,000 tokens per request: 2.22x
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP1 pid=2923425)[0;0m INFO 01-27 01:25:51 [custom_all_reduce.py:216] Registering 6966 cuda graph addresses
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:51 [custom_all_reduce.py:216] Registering 6966 cuda graph addresses
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m [0;36m(Worker_TP0 pid=2923423)[0;0m INFO 01-27 01:25:51 [gpu_model_runner.py:4856] Graph capturing finished in 7 secs, took 0.71 GiB
+[0;36m(EngineCore_DP0 pid=2923417)[0;0m INFO 01-27 01:25:52 [core.py:273] init engine (profile, create kv cache, warmup model) took 51.96 seconds
+Problem agent_multi_step_0 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username":"Eve","password":"password123"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_0 not completed, re-added to waiting queue.
+Problem agent_multi_step_1 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username":"Eve","password":"password123"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_2 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+Problem agent_multi_step_3 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_3 not completed, re-added to waiting queue.
+Problem agent_multi_step_4 turn 1 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name":"Eve","receiver_name":"Frank"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 1 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name":"Eve","receiver_name":"Frank"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_6 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+Problem agent_multi_step_7 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_16 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_17 turn 1 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem agent_multi_step_18 turn 1 response: <tool_call>
+{"name": "search_messages", "arguments": {"user_name": "Isaac", "keyword": "call"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_19 turn 1 response: <tool_call>
+{"name": "search_messages", "arguments": {"user_name": "Isaac", "keyword": "call"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_1 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_18 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_16 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_0 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_2 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_27 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_23 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_11 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_3 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_22 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_28 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_19 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_24 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_13 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_8 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_14 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_4 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_15 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_20 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_10 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_17 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_7 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_26 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_9 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_6 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_25 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_5 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_21 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_12 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_29 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_1 completed. 1/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_5 completed. 2/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_3 completed. 3/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_14 completed. 4/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_2 completed. 5/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_7 completed. 6/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_12 completed. 7/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_9 completed. 8/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_10 completed. 9/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_0 completed. 10/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_4 completed. 11/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_11 completed. 12/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_16 completed. 13/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_17 completed. 14/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_13 completed. 15/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_18 completed. 16/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_19 completed. 17/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_6 completed. 18/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_8 completed. 19/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_15 completed. 20/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_22 completed. 21/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_20 completed. 22/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_25 completed. 23/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_21 completed. 24/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_30 completed. 25/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_31 completed. 26/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_26 completed. 27/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_28 completed. 28/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_29 completed. 29/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_32 completed. 30/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_35 completed. 31/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_38 completed. 32/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_34 completed. 33/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_36 completed. 34/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_23 completed. 35/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_24 completed. 36/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_37 completed. 37/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_39 completed. 38/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_27 completed. 39/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_48 completed. 40/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_42 completed. 41/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_40 completed. 42/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_46 completed. 43/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_1 completed. 44/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_45 completed. 45/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_2 completed. 46/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_43 completed. 47/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_44 completed. 48/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_49 completed. 49/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_3 completed. 50/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_4 completed. 51/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_41 completed. 52/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_0 completed. 53/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_33 completed. 54/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_5 completed. 55/15714 completed.
+Problem no_perturbation_data_normal_atom_bool_normal_atom_bool_47 completed. 56/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_7 completed. 57/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_6 completed. 58/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_11 completed. 59/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_16 completed. 60/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_8 completed. 61/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_12 completed. 62/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_10 completed. 63/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_17 completed. 64/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_19 completed. 65/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_13 completed. 66/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_20 completed. 67/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_18 completed. 68/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_21 completed. 69/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_23 completed. 70/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_9 completed. 71/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_15 completed. 72/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_22 completed. 73/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_14 completed. 74/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_28 completed. 75/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_26 completed. 76/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_24 completed. 77/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_25 completed. 78/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_27 completed. 79/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_29 completed. 80/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_32 completed. 81/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_30 completed. 82/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_38 completed. 83/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_34 completed. 84/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_31 completed. 85/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_33 completed. 86/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_35 completed. 87/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_41 completed. 88/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_43 completed. 89/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_36 completed. 90/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_37 completed. 91/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_40 completed. 92/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_42 completed. 93/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_39 completed. 94/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_44 completed. 95/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_45 completed. 96/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_46 completed. 97/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_47 completed. 98/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_48 completed. 99/15714 completed.
+Problem no_perturbation_data_normal_atom_enum_normal_atom_enum_49 completed. 100/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_3 completed. 101/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_5 completed. 102/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_2 completed. 103/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_4 completed. 104/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_0 completed. 105/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_11 completed. 106/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_7 completed. 107/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_9 completed. 108/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_6 completed. 109/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_15 completed. 110/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_1 completed. 111/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_13 completed. 112/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_14 completed. 113/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_12 completed. 114/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_17 completed. 115/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_8 completed. 116/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_18 completed. 117/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_19 completed. 118/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_16 completed. 119/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_20 completed. 120/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_23 completed. 121/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_22 completed. 122/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_26 completed. 123/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_21 completed. 124/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_25 completed. 125/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_10 completed. 126/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_32 completed. 127/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_29 completed. 128/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_27 completed. 129/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_33 completed. 130/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_31 completed. 131/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_35 completed. 132/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_38 completed. 133/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_36 completed. 134/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_28 completed. 135/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_45 completed. 136/15714 completed.
+Problem agent_multi_step_1 turn 2 response: <tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_39 completed. 137/15714 completed.
+Problem agent_multi_step_4 turn 2 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 2 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_30 completed. 138/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_40 completed. 139/15714 completed.
+Problem agent_multi_step_0 turn 2 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name":"Domino's"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_0 not completed, re-added to waiting queue.
+Problem agent_multi_step_18 turn 2 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 5}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_19 turn 2 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 5}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_24 completed. 140/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_37 completed. 141/15714 completed.
+Problem agent_multi_step_2 turn 2 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name":"Jiutian BBQ"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+Problem agent_multi_step_3 turn 2 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name":"Jiutian BBQ"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_3 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_16 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_17 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_46 completed. 142/15714 completed.
+Problem agent_multi_step_6 turn 2 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username":"Isaac","password":"password654"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+Problem agent_multi_step_7 turn 2 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username":"Isaac","password":"password654"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 2 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username":"Isaac","password":"password654"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 2 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username":"Isaac","password":"password654"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 2 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name":"Grace","receiver_name":"Helen"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 2 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name":"Grace","receiver_name":"Helen"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 2 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name":"Grace","receiver_name":"Helen"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 2 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name":"Grace","receiver_name":"Helen"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_43 completed. 143/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_47 completed. 144/15714 completed.
+Problem agent_multi_turn_11 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_11 not completed, re-added to waiting queue.
+Problem agent_multi_turn_8 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_8 not completed, re-added to waiting queue.
+Problem agent_multi_turn_14 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_14 not completed, re-added to waiting queue.
+Problem agent_multi_turn_10 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_10 not completed, re-added to waiting queue.
+Problem agent_multi_turn_18 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title":"To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_18 not completed, re-added to waiting queue.
+Problem agent_multi_turn_16 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title":"To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_16 not completed, re-added to waiting queue.
+Problem agent_multi_turn_9 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_9 not completed, re-added to waiting queue.
+Problem agent_multi_turn_12 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_12 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_48 completed. 145/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_49 completed. 146/15714 completed.
+Problem agent_multi_turn_19 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title":"To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_19 not completed, re-added to waiting queue.
+Problem agent_multi_turn_17 turn 2 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title":"To-do list"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_17 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_41 completed. 147/15714 completed.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_44 completed. 148/15714 completed.
+Agent message to user: I'll help you modify your flight reservation. First, I need to retrieve your reservation details to make the changes. Could you please provide your user ID and reservation ID?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_23 not completed, re-added to waiting queue.
+Agent message to user: I'll help you modify your flight reservation. First, I need to retrieve your reservation details to make these changes. Could you please provide your user ID and reservation ID?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_24 not completed, re-added to waiting queue.
+Agent message to user: I'll help you send a message to Frank. However, I need to know the content of the message you'd like to send and your own name as the sender. Could you please provide these details?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_1 not completed, re-added to waiting queue.
+Agent message to user: I'll help you send a message to Frank. However, I need to know the content of the message you'd like to send and your own name as the sender. Could you please provide these details?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_2 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_3 completed. 149/15714 completed.
+Agent message to user: I'll help you modify your flight booking. First, I need to retrieve your reservation details to make these changes. Could you please provide your user ID and reservation ID?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_25 not completed, re-added to waiting queue.
+Agent message to user: I'll help you send a message to Frank. To do this, I'll need:
+1. Your name (the sender)
+2. The content of the message you want to send
+
+Could you please provide these details?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_0 not completed, re-added to waiting queue.
+Agent message to user: I'll help you send a message to Frank. However, I need to know the content of the message you'd like to send and your own name as the sender. Could you please provide these details?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_3 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_2 completed. 150/15714 completed.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_4 completed. 151/15714 completed.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_5 completed. 152/15714 completed.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_2 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_1 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_1 completed. 153/15714 completed.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_23 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_0 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_3 not completed, re-added to waiting queue.
+Agent message to user: I'll help you add a reminder based on a message from Eve. First, I need to view the messages between you and Eve to get the content. Could you please provide your name so I can look up these messages?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_7 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_24 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_6 completed. 154/15714 completed.
+Agent message to user: I'll help you view the messages from Frank. But first, I need to log in to your device. Could you please allow me to log in?
+
+Once you confirm, I can proceed with viewing the messages between you and Frank.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_13 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_25 not completed, re-added to waiting queue.
+Agent message to user: I'll help you add a reminder based on a message from Eve. First, I need to view the messages between you and Eve to get the content. Could you please provide your name so I can look up these messages?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_5 not completed, re-added to waiting queue.
+Problem agent_multi_turn_20 turn 2 response: I'll help you book a flight from Beijing to Shanghai. First, I need to search for available flights. Let me check the flight details.
+
+<tool_call>
+{"name": "get_flight_details", "arguments": {"origin":"北京","destination":"上海"}}
+</tool_call>
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_20 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_8 completed. 155/15714 completed.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_7 not completed, re-added to waiting queue.
+Agent message to user: I'll help you add a reminder based on a message from Eve. First, I need to view the messages between you and Eve to find the relevant one. Could you please provide your name and Eve's name so I can retrieve the messages?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_6 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_0 completed. 156/15714 completed.
+Agent message to user: I'll help you book a flight from Beijing to Nanjing. First, I need to search for available flights. Let me check the flight details for this route.
+
+Could you please provide your user ID and password so I can proceed with the booking?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_29 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_9 completed. 157/15714 completed.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_13 not completed, re-added to waiting queue.
+Agent message to user: I'll help you add a new reminder. To do this, I'll need:
+1. The title of the reminder
+2. The description/content of the reminder
+3. The time for the reminder (if different from the current time)
+
+Could you please provide these details?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_4 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_5 not completed, re-added to waiting queue.
+Agent message to user: I'll help you find a flight from Beijing to Shenzhen on July 18th. First, I'll need to search for available flights. However, I notice that you haven't provided your user ID and password, which are required to proceed with booking. Could you please provide these details?
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_26 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_13 completed. 158/15714 completed.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_29 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_6 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_list_normal_atom_list_34 completed. 159/15714 completed.
+Agent message to user: I'll help you check the latest messages from Frank. First, I need to log in to your device to access the messages. Then I can retrieve the messages between you and Frank.
+
+[login_device()]
+I'll need your permission to log in to your device. Please confirm if you want me to proceed with logging in.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_15 not completed, re-added to waiting queue.
+Problem no_perturbation_data_agent_multi_turn_agent_multi_turn_26 not completed, re-added to waiting queue.
+Problem no_perturbation_data_normal_atom_number_normal_atom_number_7 completed. 160/15714 completed.
