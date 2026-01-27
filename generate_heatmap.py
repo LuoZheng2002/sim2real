@@ -67,11 +67,11 @@ def load_accuracies(base_dir: Path):
 
 def plot_heatmap(df, model_name, output_path=None):
     if output_path is None:
-        output_path = f"{model_name}_accuracy_heatmap.png"
+        output_path = f"{model_name}_accuracy_heatmap.pdf"
 
     plt.figure(figsize=(1.2 * len(df.columns), 0.6 * len(df.index) + 2))
 
-    sns.heatmap(
+    ax = sns.heatmap(
         df,
         annot=True,
         fmt=".3f",
@@ -80,11 +80,18 @@ def plot_heatmap(df, model_name, output_path=None):
         vmax=1,
         linewidths=0.5,
         cbar_kws={"label": "Accuracy"},
+        annot_kws={"size": 12},
     )
 
-    plt.title(f"Accuracy Heatmap — {model_name}")
-    plt.xlabel("Dataset")
-    plt.ylabel("Perturbation")
+    cbar = ax.collections[0].colorbar
+    cbar.ax.tick_params(labelsize=14)
+    cbar.set_label("Accuracy", fontsize=16)
+
+    # plt.title(f"Accuracy Heatmap — {model_name}", fontsize=18)
+    plt.xlabel("Dataset Tasks", fontsize=18)
+    plt.ylabel("Perturbation", fontsize=18)
+    plt.xticks(fontsize=14, rotation=45, ha='right')
+    plt.yticks(fontsize=14)
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close()
