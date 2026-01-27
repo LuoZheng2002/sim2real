@@ -57,12 +57,21 @@ def load_accuracies(base_dir: Path):
             })
 
     df = pd.DataFrame(records)
-    df["perturbation"] = pd.Categorical(
-        df["perturbation"],
-        categories=perturbations,
-        ordered=True,
-    )
-    return df.pivot(index="perturbation", columns="dataset", values="accuracy")
+    pivot_df = df.pivot(index="perturbation", columns="dataset", values="accuracy")
+
+    # Sort rows: no_perturbation on top, then by row average (highest to lowest)
+    row_means = pivot_df.mean(axis=1)
+    other_rows = [idx for idx in pivot_df.index if idx != "no_perturbation"]
+    other_rows_sorted = sorted(other_rows, key=lambda x: row_means[x], reverse=True)
+    row_order = ["no_perturbation"] + other_rows_sorted
+    pivot_df = pivot_df.reindex(row_order)
+
+    # Sort columns by column average (highest to lowest)
+    col_means = pivot_df.mean(axis=0)
+    col_order = col_means.sort_values(ascending=False).index
+    pivot_df = pivot_df[col_order]
+
+    return pivot_df
 
 
 def plot_heatmap(df, model_name, output_path=None):
