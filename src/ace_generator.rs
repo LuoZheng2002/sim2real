@@ -347,6 +347,7 @@ pub struct AceGenerator {
     // and retrieving the result and matching it with the id
     // needs to store all the tasks and results
     pub model_safe_name: String,
+    pub enable_fc: bool, // Function calling mode
     pub waiting_queue: VecDeque<AceProblem>,
     pub executing_pool: HashMap<String, AceProblem>,
     pub num_completed: usize,
@@ -356,8 +357,8 @@ pub struct AceGenerator {
 #[pymethods]
 impl AceGenerator {
     #[new]
-    pub fn new(model_name: String) -> Self {
-        Self::new_helper(model_name)
+    pub fn new(model_name: String, enable_fc: bool) -> Self {
+        Self::new_helper(model_name, enable_fc)
     }
     /// Returns a json string with the format {"identifier": str, "system_prompt": str, "user_prompt": str}
     pub fn next_task(&mut self) -> Option<String> {
@@ -373,10 +374,14 @@ impl AceGenerator {
     }
 }
 impl AceGenerator {
-    pub fn new_helper(model_name: String) -> Self {
+    pub fn new_helper(model_name: String, enable_fc: bool) -> Self {
         let mut waiting_queue = VecDeque::new();
         let executing_pool = HashMap::new();
-        let model_safe_name = model_name.replace("/", "-");
+        let model_safe_name = if enable_fc {
+            format!("{}-FC", model_name.replace("/", "-"))
+        } else {
+            model_name.replace("/", "-")
+        };
         for perturbation_type in PerturbationType::all_perturbations() {
             let perturbation_folder_name = perturbation_type.to_folder_name();
             for (dataset_name, dataset_trait) in DATASETS.iter() {
@@ -419,6 +424,7 @@ impl AceGenerator {
         println!("Initialized ACEBenchRunner with {} problems.", total_num);
         AceGenerator {
             model_safe_name,
+            enable_fc,
             waiting_queue,
             executing_pool,
             num_completed: 0,
@@ -428,7 +434,7 @@ impl AceGenerator {
     pub fn next_task_helper(&mut self) -> Option<String> {
         let mut problem = self.waiting_queue.pop_front()?;
         problem.status = ProblemStatus::Executing;
-        let python_task = problem.build_python_task();
+        let python_task = problem.build_python_task(self.enable_fc);
         self.executing_pool
             .insert(problem.identifier.clone(), problem);
         let python_task_serialized =

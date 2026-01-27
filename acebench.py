@@ -47,6 +47,11 @@ parser.add_argument(
     default=1,
     help="Number of GPUs to use for local inference (default: 1)"
 )
+parser.add_argument(
+    "--fc",
+    action="store_true",
+    help="Enable function calling mode: pass tools to apply_chat_template instead of including in prompt"
+)
 
 
 args = parser.parse_args()
@@ -74,9 +79,10 @@ from rust_code import *
 
 async def main():
     print("use_api_for_all:", args.use_api_for_all)
+    print("fc (function calling):", args.fc)
 
     # create a AceGenerator instance
-    runner = AceGenerator(args.model_name)
+    runner = AceGenerator(args.model_name, args.fc)
     async def process_single_task_async(task: dict) -> dict:
             global client, api_backend_created, engine, vllm_backend_created, tokenizer
             currently_using_api = args.use_api_for_all or task['role'] == 'user'
@@ -94,12 +100,17 @@ async def main():
                     task["user_prompt"],
                 )
             else:
+                # Validate tools field based on FC mode
+                tools = task.get("tools")
+                assert (args.fc and tools is not None) or (not args.fc and tools is None), \
+                    f"FC mode mismatch: fc={args.fc}, tools={'present' if tools else 'missing'} in task {task['identifier']}"
                 response = await call_vllm_model_async(
-                    args.model_name,    
+                    args.model_name,
                     engine,
                     tokenizer,
                     task["system_prompt"],
                     task["user_prompt"],
+                    tools,
                 )
             response_dict = {
                 "identifier": task["identifier"],
@@ -121,7 +132,7 @@ async def main():
 
     # sort
     runner.sort_all_files_after_generation()
-    evaluate_all_results(args.model_name)
+    evaluate_all_results(args.model_name, args.fc)
 
 
 if __name__ == "__main__":
