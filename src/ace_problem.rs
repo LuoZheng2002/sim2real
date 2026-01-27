@@ -12,8 +12,10 @@ use crate::{
     parse_ast::decode_function_list,
     prompts::{
         base_prompt_en, multi_step_agent_prompt_system_en, multi_step_agent_prompt_user_en,
-        multi_turn_agent_prompt_system_en, multi_turn_agent_prompt_user_en,
-        system_prompt_for_normal_data_en, system_prompt_for_preference_data_en,
+        multi_step_agent_prompt_user_fc_en, multi_turn_agent_prompt_system_en,
+        multi_turn_agent_prompt_user_en, multi_turn_agent_prompt_user_fc_en,
+        system_prompt_for_normal_data_en, system_prompt_for_normal_data_fc_en,
+        system_prompt_for_preference_data_en, system_prompt_for_preference_data_fc_en,
         system_prompt_for_special_data_en, travel_prompt_en, user_prompt_en,
         user_simulation_init_prompt_en, user_simulation_system_prompt_base_en,
         user_simulation_system_prompt_travel_en,
@@ -208,15 +210,19 @@ const MAX_TURNS: usize = 20;
 impl AceProblem {
     /// The LLM task is going to be executed by python, and it will produce a response with the same identifier
     /// after receiving the response, the internal state will be updated accordingly
-    pub fn build_python_task(&self) -> PythonTask {
+    pub fn build_python_task(&self, enable_fc: bool) -> PythonTask {
         match &self.state {
             AceProblemState::SingleTurnNormal(single_turn_state) => {
-                let function_str =
-                    serde_json::to_string(&self.function).expect("failed to serialize function");
-                let system_prompt = system_prompt_for_normal_data_en(
-                    single_turn_state.time.as_ref().unwrap(),
-                    &function_str,
-                );
+                let system_prompt = if enable_fc {
+                    system_prompt_for_normal_data_fc_en(single_turn_state.time.as_ref().unwrap())
+                } else {
+                    let function_str =
+                        serde_json::to_string(&self.function).expect("failed to serialize function");
+                    system_prompt_for_normal_data_en(
+                        single_turn_state.time.as_ref().unwrap(),
+                        &function_str,
+                    )
+                };
                 let user_prompt = if single_turn_state.has_transition_perturbation
                     && !single_turn_state.first_turn
                 {
@@ -231,20 +237,32 @@ impl AceProblem {
                     assert!(single_turn_state.first_turn);
                     user_prompt_en(&single_turn_state.question)
                 };
+                let tools = if enable_fc {
+                    Some(self.function.clone())
+                } else {
+                    None
+                };
                 PythonTask {
                     identifier: self.identifier.clone(),
                     system_prompt,
                     user_prompt,
                     role: "assistant".to_string(),
+                    tools,
                 }
             }
             AceProblemState::SingleTurnPreference(single_turn_state) => {
-                let function_str =
-                    serde_json::to_string(&self.function).expect("failed to serialize function");
-                let system_prompt = system_prompt_for_preference_data_en(
-                    single_turn_state.profile.as_ref().unwrap(),
-                    &function_str,
-                );
+                let system_prompt = if enable_fc {
+                    system_prompt_for_preference_data_fc_en(
+                        single_turn_state.profile.as_ref().unwrap(),
+                    )
+                } else {
+                    let function_str =
+                        serde_json::to_string(&self.function).expect("failed to serialize function");
+                    system_prompt_for_preference_data_en(
+                        single_turn_state.profile.as_ref().unwrap(),
+                        &function_str,
+                    )
+                };
                 let user_prompt = if single_turn_state.has_transition_perturbation
                     && !single_turn_state.first_turn
                 {
@@ -259,11 +277,17 @@ impl AceProblem {
                     assert!(single_turn_state.first_turn);
                     user_prompt_en(&single_turn_state.question)
                 };
+                let tools = if enable_fc {
+                    Some(self.function.clone())
+                } else {
+                    None
+                };
                 PythonTask {
                     identifier: self.identifier.clone(),
                     system_prompt,
                     user_prompt,
                     role: "assistant".to_string(),
+                    tools,
                 }
             }
             AceProblemState::SingleTurnSpecial(_single_turn_state) => {
@@ -308,16 +332,25 @@ impl AceProblem {
                 // Multi-step uses different prompts - agent decides when to finish
                 // Note: Multi-step does NOT use travel_prompt or base_prompt (unlike multi-turn)
                 let system_prompt = multi_step_agent_prompt_system_en();
-                let functions_str =
-                    serde_json::to_string(&self.function).expect("failed to serialize function");
-                let user_prompt =
-                    multi_step_agent_prompt_user_en(&functions_str, &inference_message);
+                let user_prompt = if enable_fc {
+                    multi_step_agent_prompt_user_fc_en(&inference_message)
+                } else {
+                    let functions_str =
+                        serde_json::to_string(&self.function).expect("failed to serialize function");
+                    multi_step_agent_prompt_user_en(&functions_str, &inference_message)
+                };
+                let tools = if enable_fc {
+                    Some(self.function.clone())
+                } else {
+                    None
+                };
                 // User turn
                 PythonTask {
                     identifier: self.identifier.clone(),
                     system_prompt, // system prompt is only used in the first turn
                     user_prompt,
                     role: "assistant".to_string(),
+                    tools,
                 }
             }
             AceProblemState::MultiTurn(agent_problem_state) => {
@@ -357,11 +390,13 @@ impl AceProblem {
                         )
                     };
                     let user_prompt = user_simulation_init_prompt_en();
+                    // User simulation doesn't need tools - tools are only for agent role
                     PythonTask {
                         identifier: self.identifier.clone(),
                         system_prompt,
                         user_prompt,
                         role: "user".to_string(),
+                        tools: None,
                     }
                 } else {
                     let last_recipient = agent_problem_state
@@ -414,11 +449,13 @@ impl AceProblem {
                                     }
                                 }
                             }
+                            // User simulation doesn't need tools - tools are only for agent role
                             PythonTask {
                                 identifier: self.identifier.clone(),
                                 system_prompt,
                                 user_prompt,
                                 role: "user".to_string(),
+                                tools: None,
                             }
                         }
                         DialogueParticipant::Agent => {
@@ -438,15 +475,24 @@ impl AceProblem {
                             {
                                 system_prompt.push_str(&base_prompt_en());
                             }
-                            let functions_str = serde_json::to_string(&self.function)
-                                .expect("failed to serialize function");
-                            let user_prompt =
-                                multi_turn_agent_prompt_user_en(&functions_str, &inference_message);
+                            let user_prompt = if enable_fc {
+                                multi_turn_agent_prompt_user_fc_en(&inference_message)
+                            } else {
+                                let functions_str = serde_json::to_string(&self.function)
+                                    .expect("failed to serialize function");
+                                multi_turn_agent_prompt_user_en(&functions_str, &inference_message)
+                            };
+                            let tools = if enable_fc {
+                                Some(self.function.clone())
+                            } else {
+                                None
+                            };
                             PythonTask {
                                 identifier: self.identifier.clone(),
                                 system_prompt,
                                 user_prompt,
                                 role: "assistant".to_string(),
+                                tools,
                             }
                         }
                         DialogueParticipant::Execution => {

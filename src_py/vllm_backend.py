@@ -36,6 +36,7 @@ async def call_vllm_model_async(
     tokenizer,
     system_prompt: str,
     user_prompt: str,
+    tools: list = None,  # Tools for FC (function calling) mode
 ) -> str:
     from vllm import SamplingParams
     try:
@@ -44,10 +45,28 @@ async def call_vllm_model_async(
             {"role": "user", "content": user_prompt},
         ]
 
-
         disable_thinking = should_disable_thinking(model_name)
 
-        if disable_thinking:
+        if tools is not None:
+            # FC mode: pass tools to apply_chat_template
+            if disable_thinking:
+                formatted_prompt = tokenizer.apply_chat_template(
+                    messages,
+                    tools=tools,
+                    add_generation_prompt=True,
+                    tokenize=False,
+                    enable_thinking=False,
+                    output_tool_calls=True,
+                )
+            else:
+                formatted_prompt = tokenizer.apply_chat_template(
+                    messages,
+                    tools=tools,
+                    add_generation_prompt=True,
+                    tokenize=False,
+                    output_tool_calls=True,
+                )
+        elif disable_thinking:
             formatted_prompt = tokenizer.apply_chat_template(
                 messages,
                 add_generation_prompt=True,

@@ -70,6 +70,40 @@ pub fn user_prompt_en(question: &str) -> String {
     format!("Conversation history 1..t:\n{}", question)
 }
 
+// FC (Function Calling) mode prompt variants - tools passed separately via apply_chat_template
+pub fn system_prompt_for_normal_data_fc_en(time: &str) -> String {
+    format!(
+        r#"You are an AI assistant with the role name "assistant." Based on the provided API specifications and conversation history from steps 1 to t, generate the API requests that the assistant should call in step t+1.
+If the API parameter description does not specify otherwise, the parameter is optional (parameters mentioned in the user input need to be included in the output; if not mentioned, they do not need to be included).
+If the API parameter description does not specify the required format for the value, use the user's original text for the parameter value.
+If the API requires no parameters, call the API with no arguments.
+
+{time}
+
+Role Descriptions:
+user: User
+assistant: The AI assistant role that makes API requests
+tool: Provides the results returned from tool calls"#
+    )
+}
+
+pub fn system_prompt_for_preference_data_fc_en(profile: &str) -> String {
+    format!(
+        r#"You are an AI assistant, and your role is called assistant. Based on the given API description, dialogue history 1..t, and character profile, generate the API requests that the assistant should call in step t+1.
+If the API parameter description does not specify special instructions, the parameter is optional (parameters mentioned in the user input or character profile should be included in the output, and if not mentioned, they should not be included).
+If the API parameter description does not specify the format for the parameter value, the parameter value should be taken from the user's original text or character profile.
+If the API requires no parameters, call the API with no arguments.
+
+Character Profile:
+{profile}
+
+Role Description:
+user: User
+assistant: AI assistant performing API calls
+tool: Provides the results of tool calls"#
+    )
+}
+
 
 /// Multi-step agent prompt (agent decides when to finish)
 /// Used for data_agent_multi_step - no user simulation, agent completes task autonomously
@@ -94,6 +128,11 @@ pub fn multi_step_agent_prompt_user_en(functions: &str, history: &str) -> String
     format!("Below is the list of APIs you can call (in JSON format): {}. Conversation history: {}\n", functions, history)
 }
 
+// FC mode: tools passed separately, so user prompt only includes history
+pub fn multi_step_agent_prompt_user_fc_en(history: &str) -> String {
+    format!("Conversation history: {}\n", history)
+}
+
 /// Multi-turn agent prompt (user simulation decides when to finish)
 /// Used for data_agent_multi_turn - agent interacts with simulated user
 pub fn multi_turn_agent_prompt_system_en() -> String {
@@ -116,6 +155,11 @@ The rules you need to follow are as follows:
 
 pub fn multi_turn_agent_prompt_user_en(functions: &str, history: &str) -> String {
     format!("Below is the list of APIs you can use:\n{}\n\nConversation history 1..t:\n{}", functions, history)
+}
+
+// FC mode: tools passed separately, so user prompt only includes history
+pub fn multi_turn_agent_prompt_user_fc_en(history: &str) -> String {
+    format!("Conversation history 1..t:\n{}", history)
 }
 
 pub fn user_simulation_system_prompt_base_en(instruction: &str) -> String {

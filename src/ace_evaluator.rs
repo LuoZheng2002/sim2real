@@ -86,8 +86,12 @@ pub struct EvaluationSummary {
 }
 
 #[pyfunction]
-pub fn evaluate_all_results(model_name: String) {
-    let model_safe_name = model_name.replace("/", "-");
+pub fn evaluate_all_results(model_name: String, enable_fc: bool) {
+    let model_safe_name = if enable_fc {
+        format!("{}-FC", model_name.replace("/", "-"))
+    } else {
+        model_name.replace("/", "-")
+    };
     for perturbation_type in PerturbationType::all_perturbations() {
         let perturbation_folder_name = perturbation_type.to_folder_name();
         for (dataset_name, dataset_trait) in DATASETS.iter() {
