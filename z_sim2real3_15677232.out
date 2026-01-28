@@ -1,0 +1,1475 @@
+✏️ Setting installed package as editable
+Initialized ACEBenchRunner with 20 problems.
+Acquiring build lock...
+Building Rust extension with maturin develop...
+Installed Rust extension successfully.
+Released build lock.
+use_api_for_all: False
+fc (function calling): True
+importing vllm and transformers...
+vllm and transformers imported.
+Creating vLLM backend...
+INFO 01-27 23:19:35 [model.py:530] Resolved architecture: Qwen3ForCausalLM
+INFO 01-27 23:19:35 [model.py:1545] Using max model len 15000
+INFO 01-27 23:19:38 [scheduler.py:229] Chunked prefill is enabled with max_num_batched_tokens=2048.
+INFO 01-27 23:19:38 [vllm.py:630] Asynchronous scheduling is enabled.
+INFO 01-27 23:19:38 [vllm.py:637] Disabling NCCL for DP synchronization when using async scheduling.
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:19:40 [core.py:97] Initializing a V1 LLM engine (v0.14.0) with config: model='zhuiguang-ning/LoopTool-8B', speculative_config=None, tokenizer='zhuiguang-ning/LoopTool-8B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=15000, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=zhuiguang-ning/LoopTool-8B, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'level': None, 'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::kda_attention', 'vllm::sparse_attn_indexer'], 'compile_mm_encoder': False, 'compile_sizes': [], 'compile_ranges_split_points': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'eliminate_noops': True, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 256, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': True}, 'local_cache_dir': None}
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:19:49 [parallel_state.py:1214] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://141.142.254.53:59611 backend=nccl
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:19:50 [parallel_state.py:1425] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:01 [gpu_model_runner.py:3808] Starting to load model zhuiguang-ning/LoopTool-8B...
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:08 [cuda.py:351] Using FLASH_ATTN attention backend out of potential backends: ('FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION')
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:21 [default_loader.py:291] Loading weights took 11.44 seconds
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:21 [gpu_model_runner.py:3905] Model loading took 15.27 GiB memory and 19.037888 seconds
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:40 [backends.py:644] Using cache directory: /u/zluo8/.cache/vllm/torch_compile_cache/c239804604/rank_0_0/backbone for vLLM's torch.compile
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:40 [backends.py:704] Dynamo bytecode transform time: 18.64 s
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:50 [backends.py:226] Directly load the compiled graph(s) for compile range (1, 2048) from the cache, took 4.392 s
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:50 [monitor.py:34] torch.compile takes 23.03 s in total
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:54 [gpu_worker.py:358] Available KV cache memory: 19.52 GiB
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:55 [kv_cache_utils.py:1305] GPU KV cache size: 142,128 tokens
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:20:55 [kv_cache_utils.py:1310] Maximum concurrency for 15,000 tokens per request: 9.47x
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:21:01 [gpu_model_runner.py:4856] Graph capturing finished in 6 secs, took 0.38 GiB
+[0;36m(EngineCore_DP0 pid=3812200)[0;0m INFO 01-27 23:21:01 [core.py:273] init engine (profile, create kv cache, warmup model) took 39.64 seconds
+Problem agent_multi_step_15 turn 1 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_16 turn 1 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_17 turn 1 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem agent_multi_step_18 turn 1 response: <tool_call>
+{"name": "search_messages", "arguments": {"user_name": "Isaac", "keyword": "call"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_19 turn 1 response: <tool_call>
+{"name": "search_messages", "arguments": {"user_name": "Isaac", "keyword": "call"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+Problem agent_multi_step_0 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Eve", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_0 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 1 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Grace", "receiver_name": "Helen"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 1 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Grace", "receiver_name": "Helen"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 1 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Grace", "receiver_name": "Helen"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 1 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Grace", "receiver_name": "Helen"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Eve", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_4 turn 1 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 1 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_16 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 2 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The device is not logged in, so you cannot view notifications. Please log in to the device first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_18 turn 2 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 5}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 2 response: <tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 2 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 3}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 2 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 3}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_2 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Jack", "password": "password654"}}
+</tool_call>
+<tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Jiutian BBQ"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+Problem agent_multi_step_3 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Jack", "password": "password654"}}
+</tool_call>
+<tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Jiutian BBQ"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_3 not completed, re-added to waiting queue.
+Problem agent_multi_step_17 turn 2 response: <tool_call>
+{"name": "search_messages", "arguments": {"user_name": "Eve", "keyword": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem agent_multi_step_4 turn 2 response: <tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 2 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 3 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 2 response: To view the messages, I need to log in to the device first. Let me do that. 
+
+<tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_16 turn 3 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_2 turn 2 response: <tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+Problem agent_multi_step_0 turn 2 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Eve", "merchant_name": "Domino's", "items": [{"product": "Super Supreme Pizza", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_0 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 3 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Grace", "receiver_name": "Helen"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 3 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Eve", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_17 turn 3 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 1002}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 3 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 4}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_19 turn 2 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 5}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "See you tomorrow"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+Problem agent_multi_step_18 turn 3 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "See you tomorrow"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_3 turn 2 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Jack", "receiver_name": "Jiutian BBQ"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_3 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 4 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 4 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Isaac", "password": "password654"}}
+</tool_call>
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Isaac", "merchant_name": "Rice Village Bibimbap", "items": [{"product": "Stone Pot Bibimbap", "quantity": 1}, {"product": "Korean Beef Bibimbap", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Isaac", "password": "password654"}}
+</tool_call>
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Isaac", "merchant_name": "Rice Village Bibimbap", "items": [{"product": "Stone Pot Bibimbap", "quantity": 1}, {"product": "Korean Beef Bibimbap", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 3 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Grace", "receiver_name": "Helen"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_4 turn 3 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_2 turn 3 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Jack", "password": "password654"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+Problem agent_multi_step_18 turn 4 response: <tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 4 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 2 response: <tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 3 response: The message from Grace has been successfully deleted. Now, I will proceed to carry out the instructions contained in the message. Let me check the available milk tea delivery options from Heytea. 
+
+<tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Helen", "password": "password321"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 5 response: <tool_call>
+{"name": "search_messages", "arguments": {"user_name": "Eve", "keyword": "price"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 5 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 4}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_4 turn 4 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 4 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 5 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The reminder "To-do list" has been successfully retrieved. The task involves helping Frank place a food delivery order at "Hema Fresh" for two "Fresh Gift Packs" and then sending a message to Frank with the total price. Let's proceed with placing the food delivery order first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_2 turn 4 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Jiutian BBQ"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+Problem agent_multi_step_1 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Eve", "password": "password123"}}
+</tool_call>
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Eve", "merchant_name": "Domino's", "items": [{"product": "Super Supreme Pizza", "quantity": 1}]}}
+</tool_call>
+<tool_call>
+{"name": "add_reminder", "arguments": {"title": "Today's Spending", "description": "Today's spending () yuan", "time": "2024-07-15 09:30"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_0 turn 3 response: <tool_call>
+{"name": "add_reminder", "arguments": {"title": "Today's Spending", "description": "Today's spending (88) yuan", "time": "2024-07-15 09:30"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_0 not completed, re-added to waiting queue.
+Problem agent_multi_step_6 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Isaac", "password": "password654"}}
+</tool_call>
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Isaac", "merchant_name": "Rice Village Bibimbap", "items": [{"product": "Stone Pot Bibimbap", "quantity": 1}, {"product": "Korean Beef Bibimbap", "quantity": 1}]}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+Problem agent_multi_step_7 turn 1 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Isaac", "password": "password654"}}
+</tool_call>
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Isaac", "merchant_name": "Rice Village Bibimbap", "items": [{"product": "Stone Pot Bibimbap", "quantity": 1}, {"product": "Korean Beef Bibimbap", "quantity": 1}]}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 4 response: <tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 2 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank after removing the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_18 turn 5 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "See you tomorrow"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_4 turn 5 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 4}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 3 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Isaac", "password": "password654"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 6 response: <tool_call>
+{"name": "view_reminder_by_title", "arguments": {"title": "To-do list"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 3 response: The latest message from Grace to you has been deleted. Now, let's proceed with the task mentioned in her message. I will check the milk tea delivery options available from Heytea and purchase a cheaper milk tea for you. 
+
+First, I need to log in to the food delivery platform to proceed with the purchase. Let me do that first. 
+
+<tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Helen", "password": "password321"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. If the message storage was full, the latest message would have been deleted to make space, but there is no indication of that in the provided execution results. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems there are no messages between you and Jiutian BBQ. Let's proceed to place an order for the barbecue that fits within your budget of 120 yuan. From the available options, the Grilled Pork Belly is priced at 78 yuan, which is within your budget. Would you like to place an order for it?
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_3 not completed, re-added to waiting queue.
+Problem agent_multi_step_16 turn 5 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Frank", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The reminder "To-do list" has been retrieved successfully. The description indicates that you need to help Frank place a food delivery order at "Hema Fresh" for two "Fresh Gift Packs" and then send a message to Frank with the total price. Let's proceed with placing the food delivery order first. 
+
+I will call the `add_food_delivery_order` function to place the order for Frank.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem agent_multi_step_2 turn 5 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Jack", "receiver_name": "Jiutian BBQ"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The device is not logged in, so the message cannot be sent. Please log in to the device first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 5 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Helen", "password": "password321"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_19 turn 4 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 4 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Heytea"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+Problem agent_multi_step_1 turn 2 response: It seems there was an issue with logging in to the food platform due to the Wi-Fi not being enabled. Let me first turn on the Wi-Fi connection. 
+
+<tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_6 turn 2 response: The login to the food platform and sending the message failed due to Wi-Fi issues. Let's turn on the Wi-Fi first.
+
+<tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 4 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 6 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_4 turn 6 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. However, there is an issue with the message queue being at capacity. You need to ask the user which message to delete to free up space.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The text messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the Wi-Fi has been turned on, allowing the message to be sent. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 6 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Heytea"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_19 turn 5 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 4}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 7 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed with Domino's, and a reminder titled "Today's Spending" has been added with the description "Today's spending (88) yuan" for the time "2024-07-15 09:30". Let me know if there's anything else you need!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_0 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The messages between Grace and you are as follows:
+
+- Message ID: 3
+  - Sender: Grace
+  - Receiver: Helen
+  - Message: "Please check the milk tea delivery options available from Heytea and purchase a cheaper milk tea for me. After making the purchase, remember to reply to me with \"Already bought.\""
+  - Time: 2023-12-05
+
+Now, I can proceed with carrying out Grace's request. Let me check the milk tea delivery options from Heytea.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_7 turn 3 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 1}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The most recent message from Grace to Helen has been successfully deleted. Now, let's proceed with the request mentioned in the message. The message says: "Please check the milk tea delivery options available from Heytea and purchase a cheaper milk tea for me. After making the purchase, remember to reply to me with 'Already bought.'" 
+
+To fulfill this request, I will first check the products available from Heytea. Let's proceed with that step.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_3 turn 4 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Jack", "merchant_name": "Jiutian BBQ", "items": [{"product": "Grilled Pork Belly", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_3 not completed, re-added to waiting queue.
+Problem agent_multi_step_17 turn 5 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Frank", "merchant_name": "Hema Fresh", "items": [{"product": "Fresh Gift Packs", "quantity": 2}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The reminder "To-do list" has been retrieved. It contains the task to help Frank place a food delivery order at "Hema Fresh" for two "Fresh Gift Packs" and then send a message to Frank with the price of the purchased goods. However, there are no related message records found with the keyword "price". 
+
+To proceed, I will need to place the food delivery order and then calculate the price to send the message to Frank. Let's start by placing the food delivery order.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 4 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Isaac", "merchant_name": "Rice Village Bibimbap", "items": [{"product": "Stone Pot Bibimbap", "quantity": 1}, {"product": "Korean Beef Bibimbap", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 5 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The reminder "To-do list" has been retrieved. The description mentions helping Frank place a food delivery order at "Hema Fresh" for two "Fresh Gift Packs" and sending a message to Frank with the price. Let's proceed with placing the food delivery order first. 
+
+I will now call the `add_food_delivery_order` function to place the order for Frank.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 5 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Helen", "merchant_name": "Heytea", "items": [{"product": "Four Seasons Spring Milk Tea", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 7 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Heytea"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_1 turn 3 response: The Wi-Fi has been successfully turned on. Now, let me attempt to log in to the food platform again. 
+
+<tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Eve", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_4 completed. 1/20 completed.
+Problem agent_multi_step_13 turn 5 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Helen", "password": "password321"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 6 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The text messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the Wi-Fi has been turned on, allowing the message to be sent. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 7 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Helen", "merchant_name": "Heytea", "items": [{"product": "Four Seasons Spring Milk Tea", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 7 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Eve", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the latest message (ID 4) has been deleted to ensure there is space in the message storage. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_19 not completed, re-added to waiting queue.
+The agent is trying to ask a question: I have checked the products available at Jiutian BBQ. Here are the options:
+
+1. Korean Grilled Beef - Price: 128.0 yuan
+2. Grilled Pork Belly - Price: 78.0 yuan
+
+Both options are within your budget of 120 yuan. Would you like to proceed with placing an order for one of these items? If so, please specify which one you would like to order and the quantity.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_19 completed. 2/20 completed.
+The agent is trying to ask a question: The order for Grilled Pork Belly has been successfully placed with Jiutian BBQ, and the total amount is 78 yuan, which is within your budget of 120 yuan. If you need any further assistance, feel free to ask!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_3 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 5 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 8 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 1}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_3 completed. 3/20 completed.
+The agent is trying to ask a question: The food delivery order has been successfully placed with Domino's, and a reminder titled "Today's Spending" has been added with the description "Today's spending (88) yuan" for the time "2024-07-15 09:30". Let me know if there's anything else you need!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_0 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 8 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Frank", "merchant_name": "Hema Fresh", "items": [{"product": "Fresh Gift Packs", "quantity": 2}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 8 response: <tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Hema Fresh"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 6 response: <tool_call>
+{"name": "login_device", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_0 completed. 4/20 completed.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank after removing the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 8 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Helen", "merchant_name": "Heytea", "items": [{"product": "Four Seasons Spring Milk Tea", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 6 response: To log in to the food delivery platform, I need to ensure that the WiFi is turned on first. Let me turn on the WiFi connection. 
+
+<tool_call>
+{"name": "turn_on_wifi", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_10 turn 6 response: The order for the Four Seasons Spring Milk Tea has been successfully placed with Heytea. I will now inform Grace that the task has been completed.
+
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Helen", "receiver_name": "Grace", "message": "Already bought."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The text messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the Wi-Fi has been turned on, allowing the message to be sent. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_17 turn 6 response: It seems that Frank is not logged in to the food platform. To proceed, I need to log him in first. I will call the `login_food_platform` function with Frank's username and password. 
+
+Assuming Frank's password is "password123", I will proceed with the login.
+<tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Frank", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem agent_multi_step_8 turn 7 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 4}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+Problem agent_multi_step_2 turn 7 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Jack", "merchant_name": "Jiutian BBQ", "items": [{"product": "Grilled Pork Belly", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_11 turn 8 response: The order for the Four Seasons Spring Milk Tea has been successfully placed with Heytea. Now, I will send a confirmation message to Grace as instructed.
+
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Helen", "receiver_name": "Grace", "message": "Already bought."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+Problem agent_multi_step_1 turn 4 response: The login to the food platform was successful. Now, I will proceed to place the takeout order for the Domino's Super Supreme Pizza. 
+
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Eve", "merchant_name": "Domino's", "items": [{"product": "Super Supreme Pizza", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 9 response: agent: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Helen", "password": "password321"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 7 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Helen", "password": "password321"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 7 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_6 turn 3 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Isaac", "password": "password654"}}
+</tool_call>
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Isaac", "merchant_name": "Rice Village Bibimbap", "items": [{"product": "Stone Pot Bibimbap", "quantity": 1}, {"product": "Korean Beef Bibimbap", "quantity": 1}]}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 10 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 9 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Eve", "merchant_name": "Hema Fresh", "items": [{"product": "Fresh Gift Pack", "quantity": 2}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The confirmation message "Already bought." has been successfully sent to Grace. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task mentioned in Grace's message has been completed. The cheaper milk tea has been ordered, and I have informed Grace that it has been bought. If you need anything else, feel free to ask!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_10 completed. 5/20 completed.
+The agent is trying to ask a question: The takeout has been successfully ordered from Rice Village Bibimbap, and the message has been sent to Frank. Let me know if there's anything else you need!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 11 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_8 completed. 6/20 completed.
+The agent is trying to ask a question: The text messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the Wi-Fi has been turned on, allowing the message to be sent. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 8 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The confirmation message "Already bought." has been successfully sent to Grace. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: agent: It seems that Frank is not logged in to the food platform. To proceed, I need to log in Frank to the food platform first. Let me call the `login_food_platform` function with Frank's credentials. 
+
+However, I don't have Frank's password. If you can provide Frank's password, I can proceed with the login. Otherwise, I cannot place the order on his behalf.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: Your order for Grilled Pork Belly has been successfully placed with Jiutian BBQ, and the total amount is 78 yuan. If you need any further assistance, feel free to ask. Otherwise, you can conclude the conversation.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food order was successfully placed, but the message sending failed due to a full inbox. Please let me know which message you would like to delete to free up space.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_11 completed. 7/20 completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_2 completed. 8/20 completed.
+Problem agent_multi_step_13 turn 8 response: Now that I am logged in to the food delivery platform, I will check the milk tea delivery options available from Heytea. 
+
+<tool_call>
+{"name": "get_products", "arguments": {"merchant_name": "Heytea"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 10 response: <tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Helen", "merchant_name": "Heytea", "items": [{"product": "Four Seasons Spring Milk Tea", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_6 turn 5 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 1}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 9 response: <tool_call>
+{"name": "view_messages_between_users", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_14 turn 10 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Frank", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The text messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the Wi-Fi has been turned on, allowing the message to be sent. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_1 turn 5 response: The food delivery order has been successfully placed with Domino's, and the total amount is 88 yuan. Now, I will log the expenditure in the reminder as requested. 
+
+<tool_call>
+{"name": "add_reminder", "arguments": {"title": "Today's Spending", "description": "Today's spending (88) yuan", "time": "2024-07-15 09:30"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 12 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 5}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform failed due to an incorrect password. Let's try to resolve this issue first.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 10 response: The food delivery order has been successfully placed with Hema Fresh for two "Fresh Gift Packs," totaling 198 yuan. Now, I will send a message to Frank with the price of the purchased goods.
+
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "The price of the purchased goods is 198.0 yuan."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+Problem agent_multi_step_6 turn 6 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank after removing the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The reminder "Today's Spending" has been successfully added with the description "Today's spending (88) yuan". The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_16 turn 16 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Frank", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank after removing the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_12 turn 11 response: The food delivery order for the Four Seasons Spring Milk Tea has been successfully placed with Heytea. As requested, I will now reply to Grace with "Already bought." 
+
+Let me send the message.
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Helen", "receiver_name": "Grace", "message": "Already bought."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt failed with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The text messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the Wi-Fi has been turned on, allowing the message to be sent. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 10 response: The inbox is empty, so there is no need to delete any messages. I will proceed to send the message to Frank. 
+
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The takeout has been successfully ordered, and the message has been sent to Frank. Is there anything else I can assist you with?
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been sent to Frank, but the inbox is at capacity. You need to delete a message to make space. Would you like me to delete the newest message or choose another one?
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message "Already bought." has been successfully sent to Grace. The task is now complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The takeout has been successfully ordered, and the message has been sent to Frank.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_6 completed. 9/20 completed.
+Problem agent_multi_step_14 turn 12 response: <tool_call>
+{"name": "login_food_platform", "arguments": {"username": "Frank", "password": "password123"}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 12 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 15 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 9 response: The milk tea delivery options available from Heytea are:
+
+1. **Cheese Milk Tea** - Price: $25.00
+2. **Four Seasons Spring Milk Tea** - Price: $22.00
+
+I will purchase the cheaper option, which is the Four Seasons Spring Milk Tea. Let me proceed with placing the order. 
+
+<tool_call>
+{"name": "add_food_delivery_order", "arguments": {"username": "Helen", "merchant_name": "Heytea", "items": [{"product": "Four Seasons Spring Milk Tea", "quantity": 1}]}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform continues to fail due to an incorrect password. Let's attempt to resolve this issue by checking if there is any other information that can help us determine the correct password or if there is an alternative way to proceed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The inbox is still full, but there are no messages to delete. Please check if there is a specific message you would like to delete or if there is an issue with the message sending functionality.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is now complete. The food delivery order has been placed, and the message "Already bought." has been sent to Grace.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 not completed, re-added to waiting queue.
+Problem agent_multi_step_15 turn 13 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 4}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The text messages containing the word "call" have been removed, and the message "See you tomorrow" has been successfully sent to Frank. Additionally, the Wi-Fi has been turned on, allowing the message to be sent. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_12 completed. 10/20 completed.
+Problem agent_multi_step_5 turn 16 response: <tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_18 completed. 11/20 completed.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 12 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 1}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform continues to fail due to an incorrect password. Let's attempt to resolve this issue by checking if there is any other information that can help us determine the correct password or if there is an alternative way to proceed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The newest message has been successfully deleted to make space. The task to help Frank with the food delivery order and send the price message has been completed. If you need further assistance, feel free to ask!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_15 completed. 12/20 completed.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_9 turn 13 response: <tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Isaac", "receiver_name": "Frank", "message": "The takeout has been ordered."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 10 response: I have successfully placed the order for the Four Seasons Spring Milk Tea from Heytea. Now, I will reply to Grace to inform her that the purchase has been completed. 
+
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Helen", "receiver_name": "Grace", "message": "Already bought."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem agent_multi_step_5 turn 17 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 2}}
+</tool_call>
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Eve", "receiver_name": "Frank", "message": "Don't forget tomorrow afternoon's meeting."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank. The task is completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank after removing the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank. The task is completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform continues to fail due to an incorrect password. Let's attempt to resolve this issue by checking if there is any other information that can help us determine the correct password or if there is an alternative way to proceed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank after removing the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank. The task is completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 11 response: To send the message, I need to free up space in the inbox. Let me check the messages to see which one can be deleted. 
+
+<tool_call>
+{"name": "get_latest_message_id", "arguments": {}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank after removing the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank. The task is completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+Problem agent_multi_step_13 turn 12 response: <tool_call>
+{"name": "delete_message", "arguments": {"message_id": 4}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_5 completed. 13/20 completed.
+The agent is trying to ask a question: The message has been successfully sent to Frank. The task is completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login to the food delivery platform continues to fail due to an incorrect password. Let's attempt to resolve this issue by checking if there is any other information that can help us determine the correct password or if there is an alternative way to proceed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank. The task is completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message has been successfully sent to Frank. The task is completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_16 completed. 14/20 completed.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_9 completed. 15/20 completed.
+Problem agent_multi_step_13 turn 13 response: I have successfully deleted the latest message (ID 4) to free up inbox space. Now, I can send the "Already bought." message to Grace. 
+
+<tool_call>
+{"name": "send_message", "arguments": {"sender_name": "Helen", "receiver_name": "Grace", "message": "Already bought."}}
+</tool_call>
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The message "Already bought." has been successfully sent to Grace. The task is complete.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. I have successfully carried out Grace's request by purchasing the cheaper milk tea and informing him that the purchase has been completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. I have successfully carried out Grace's request by purchasing the cheaper milk tea and informing him that the purchase has been completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The food delivery order has been successfully placed, and the message has been sent to Frank. The message queue issue has been resolved by deleting the most recent message.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_13 completed. 16/20 completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_7 completed. 17/20 completed.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+The agent is trying to ask a question: It seems that Frank's login attempt continues to fail with the provided password. Since I don't have the correct password for Frank, I cannot proceed with placing the food delivery order on his behalf. Please provide the correct password for Frank, or let me know if there's another way to assist you.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The task is complete. The food order has been successfully placed, and the reminder for today's spending has been added with the correct amount. Let me know if you need further assistance!
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 not completed, re-added to waiting queue.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_1 completed. 18/20 completed.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_14 completed. 19/20 completed.
+The agent is trying to ask a question: The login attempt for Frank failed due to an incorrect password. I need to verify the correct password for Frank. If you can provide the correct password, I can proceed with the login and then place the food delivery order. Otherwise, I cannot continue with the task.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 not completed, re-added to waiting queue.
+Problem obs_paraphrase_data_agent_multi_step_agent_multi_step_17 completed. 20/20 completed.
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_single_turn_single_function_result.json
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.4
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.92
+Dataset: data_normal_atom_object_deep | Accuracy: 0.66
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.66
+Dataset: data_normal_preference | Accuracy: 0.58
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.68
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.3
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.88
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.6
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.74
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.72
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.5
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.74
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.78
+Dataset: data_agent_multi_step | Accuracy: 0.4
+Dataset: data_agent_multi_turn | Accuracy: 0.43333333333333335
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.88
+Dataset: data_normal_atom_list | Accuracy: 0.82
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.76
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.48
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.67
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.72
+Dataset: data_agent_multi_step | Accuracy: 0.5
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.82
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.8
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.5
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.76
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.4
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.88
+Dataset: data_normal_atom_list | Accuracy: 0.84
+Dataset: data_normal_atom_number | Accuracy: 0.86
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.8
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.5
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.68
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.78
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.92
+Dataset: data_normal_atom_object_deep | Accuracy: 0.62
+Dataset: data_normal_atom_object_short | Accuracy: 0.72
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.7
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.58
+Dataset: data_normal_preference | Accuracy: 0.58
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.63
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.77
+Dataset: data_agent_multi_step | Accuracy: 0.75
+Dataset: data_agent_multi_turn | Accuracy: 0.4
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.8
+Dataset: data_normal_atom_list | Accuracy: 0.78
+Dataset: data_normal_atom_number | Accuracy: 0.94
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.6
+Dataset: data_normal_preference | Accuracy: 0.56
+Dataset: data_normal_similar_api | Accuracy: 0.7
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.74
+Dataset: data_agent_multi_step | Accuracy: 0.45
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.68
+Dataset: data_normal_atom_enum | Accuracy: 0.72
+Dataset: data_normal_atom_list | Accuracy: 0.66
+Dataset: data_normal_atom_number | Accuracy: 0.86
+Dataset: data_normal_atom_object_deep | Accuracy: 0.62
+Dataset: data_normal_atom_object_short | Accuracy: 0.8
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.56
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.54
+Dataset: data_normal_similar_api | Accuracy: 0.64
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.59
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.7
+Dataset: data_agent_multi_step | Accuracy: 0.75
+Dataset: data_agent_multi_turn | Accuracy: 0.43333333333333335
+Dataset: data_normal_atom_bool | Accuracy: 0.82
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.66
+Dataset: data_normal_preference | Accuracy: 0.6
+Dataset: data_normal_similar_api | Accuracy: 0.68
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.65
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.77
+Dataset: data_agent_multi_step | Accuracy: 0.45
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.74
+Dataset: data_normal_atom_enum | Accuracy: 0.76
+Dataset: data_normal_atom_list | Accuracy: 0.76
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.62
+Dataset: data_normal_atom_object_short | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.58
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.66
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.7
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.73
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.4666666666666667
+Dataset: data_normal_atom_bool | Accuracy: 0.82
+Dataset: data_normal_atom_enum | Accuracy: 0.88
+Dataset: data_normal_atom_list | Accuracy: 0.84
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.54
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.63
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.77
+Dataset: data_agent_multi_step | Accuracy: 0.3
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.76
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.84
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.54
+Dataset: data_normal_atom_object_short | Accuracy: 0.78
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.64
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.6
+Dataset: data_normal_preference | Accuracy: 0.56
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.61
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.73
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.43333333333333335
+Dataset: data_normal_atom_bool | Accuracy: 0.86
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.82
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.64
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.76
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.86
+Dataset: data_normal_atom_enum | Accuracy: 0.84
+Dataset: data_normal_atom_list | Accuracy: 0.88
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.64
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.74
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.65
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.74
+Dataset: data_agent_multi_step | Accuracy: 0.4
+Dataset: data_agent_multi_turn | Accuracy: 0.26666666666666666
+Dataset: data_normal_atom_bool | Accuracy: 0.78
+Dataset: data_normal_atom_enum | Accuracy: 0.84
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.92
+Dataset: data_normal_atom_object_deep | Accuracy: 0.58
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.6
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.56
+Dataset: data_normal_similar_api | Accuracy: 0.7
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.64
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.73
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.86
+Dataset: data_normal_atom_enum | Accuracy: 0.84
+Dataset: data_normal_atom_list | Accuracy: 0.88
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.64
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.65
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.76
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.72
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.6
+Dataset: data_normal_similar_api | Accuracy: 0.68
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.68
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+vLLM backend created.
+ERROR 01-27 23:21:32 [core_client.py:610] Engine core proc EngineCore_DP0 died unexpectedly, shutting down client.

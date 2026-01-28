@@ -74,6 +74,14 @@ def load_accuracies(base_dir: Path):
     return pivot_df
 
 
+def save_csv(df, model_name, output_path=None):
+    if output_path is None:
+        output_path = f"{model_name}_accuracy_heatmap.csv"
+
+    df.to_csv(output_path)
+    print(f"Saved CSV to {output_path}")
+
+
 def plot_heatmap(df, model_name, output_path=None):
     if output_path is None:
         output_path = f"{model_name}_accuracy_heatmap.pdf"
@@ -128,6 +136,7 @@ def main():
         raise FileNotFoundError(f"Directory not found: {base_dir}")
 
     df = load_accuracies(base_dir)
+    save_csv(df, args.model_name)
     plot_heatmap(df, args.model_name, args.output)
 
 
