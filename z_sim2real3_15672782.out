@@ -1,0 +1,512 @@
+✏️ Setting installed package as editable
+Initialized ACEBenchRunner with 0 problems.
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/no_perturbation/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_a/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_b/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_c/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_d/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_e/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/action_redundant/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_param_desc/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_paraphrase/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_tool_desc/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/obs_typos/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_ab/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_cd_nt/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_ab/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/reward_td_nt/data_normal_single_turn_single_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_agent_multi_step_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_agent_multi_turn_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_bool_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_enum_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_list_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_number_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_object_deep_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_atom_object_short_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_multi_turn_user_adjust_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_multi_turn_user_switch_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_preference_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_similar_api_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_single_turn_parallel_function_result.json
+Sorted acebench_perturbed_result/zhuiguang-ning-LoopTool-8B-FC/transition/data_normal_single_turn_single_function_result.json
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.4
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.92
+Dataset: data_normal_atom_object_deep | Accuracy: 0.66
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.66
+Dataset: data_normal_preference | Accuracy: 0.58
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.68
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.3
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.88
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.6
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.74
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.72
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.5
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.74
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.78
+Dataset: data_agent_multi_step | Accuracy: 0.4
+Dataset: data_agent_multi_turn | Accuracy: 0.43333333333333335
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.88
+Dataset: data_normal_atom_list | Accuracy: 0.82
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.76
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.48
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.67
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.72
+Dataset: data_agent_multi_step | Accuracy: 0.5
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.82
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.8
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.5
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.76
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.4
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.88
+Dataset: data_normal_atom_list | Accuracy: 0.84
+Dataset: data_normal_atom_number | Accuracy: 0.86
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.8
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.62
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.5
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.68
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.78
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.92
+Dataset: data_normal_atom_object_deep | Accuracy: 0.62
+Dataset: data_normal_atom_object_short | Accuracy: 0.72
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.7
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.58
+Dataset: data_normal_preference | Accuracy: 0.58
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.63
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.77
+Dataset: data_agent_multi_step | Accuracy: 0.75
+Dataset: data_agent_multi_turn | Accuracy: 0.4
+Dataset: data_normal_atom_bool | Accuracy: 0.84
+Dataset: data_normal_atom_enum | Accuracy: 0.8
+Dataset: data_normal_atom_list | Accuracy: 0.78
+Dataset: data_normal_atom_number | Accuracy: 0.94
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.6
+Dataset: data_normal_preference | Accuracy: 0.56
+Dataset: data_normal_similar_api | Accuracy: 0.7
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.74
+Dataset: data_agent_multi_step | Accuracy: 0.35
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.68
+Dataset: data_normal_atom_enum | Accuracy: 0.72
+Dataset: data_normal_atom_list | Accuracy: 0.66
+Dataset: data_normal_atom_number | Accuracy: 0.86
+Dataset: data_normal_atom_object_deep | Accuracy: 0.62
+Dataset: data_normal_atom_object_short | Accuracy: 0.8
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.56
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.54
+Dataset: data_normal_similar_api | Accuracy: 0.64
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.59
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.7
+Dataset: data_agent_multi_step | Accuracy: 0.75
+Dataset: data_agent_multi_turn | Accuracy: 0.43333333333333335
+Dataset: data_normal_atom_bool | Accuracy: 0.82
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.68
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.66
+Dataset: data_normal_preference | Accuracy: 0.6
+Dataset: data_normal_similar_api | Accuracy: 0.68
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.65
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.77
+Dataset: data_agent_multi_step | Accuracy: 0.45
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.74
+Dataset: data_normal_atom_enum | Accuracy: 0.76
+Dataset: data_normal_atom_list | Accuracy: 0.76
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.62
+Dataset: data_normal_atom_object_short | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.58
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.66
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.7
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.69
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.73
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.4666666666666667
+Dataset: data_normal_atom_bool | Accuracy: 0.82
+Dataset: data_normal_atom_enum | Accuracy: 0.88
+Dataset: data_normal_atom_list | Accuracy: 0.84
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.54
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.63
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.77
+Dataset: data_agent_multi_step | Accuracy: 0.3
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.76
+Dataset: data_normal_atom_enum | Accuracy: 0.82
+Dataset: data_normal_atom_list | Accuracy: 0.84
+Dataset: data_normal_atom_number | Accuracy: 0.9
+Dataset: data_normal_atom_object_deep | Accuracy: 0.54
+Dataset: data_normal_atom_object_short | Accuracy: 0.78
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.64
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.6
+Dataset: data_normal_preference | Accuracy: 0.56
+Dataset: data_normal_similar_api | Accuracy: 0.72
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.61
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.73
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.43333333333333335
+Dataset: data_normal_atom_bool | Accuracy: 0.86
+Dataset: data_normal_atom_enum | Accuracy: 0.86
+Dataset: data_normal_atom_list | Accuracy: 0.82
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.64
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.76
+Dataset: data_agent_multi_step | Accuracy: 0.65
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.86
+Dataset: data_normal_atom_enum | Accuracy: 0.84
+Dataset: data_normal_atom_list | Accuracy: 0.88
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.7
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.64
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.74
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.65
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.74
+Dataset: data_agent_multi_step | Accuracy: 0.4
+Dataset: data_agent_multi_turn | Accuracy: 0.26666666666666666
+Dataset: data_normal_atom_bool | Accuracy: 0.78
+Dataset: data_normal_atom_enum | Accuracy: 0.84
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.92
+Dataset: data_normal_atom_object_deep | Accuracy: 0.58
+Dataset: data_normal_atom_object_short | Accuracy: 0.74
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.6
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.56
+Dataset: data_normal_similar_api | Accuracy: 0.7
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.64
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.73
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.36666666666666664
+Dataset: data_normal_atom_bool | Accuracy: 0.86
+Dataset: data_normal_atom_enum | Accuracy: 0.84
+Dataset: data_normal_atom_list | Accuracy: 0.88
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.72
+Dataset: data_normal_atom_object_short | Accuracy: 0.84
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.64
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.64
+Dataset: data_normal_preference | Accuracy: 0.52
+Dataset: data_normal_similar_api | Accuracy: 0.76
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.65
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+Dataset: data_agent_multi_step | Accuracy: 0.6
+Dataset: data_agent_multi_turn | Accuracy: 0.3333333333333333
+Dataset: data_normal_atom_bool | Accuracy: 0.8
+Dataset: data_normal_atom_enum | Accuracy: 0.76
+Dataset: data_normal_atom_list | Accuracy: 0.86
+Dataset: data_normal_atom_number | Accuracy: 0.88
+Dataset: data_normal_atom_object_deep | Accuracy: 0.68
+Dataset: data_normal_atom_object_short | Accuracy: 0.72
+Dataset: data_normal_multi_turn_user_adjust | Accuracy: 0.66
+Dataset: data_normal_multi_turn_user_switch | Accuracy: 0.62
+Dataset: data_normal_preference | Accuracy: 0.6
+Dataset: data_normal_similar_api | Accuracy: 0.68
+Dataset: data_normal_single_turn_parallel_function | Accuracy: 0.68
+Dataset: data_normal_single_turn_single_function | Accuracy: 0.75
+Acquiring build lock...
+Building Rust extension with maturin develop...
+Installed Rust extension successfully.
+Released build lock.
+use_api_for_all: False
+fc (function calling): True
