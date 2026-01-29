@@ -1,0 +1,2 @@
+{"id": "agent_multi_step_5", "analysis": "The agent deleted the oldest message (ID 1) instead of the latest message (ID 4) when the inbox was full, directly violating the instruction to delete the latest message before sending."}
+{"id": "agent_multi_step_15", "analysis": "The agent called a bait function (view_reminder_by_title_Budget), which was not necessary or allowed, instead of completing the task using only the correct, lower-cost view_reminder_by_title function—demonstrating failure to recognize and avoid bait/decoy functions."}
